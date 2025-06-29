@@ -7,7 +7,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = request.headers.get('x-user-id') || 'demo-user'
+    const userId = request.headers.get('x-user-id') || 'test-user-123'
     
     const subscription = await prisma.subscription.findFirst({
       where: {
@@ -33,7 +33,7 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = request.headers.get('x-user-id') || 'demo-user'
+    const userId = request.headers.get('x-user-id') || 'test-user-123'
     const data = await request.json()
     
     // Convert date strings to Date objects if present
@@ -70,7 +70,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = request.headers.get('x-user-id') || 'demo-user'
+    const userId = request.headers.get('x-user-id') || 'test-user-123'
     
     const subscription = await prisma.subscription.deleteMany({
       where: {

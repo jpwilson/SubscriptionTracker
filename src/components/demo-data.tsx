@@ -1,15 +1,18 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useSubscriptions, useCreateSubscription } from '@/hooks/use-subscriptions'
 
 export function DemoDataInitializer() {
   const { data: subscriptions } = useSubscriptions()
   const createSubscription = useCreateSubscription()
+  const hasInitialized = useRef(false)
 
   useEffect(() => {
-    // Check if user has any subscriptions
-    if (subscriptions && subscriptions.length === 0) {
+    // Only run once and only if no subscriptions exist
+    if (!hasInitialized.current && subscriptions && subscriptions.length === 0) {
+      hasInitialized.current = true
+      
       // Add demo subscriptions
       const demoSubscriptions = [
         {
@@ -17,8 +20,8 @@ export function DemoDataInitializer() {
           amount: 15.99,
           billingCycle: 'monthly',
           category: 'Entertainment',
-          startDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 60 days ago
-          nextPaymentDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 5 days from now
+          startDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          nextPaymentDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           isTrial: false,
           status: 'active',
           color: '#E50914',
@@ -28,8 +31,8 @@ export function DemoDataInitializer() {
           amount: 9.99,
           billingCycle: 'monthly',
           category: 'Entertainment',
-          startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 30 days ago
-          nextPaymentDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 15 days from now
+          startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          nextPaymentDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           isTrial: false,
           status: 'active',
           color: '#1DB954',
@@ -40,7 +43,7 @@ export function DemoDataInitializer() {
           billingCycle: 'monthly',
           category: 'Software',
           startDate: new Date().toISOString().split('T')[0],
-          nextPaymentDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 7 days (trial)
+          nextPaymentDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           isTrial: true,
           status: 'active',
           color: '#24292e',
@@ -50,8 +53,8 @@ export function DemoDataInitializer() {
           amount: 52.99,
           billingCycle: 'monthly',
           category: 'Software',
-          startDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 90 days ago
-          nextPaymentDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 20 days from now
+          startDate: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          nextPaymentDate: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
           isTrial: false,
           status: 'active',
           color: '#FF0000',
@@ -71,7 +74,7 @@ export function DemoDataInitializer() {
       
       addDemoData()
     }
-  }, [subscriptions?.length]) // Only run when subscriptions length changes
+  }, [subscriptions, createSubscription])
   
   return null
 }

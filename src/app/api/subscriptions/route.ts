@@ -4,9 +4,9 @@ import { prisma } from '@/lib/prisma'
 // GET /api/subscriptions - Get all subscriptions for the current user
 export async function GET(request: NextRequest) {
   try {
-    // For MVP, we'll use a hardcoded user ID
+    // For MVP, we'll use our test user ID
     // In production with Supabase, we'll get this from the auth session
-    const userId = request.headers.get('x-user-id') || 'demo-user'
+    const userId = request.headers.get('x-user-id') || 'test-user-123'
     
     const subscriptions = await prisma.subscription.findMany({
       where: { userId },
@@ -23,19 +23,13 @@ export async function GET(request: NextRequest) {
 // POST /api/subscriptions - Create a new subscription
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'demo-user'
+    const userId = request.headers.get('x-user-id') || 'test-user-123'
     const data = await request.json()
     
-    // Ensure user exists (for MVP)
+    // Check if user exists
     const user = await prisma.user.findUnique({ where: { id: userId } })
     if (!user) {
-      await prisma.user.create({
-        data: {
-          id: userId,
-          email: 'demo@example.com',
-          password: 'demo', // This won't be used in production
-        },
-      })
+      return NextResponse.json({ error: 'User not found. Please run npm run reset-db' }, { status: 404 })
     }
     
     const subscription = await prisma.subscription.create({

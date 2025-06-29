@@ -28,9 +28,9 @@ export interface SubscriptionStats {
   totalSubscriptions: number
 }
 
-// For MVP, we'll use a demo user ID
+// For MVP, we'll use our test user ID
 // In production, this will come from Supabase Auth
-const getUserId = () => 'demo-user'
+const getUserId = () => 'test-user-123'
 
 export const subscriptionApi = {
   // Get all subscriptions

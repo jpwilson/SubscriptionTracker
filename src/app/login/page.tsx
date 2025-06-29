@@ -71,7 +71,11 @@ export default function LoginPage() {
             </motion.div>
             <h1 className="text-3xl font-bold text-white mb-2">Welcome to SubTracker</h1>
             <p className="text-gray-300">Your intelligent subscription manager</p>
-            <p className="text-purple-400 text-sm mt-2">(Demo Mode - No real auth required)</p>
+            <div className="mt-4 p-3 bg-purple-600/20 rounded-lg border border-purple-600/30">
+              <p className="text-purple-300 text-sm font-medium">Demo Credentials:</p>
+              <p className="text-purple-200 text-sm">Email: demo@subtracker.app</p>
+              <p className="text-purple-200 text-sm">Password: demo123</p>
+            </div>
           </div>
 
           {isLoading && step > 0 && (
@@ -96,7 +100,7 @@ export default function LoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full px-4 py-3 pl-10 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="demo@example.com"
+                  placeholder="demo@subtracker.app"
                   required
                 />
                 <Mail className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
@@ -111,7 +115,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 pl-10 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  placeholder="any password works"
+                  placeholder="demo123"
                   required
                 />
                 <Lock className="absolute left-3 top-3.5 w-4 h-4 text-gray-400" />
@@ -136,7 +140,7 @@ export default function LoginPage() {
               {isLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                isSignUp ? 'Create Demo Account' : 'Sign In to Demo'
+                isSignUp ? 'Sign Up (Disabled)' : 'Sign In'
               )}
             </Button>
           </form>

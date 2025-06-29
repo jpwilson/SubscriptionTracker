@@ -15,6 +15,11 @@ interface AuthContextType {
   isLoading: boolean
 }
 
+// Test credentials - only these will work
+const TEST_EMAIL = 'demo@subtracker.app'
+const TEST_PASSWORD = 'demo123'
+const TEST_USER_ID = 'test-user-123'
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
   signIn: async () => {},
@@ -37,15 +42,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    // Mock sign in - accept any credentials for now
-    const mockUser = { id: '1', email }
+    // Only accept the test credentials
+    if (email !== TEST_EMAIL || password !== TEST_PASSWORD) {
+      throw new Error('Invalid credentials. Use demo@subtracker.app / demo123')
+    }
+    
+    const mockUser = { id: TEST_USER_ID, email: TEST_EMAIL }
     setUser(mockUser)
     localStorage.setItem('mockUser', JSON.stringify(mockUser))
   }
 
   const signUp = async (email: string, password: string) => {
-    // Mock sign up - same as sign in for now
-    await signIn(email, password)
+    // For demo, sign up is the same as sign in
+    throw new Error('Sign up disabled for demo. Use demo@subtracker.app / demo123')
   }
 
   const signOut = async () => {

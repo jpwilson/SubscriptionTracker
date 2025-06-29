@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 // GET /api/subscriptions/stats - Get subscription statistics
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'demo-user'
+    const userId = request.headers.get('x-user-id') || 'test-user-123'
     
     const subscriptions = await prisma.subscription.findMany({
       where: { 
