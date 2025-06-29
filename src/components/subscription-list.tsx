@@ -1,28 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Trash2, Edit2, AlertCircle } from 'lucide-react'
-import { MockDataStore, type Subscription } from '@/lib/mock-data'
+import { Plus, Trash2, Edit2, AlertCircle, Loader2 } from 'lucide-react'
+import { useSubscriptions, useDeleteSubscription } from '@/hooks/use-subscriptions'
 import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 
-interface SubscriptionListProps {
-  onRefresh: () => void
-}
-
-export function SubscriptionList({ onRefresh }: SubscriptionListProps) {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([])
-
-  useEffect(() => {
-    const subs = MockDataStore.getSubscriptions()
-    setSubscriptions(subs)
-  }, [onRefresh])
+export function SubscriptionList() {
+  const { data: subscriptions, isLoading } = useSubscriptions()
+  const deleteSubscription = useDeleteSubscription()
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this subscription?')) {
-      MockDataStore.deleteSubscription(id)
-      onRefresh()
+      deleteSubscription.mutate(id)
     }
   }
 
@@ -38,7 +28,15 @@ export function SubscriptionList({ onRefresh }: SubscriptionListProps) {
     return colors[category] || colors['Other']
   }
 
-  if (subscriptions.length === 0) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-purple-400" />
+      </div>
+    )
+  }
+
+  if (!subscriptions || subscriptions.length === 0) {
     return (
       <motion.div
         initial={{ opacity: 0 }}
@@ -114,8 +112,13 @@ export function SubscriptionList({ onRefresh }: SubscriptionListProps) {
                       variant="ghost"
                       className="text-gray-400 hover:text-red-400"
                       onClick={() => handleDelete(sub.id)}
+                      disabled={deleteSubscription.isPending}
                     >
-                      <Trash2 className="w-4 h-4" />
+                      {deleteSubscription.isPending ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="w-4 h-4" />
+                      )}
                     </Button>
                   </div>
                 </div>

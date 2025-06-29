@@ -1,50 +1,29 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, LogOut } from 'lucide-react'
+import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, LogOut, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/lib/mock-auth'
-import { MockDataStore } from '@/lib/mock-data'
+import { useSubscriptionStats } from '@/hooks/use-subscriptions'
 import { formatCurrency } from '@/lib/utils'
 import { SubscriptionList } from '@/components/subscription-list'
 import { AddSubscriptionModal } from '@/components/add-subscription-modal'
 import { OnboardingTour } from '@/components/onboarding-tour'
 import { DemoDataInitializer } from '@/components/demo-data'
-import { ClearDataButton } from '@/components/clear-data-button'
 
 export default function DashboardPage() {
   const { user, signOut } = useAuth()
   const [showAddModal, setShowAddModal] = useState(false)
-  const [stats, setStats] = useState({
-    monthlyTotal: 0,
-    yearlyTotal: 0,
-    upcomingRenewals: 0,
-    activeTrials: 0,
-  })
-  const [refreshKey, setRefreshKey] = useState(0)
   const router = useRouter()
-
-  useEffect(() => {
-    if (!user) {
-      router.push('/login')
-    }
-  }, [user, router])
-
-  useEffect(() => {
-    const newStats = MockDataStore.getStats()
-    setStats(newStats)
-  }, [refreshKey])
+  
+  // Use the new hook for stats
+  const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
 
   const handleSignOut = async () => {
     await signOut()
     router.push('/login')
-  }
-
-  const handleAddSubscription = () => {
-    setRefreshKey(prev => prev + 1)
-    setShowAddModal(false)
   }
 
   if (!user) {
@@ -62,6 +41,13 @@ export default function DashboardPage() {
         </div>
       </div>
     )
+  }
+
+  const displayStats = stats || {
+    monthlyTotal: 0,
+    yearlyTotal: 0,
+    upcomingRenewals: 0,
+    activeTrials: 0,
   }
 
   return (
@@ -105,25 +91,25 @@ export default function DashboardPage() {
           {[
             {
               title: 'Monthly Cost',
-              value: formatCurrency(stats.monthlyTotal),
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.monthlyTotal),
               icon: <Calendar className="w-5 h-5" />,
               color: 'from-blue-500 to-blue-600',
             },
             {
               title: 'Annual Cost',
-              value: formatCurrency(stats.yearlyTotal),
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.yearlyTotal),
               icon: <TrendingUp className="w-5 h-5" />,
               color: 'from-green-500 to-green-600',
             },
             {
               title: 'Upcoming Renewals',
-              value: stats.upcomingRenewals,
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : displayStats.upcomingRenewals,
               icon: <AlertTriangle className="w-5 h-5" />,
               color: 'from-yellow-500 to-yellow-600',
             },
             {
               title: 'Active Trials',
-              value: stats.activeTrials,
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : displayStats.activeTrials,
               icon: <Sparkles className="w-5 h-5" />,
               color: 'from-purple-500 to-purple-600',
             },
@@ -151,12 +137,7 @@ export default function DashboardPage() {
 
         {/* Subscriptions List */}
         <div className="subscription-list">
-          <SubscriptionList onRefresh={() => setRefreshKey(prev => prev + 1)} />
-        </div>
-        
-        {/* Clear Data Button - shown at bottom */}
-        <div className="mt-8 text-center">
-          <ClearDataButton onClear={() => setRefreshKey(prev => prev + 1)} />
+          <SubscriptionList />
         </div>
       </div>
 
@@ -164,14 +145,14 @@ export default function DashboardPage() {
       {showAddModal && (
         <AddSubscriptionModal
           onClose={() => setShowAddModal(false)}
-          onSave={handleAddSubscription}
+          onSave={() => setShowAddModal(false)}
         />
       )}
 
       {/* Onboarding Tour */}
       <OnboardingTour />
       
-      {/* Demo Data Initializer */}
+      {/* Demo Data Initializer - Now works with SQLite */}
       <DemoDataInitializer />
     </div>
   )

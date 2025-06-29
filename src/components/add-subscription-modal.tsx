@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { X } from 'lucide-react'
+import { X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { MockDataStore } from '@/lib/mock-data'
+import { useCreateSubscription } from '@/hooks/use-subscriptions'
 
 interface AddSubscriptionModalProps {
   onClose: () => void
@@ -12,6 +12,8 @@ interface AddSubscriptionModalProps {
 }
 
 export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalProps) {
+  const createSubscription = useCreateSubscription()
+  
   const [formData, setFormData] = useState({
     name: '',
     amount: '',
@@ -22,7 +24,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
     trialDays: '7',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
     const startDate = new Date(formData.startDate)
@@ -47,7 +49,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       }
     }
     
-    MockDataStore.saveSubscription({
+    await createSubscription.mutateAsync({
       name: formData.name,
       amount: parseFloat(formData.amount),
       billingCycle: formData.billingCycle,
@@ -199,14 +201,23 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 variant="outline"
                 onClick={onClose}
                 className="flex-1 bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
+                disabled={createSubscription.isPending}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 className="flex-1 bg-purple-600 hover:bg-purple-700"
+                disabled={createSubscription.isPending}
               >
-                Add Subscription
+                {createSubscription.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Adding...
+                  </>
+                ) : (
+                  'Add Subscription'
+                )}
               </Button>
             </div>
           </form>

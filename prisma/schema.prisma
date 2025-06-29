@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String    // In production with Supabase, this will be handled by Supabase Auth
+  createdAt     DateTime  @default(now())
+  
+  subscriptions Subscription[]
+  usageTracking UsageTracking[]
+  reminders     Reminder[]
+  wishList      WishList[]
+  preferences   UserPreferences?
+}
+
+model Subscription {
+  id                String    @id @default(uuid())
+  userId            String
+  name              String
+  amount            Float
+  billingCycle      String    // 'monthly' | 'yearly' | 'weekly' | 'quarterly' | 'one-off'
+  category          String
+  startDate         DateTime
+  nextPaymentDate   DateTime
+  isTrial           Boolean   @default(false)
+  trialEndDate      DateTime?
+  reminderDaysBefore Int      @default(3)
+  notes             String?
+  status            String    @default("active") // 'active' | 'cancelled' | 'paused' | 'expired'
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  color             String?
+  icon              String?
+  url               String?
+  lastUsed          DateTime?
+  usageFrequency    String?   // 'daily' | 'weekly' | 'monthly' | 'rarely'
+  
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  usageTracking     UsageTracking[]
+  reminders         Reminder[]
+  
+  @@index([userId])
+  @@index([nextPaymentDate])
+  @@index([status])
+}
+
+model UsageTracking {
+  id                String    @id @default(uuid())
+  subscriptionId    String
+  userId            String
+  date              DateTime
+  used              Boolean
+  satisfactionScore Int?      // 1-5 rating
+  notes             String?
+  createdAt         DateTime  @default(now())
+  
+  subscription      Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user              User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([subscriptionId, date])
+  @@index([subscriptionId])
+  @@index([date])
+}
+
+model Reminder {
+  id             String    @id @default(uuid())
+  subscriptionId String
+  userId         String
+  type           String    // 'trial_ending' | 'payment_due' | 'usage_check' | 'custom'
+  remindAt       DateTime
+  isSent         Boolean   @default(false)
+  message        String?
+  createdAt      DateTime  @default(now())
+  
+  subscription   Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([remindAt])
+}
+
+model WishList {
+  id            String    @id @default(uuid())
+  userId        String
+  name          String
+  estimatedCost Float?
+  category      String
+  priority      Int       @default(0)
+  notes         String?
+  url           String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+}
+
+model UserPreferences {
+  id                    String    @id @default(uuid())
+  userId                String    @unique
+  currency              String    @default("USD")
+  usageCheckFrequency   String    @default("weekly") // 'daily' | 'weekly' | 'monthly'
+  notificationEmail     Boolean   @default(true)
+  notificationPush      Boolean   @default(true)
+  notificationSms       Boolean   @default(false)
+  theme                 String    @default("system") // 'light' | 'dark' | 'system'
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
