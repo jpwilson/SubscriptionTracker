@@ -2,6 +2,8 @@
 // This will work with both SQLite (development) and Supabase (production)
 // Just by changing the DATABASE_URL environment variable
 
+import { getUserId } from './auth-utils'
+
 export interface Subscription {
   id: string
   name: string
@@ -9,6 +11,7 @@ export interface Subscription {
   billingCycle: string
   category: string
   startDate: string
+  endDate?: string | null
   nextPaymentDate: string
   isTrial: boolean
   status: string
@@ -27,10 +30,6 @@ export interface SubscriptionStats {
   activeTrials: number
   totalSubscriptions: number
 }
-
-// For MVP, we'll use our test user ID
-// In production, this will come from Supabase Auth
-const getUserId = () => 'test-user-123'
 
 export const subscriptionApi = {
   // Get all subscriptions

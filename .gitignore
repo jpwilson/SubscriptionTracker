@@ -28,6 +28,8 @@ yarn-error.log*
 # local env files
 .env*.local
 .env
+.env.development
+.env.production
 
 # vercel
 .vercel
@@ -40,5 +42,39 @@ next-env.d.ts
 # database
 prisma/dev.db
 prisma/dev.db-journal
-*.db
-*.db-journal
+prisma/*.db
+prisma/*.db-journal
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# generated Prisma client
+/node_modules/.prisma/
+/node_modules/@prisma/
+
+# Temporary files
+*.tmp
+*.temp

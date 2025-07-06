@@ -39,6 +39,7 @@ export async function PUT(
     // Convert date strings to Date objects if present
     const updateData: any = { ...data }
     if (data.startDate) updateData.startDate = new Date(data.startDate)
+    if (data.endDate !== undefined) updateData.endDate = data.endDate ? new Date(data.endDate) : null
     if (data.nextPaymentDate) updateData.nextPaymentDate = new Date(data.nextPaymentDate)
     if (data.trialEndDate) updateData.trialEndDate = new Date(data.trialEndDate)
     if (data.lastUsed) updateData.lastUsed = new Date(data.lastUsed)

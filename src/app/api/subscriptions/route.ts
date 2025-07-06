@@ -26,10 +26,22 @@ export async function POST(request: NextRequest) {
     const userId = request.headers.get('x-user-id') || 'test-user-123'
     const data = await request.json()
     
-    // Check if user exists
-    const user = await prisma.user.findUnique({ where: { id: userId } })
+    // Check if user exists, create if doesn't exist
+    let user = await prisma.user.findUnique({ where: { id: userId } })
     if (!user) {
-      return NextResponse.json({ error: 'User not found. Please run npm run reset-db' }, { status: 404 })
+      const email = userId === 'test-user-123' ? 'demo@subtracker.app' : 
+                   userId === 'premium-user-123' ? 'pro@subtracker.app' : 
+                   'user@subtracker.app'
+      const tier = userId === 'premium-user-123' ? 'premium' : 'free'
+      
+      user = await prisma.user.create({
+        data: {
+          id: userId,
+          email,
+          password: 'demo123', // In production, this would be hashed
+          tier,
+        },
+      })
     }
     
     const subscription = await prisma.subscription.create({
@@ -37,6 +49,7 @@ export async function POST(request: NextRequest) {
         ...data,
         userId,
         startDate: new Date(data.startDate),
+        endDate: data.endDate ? new Date(data.endDate) : null,
         nextPaymentDate: new Date(data.nextPaymentDate),
         trialEndDate: data.trialEndDate ? new Date(data.trialEndDate) : null,
         lastUsed: data.lastUsed ? new Date(data.lastUsed) : null,

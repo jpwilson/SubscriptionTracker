@@ -5,6 +5,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 interface User {
   id: string
   email: string
+  tier: 'free' | 'premium'
 }
 
 interface AuthContextType {
@@ -15,10 +16,21 @@ interface AuthContextType {
   isLoading: boolean
 }
 
-// Test credentials - only these will work
-const TEST_EMAIL = 'demo@subtracker.app'
-const TEST_PASSWORD = 'demo123'
-const TEST_USER_ID = 'test-user-123'
+// Test accounts - only these will work
+const TEST_ACCOUNTS = [
+  {
+    email: 'demo@subtracker.app',
+    password: 'demo123',
+    userId: 'test-user-123',
+    tier: 'free' as const
+  },
+  {
+    email: 'pro@subtracker.app',
+    password: 'pro123',
+    userId: 'premium-user-123',
+    tier: 'premium' as const
+  }
+]
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -42,19 +54,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    // Only accept the test credentials
-    if (email !== TEST_EMAIL || password !== TEST_PASSWORD) {
-      throw new Error('Invalid credentials. Use demo@subtracker.app / demo123')
+    // Check against both test accounts
+    const account = TEST_ACCOUNTS.find(acc => acc.email === email && acc.password === password)
+    
+    if (!account) {
+      throw new Error('Invalid credentials. Use demo@subtracker.app / demo123 or pro@subtracker.app / pro123')
     }
     
-    const mockUser = { id: TEST_USER_ID, email: TEST_EMAIL }
+    const mockUser = { 
+      id: account.userId, 
+      email: account.email, 
+      tier: account.tier 
+    }
     setUser(mockUser)
     localStorage.setItem('mockUser', JSON.stringify(mockUser))
   }
 
   const signUp = async (email: string, password: string) => {
-    // For demo, sign up is the same as sign in
-    throw new Error('Sign up disabled for demo. Use demo@subtracker.app / demo123')
+    // For demo, sign up is disabled
+    throw new Error('Sign up disabled for demo. Use demo@subtracker.app / demo123 or pro@subtracker.app / pro123')
   }
 
   const signOut = async () => {

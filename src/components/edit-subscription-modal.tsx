@@ -1,46 +1,41 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { X, Loader2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useCreateSubscription } from '@/hooks/use-subscriptions'
+import { useUpdateSubscription } from '@/hooks/use-subscriptions'
 import { useCategories } from '@/hooks/use-categories'
 import { ManageCategoriesModal } from './manage-categories-modal'
+import { Subscription } from '@/lib/api-client'
 
-interface AddSubscriptionModalProps {
+interface EditSubscriptionModalProps {
+  subscription: Subscription
   onClose: () => void
   onSave: () => void
 }
 
-export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalProps) {
-  const createSubscription = useCreateSubscription()
+export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSubscriptionModalProps) {
+  const updateSubscription = useUpdateSubscription()
   const { data: categories = [], isLoading: categoriesLoading } = useCategories()
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   
   const [formData, setFormData] = useState({
-    name: '',
-    amount: '',
-    billingCycle: 'monthly' as 'monthly' | 'yearly' | 'weekly' | 'quarterly' | 'one-off',
-    category: '',
-    startDate: new Date().toISOString().split('T')[0],
-    isActive: true,
-    endDate: '',
-    isTrial: false,
+    name: subscription.name,
+    amount: subscription.amount.toString(),
+    billingCycle: subscription.billingCycle as 'monthly' | 'yearly' | 'weekly' | 'quarterly' | 'one-off',
+    category: subscription.category,
+    startDate: new Date(subscription.startDate).toISOString().split('T')[0],
+    isActive: subscription.status === 'active',
+    endDate: subscription.endDate ? new Date(subscription.endDate).toISOString().split('T')[0] : '',
+    isTrial: subscription.isTrial,
     trialDays: '7',
     creditCardAdded: false,
     creditCardDate: new Date().toISOString().split('T')[0],
     reminderEnabled: true,
-    url: '',
-    notes: '',
+    url: subscription.url || '',
+    notes: subscription.notes || '',
   })
-
-  // Set default category when categories are loaded
-  React.useEffect(() => {
-    if (categories.length > 0 && !formData.category) {
-      setFormData(prev => ({ ...prev, category: categories[0].name }))
-    }
-  }, [categories, formData.category])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -67,22 +62,21 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       }
     }
     
-    const selectedCategory = categories.find(c => c.name === formData.category)
-    
-    await createSubscription.mutateAsync({
-      name: formData.name,
-      amount: parseFloat(formData.amount),
-      billingCycle: formData.billingCycle,
-      category: formData.category,
-      startDate: formData.startDate,
-      endDate: !formData.isActive && formData.endDate ? formData.endDate : null,
-      nextPaymentDate: nextPaymentDate.toISOString().split('T')[0],
-      isTrial: formData.isTrial,
-      status: formData.isActive ? 'active' : 'cancelled',
-      color: selectedCategory?.color || null,
-      icon: selectedCategory?.icon || null,
-      url: formData.url || null,
-      notes: formData.notes || null,
+    await updateSubscription.mutateAsync({
+      id: subscription.id,
+      updates: {
+        name: formData.name,
+        amount: parseFloat(formData.amount),
+        billingCycle: formData.billingCycle,
+        category: formData.category,
+        startDate: formData.startDate,
+        endDate: !formData.isActive && formData.endDate ? formData.endDate : null,
+        nextPaymentDate: nextPaymentDate.toISOString().split('T')[0],
+        isTrial: formData.isTrial,
+        status: formData.isActive ? 'active' : 'cancelled',
+        url: formData.url || null,
+        notes: formData.notes || null,
+      }
     })
     
     onSave()
@@ -106,7 +100,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       >
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gradient">Add Subscription</h2>
+            <h2 className="text-2xl font-bold text-gradient">Edit Subscription</h2>
             <button
               onClick={onClose}
               className="neu-button p-2 rounded-xl text-white/70 hover:text-white transition-all duration-300"
@@ -266,63 +260,6 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                   This is a free trial
                 </label>
               </div>
-
-              {formData.isTrial && (
-                <div className="ml-7 space-y-3 p-4 bg-slate-800/50 rounded-lg border border-slate-700">
-                  <div className="flex items-center gap-3">
-                    <label className="text-sm text-muted-foreground">Trial length:</label>
-                    <input
-                      type="number"
-                      value={formData.trialDays}
-                      onChange={(e) => setFormData({ ...formData, trialDays: e.target.value })}
-                      className="w-20 px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm"
-                      placeholder="7"
-                      min="1"
-                    />
-                    <span className="text-sm text-muted-foreground">days</span>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id="creditCardAdded"
-                      checked={formData.creditCardAdded}
-                      onChange={(e) => setFormData({ ...formData, creditCardAdded: e.target.checked })}
-                      className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
-                    />
-                    <label htmlFor="creditCardAdded" className="text-sm text-muted-foreground">
-                      Credit card details required
-                    </label>
-                  </div>
-
-                  {formData.creditCardAdded && (
-                    <div className="ml-7">
-                      <label className="block text-sm text-muted-foreground mb-1">
-                        When will you be charged?
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.creditCardDate}
-                        onChange={(e) => setFormData({ ...formData, creditCardDate: e.target.value })}
-                        className="w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white text-sm"
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      id="reminderEnabled"
-                      checked={formData.reminderEnabled}
-                      onChange={(e) => setFormData({ ...formData, reminderEnabled: e.target.checked })}
-                      className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
-                    />
-                    <label htmlFor="reminderEnabled" className="text-sm text-muted-foreground">
-                      Remind me before trial ends
-                    </label>
-                  </div>
-                </div>
-              )}
             </div>
 
             <div>
@@ -359,24 +296,24 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 type="button"
                 onClick={onClose}
                 className="flex-1 neu-button px-4 py-3 rounded-xl text-white/70 hover:text-white transition-all duration-300"
-                disabled={createSubscription.isPending}
+                disabled={updateSubscription.isPending}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
                 className="flex-1 relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
-                disabled={createSubscription.isPending}
+                disabled={updateSubscription.isPending}
               >
                 <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative flex items-center justify-center">
-                  {createSubscription.isPending ? (
+                  {updateSubscription.isPending ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Adding...
+                      Saving...
                     </>
                   ) : (
-                    'Add Subscription'
+                    'Save Changes'
                   )}
                 </span>
               </Button>
