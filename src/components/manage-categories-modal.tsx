@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Plus, Trash2, Loader2, Palette, Tags, Sparkles, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCategories, useCreateCategory, useDeleteCategory, type Category } from '@/hooks/use-categories'
-import { useAuth } from '@/lib/mock-auth'
+import { useAuth } from '@/providers/supabase-auth-provider'
 import { isPremiumUser } from '@/lib/feature-gates'
 
 interface ManageCategoriesModalProps {

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { motion, LayoutGroup } from 'framer-motion'
 import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, CreditCard, Calendar, Tag, PieChart, Download, Moon, Shield, Zap, Home } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/lib/mock-auth'
+import { useAuth } from '@/providers/supabase-auth-provider'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 

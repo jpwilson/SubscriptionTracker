@@ -1,4 +1,4 @@
-import { User } from '@/lib/mock-auth'
+import { User } from '@/providers/supabase-auth-provider'
 
 export const isPremiumUser = (user: User | null): boolean => {
   return user?.tier === 'premium'

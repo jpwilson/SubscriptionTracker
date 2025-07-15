@@ -95,10 +95,12 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           <p className="mt-2">Ready to start tracking your subscriptions? 🚀</p>
         </div>
       ),
-      placement: 'top',
+      placement: 'bottom',
       disableBeacon: true,
       floaterProps: {
-        disableFlip: true,
+        disableFlip: false,
+        hideArrow: false,
+        offset: 20,
       },
     },
   ]
@@ -130,7 +132,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             primaryColor: '#6366f1',
             textColor: '#ffffff',
             overlayColor: 'rgba(0, 0, 0, 0.5)',
-            width: 380,
+            width: typeof window !== 'undefined' && window.innerWidth < 500 ? 300 : 380,
             zIndex: 10000,
           },
           tooltip: {
