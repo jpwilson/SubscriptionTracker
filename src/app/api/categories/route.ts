@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js'
 
 // Default categories for new users - comprehensive list
 const DEFAULT_CATEGORIES = [
@@ -28,131 +28,226 @@ const DEFAULT_CATEGORIES = [
 // GET /api/categories - Get all categories for the current user
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'test-user-123'
-    
-    // Get user to check tier, create if doesn't exist
-    let user = await prisma.user.findUnique({
-      where: { id: userId },
-    })
-    
-    // If user doesn't exist, create a default free user
-    if (!user) {
-      const email = userId === 'test-user-123' ? 'demo@subtracker.app' : 
-                   userId === 'premium-user-123' ? 'pro@subtracker.app' : 
-                   'user@subtracker.app'
-      const tier = userId === 'premium-user-123' ? 'premium' : 'free'
-      
-      user = await prisma.user.create({
-        data: {
-          id: userId,
-          email,
-          password: 'demo123', // In production, this would be hashed
-          tier,
-        },
-      })
+    // Get the authorization header
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const token = authHeader.replace('Bearer ', '')
     
-    let categories = await prisma.category.findMany({
-      where: { 
-        userId,
-      },
-      orderBy: [
-        { isDefault: 'desc' },
-        { name: 'asc' }
-      ],
-    })
+    // Create Supabase client with the user's token
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        global: {
+          headers: {
+            Authorization: authHeader,
+          },
+        },
+      }
+    )
+
+    // Get the user from the authenticated client
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
     
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Fetch categories for the user
+    const { data: categories, error } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('is_default', { ascending: false })
+      .order('name', { ascending: true })
+
+    if (error) {
+      console.error('Error fetching categories:', error)
+      return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 })
+    }
+
     // If user has no categories, create the defaults
-    if (categories.length === 0) {
+    if (!categories || categories.length === 0) {
       const defaultCategories = DEFAULT_CATEGORIES.map(cat => ({
         ...cat,
-        userId,
-        isDefault: true,
-        parentId: null,
+        user_id: user.id,
+        is_default: true,
+        parent_id: null,
       }))
       
-      await prisma.category.createMany({
-        data: defaultCategories,
-      })
-      
-      categories = await prisma.category.findMany({
-        where: { 
-          userId,
-        },
-        orderBy: [
-          { isDefault: 'desc' },
-          { name: 'asc' }
-        ],
-      })
+      const { error: createError } = await supabase
+        .from('categories')
+        .insert(defaultCategories)
+
+      if (createError) {
+        console.error('Error creating default categories:', createError)
+        return NextResponse.json({ error: 'Failed to create default categories' }, { status: 500 })
+      }
+
+      // Fetch the newly created categories
+      const { data: newCategories, error: fetchError } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('is_default', { ascending: false })
+        .order('name', { ascending: true })
+
+      if (fetchError) {
+        console.error('Error fetching new categories:', fetchError)
+        return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 })
+      }
+
+      // Convert snake_case to camelCase for frontend compatibility
+      const formattedCategories = newCategories?.map(cat => ({
+        id: cat.id,
+        userId: cat.user_id,
+        name: cat.name,
+        color: cat.color,
+        icon: cat.icon,
+        isDefault: cat.is_default,
+        parentId: cat.parent_id,
+        createdAt: cat.created_at,
+        updatedAt: cat.updated_at,
+      })) || []
+
+      return NextResponse.json(formattedCategories)
     }
-    
-    return NextResponse.json(categories)
+
+    // Convert snake_case to camelCase for frontend compatibility
+    const formattedCategories = categories.map(cat => ({
+      id: cat.id,
+      userId: cat.user_id,
+      name: cat.name,
+      color: cat.color,
+      icon: cat.icon,
+      isDefault: cat.is_default,
+      parentId: cat.parent_id,
+      createdAt: cat.created_at,
+      updatedAt: cat.updated_at,
+    }))
+
+    return NextResponse.json(formattedCategories)
   } catch (error) {
-    console.error('Error fetching categories:', error)
-    return NextResponse.json({ error: 'Failed to fetch categories' }, { status: 500 })
+    console.error('Error in GET /api/categories:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
 // POST /api/categories - Create a new category
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'test-user-123'
+    // Get the authorization header
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const token = authHeader.replace('Bearer ', '')
     const data = await request.json()
     
-    // Get user to check tier
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-    })
+    // Create Supabase client
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+
+    // Get the user from the token
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
     
-    // Check if user can create custom categories
-    if (user?.tier !== 'premium') {
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Get user metadata to check tier
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('tier')
+      .eq('id', user.id)
+      .single()
+
+    if (userError || !userData) {
+      // If user doesn't exist in users table, assume free tier
+      const tier = 'free'
+      if (tier !== 'premium') {
+        return NextResponse.json({ 
+          error: 'Custom categories are a premium feature. Upgrade to create your own categories!' 
+        }, { status: 403 })
+      }
+    } else if (userData.tier !== 'premium') {
       return NextResponse.json({ 
         error: 'Custom categories are a premium feature. Upgrade to create your own categories!' 
       }, { status: 403 })
     }
-    
+
     // Check if this is a subcategory
     if (data.parentId) {
       // Verify parent category exists and belongs to user
-      const parent = await prisma.category.findFirst({
-        where: {
-          id: data.parentId,
-          userId,
-        },
-      })
-      
-      if (!parent) {
+      const { data: parent, error: parentError } = await supabase
+        .from('categories')
+        .select('*')
+        .eq('id', data.parentId)
+        .eq('user_id', user.id)
+        .single()
+
+      if (parentError || !parent) {
         return NextResponse.json({ error: 'Parent category not found' }, { status: 404 })
       }
     }
-    
+
     // Check if category name already exists for this user at this level
-    const existing = await prisma.category.findFirst({
-      where: {
-        userId,
-        name: data.name,
-        parentId: data.parentId || null,
-      },
-    })
-    
-    if (existing) {
+    const { data: existing, error: existingError } = await supabase
+      .from('categories')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('name', data.name)
+      .eq('parent_id', data.parentId || null)
+      .single()
+
+    if (!existingError && existing) {
       return NextResponse.json({ error: 'Category already exists' }, { status: 400 })
     }
-    
-    const category = await prisma.category.create({
-      data: {
-        ...data,
-        userId,
-        isDefault: false,
-      },
-      include: {
-        subcategories: true,
-      },
-    })
-    
-    return NextResponse.json(category, { status: 201 })
+
+    // Convert camelCase to snake_case for database
+    const categoryData = {
+      user_id: user.id,
+      name: data.name,
+      color: data.color,
+      icon: data.icon,
+      is_default: false,
+      parent_id: data.parentId || null,
+    }
+
+    // Create the category
+    const { data: category, error: createError } = await supabase
+      .from('categories')
+      .insert(categoryData)
+      .select()
+      .single()
+
+    if (createError) {
+      console.error('Error creating category:', createError)
+      return NextResponse.json({ error: 'Failed to create category' }, { status: 500 })
+    }
+
+    // Convert back to camelCase for frontend
+    const formattedCategory = {
+      id: category.id,
+      userId: category.user_id,
+      name: category.name,
+      color: category.color,
+      icon: category.icon,
+      isDefault: category.is_default,
+      parentId: category.parent_id,
+      createdAt: category.created_at,
+      updatedAt: category.updated_at,
+    }
+
+    return NextResponse.json(formattedCategory, { status: 201 })
   } catch (error) {
-    console.error('Error creating category:', error)
-    return NextResponse.json({ error: 'Failed to create category' }, { status: 500 })
+    console.error('Error in POST /api/categories:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -9,6 +9,7 @@ import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
+import { AddSubscriptionModal } from '@/components/add-subscription-modal'
 
 type SortOption = 'name' | 'price' | 'nextPayment' | 'category' | 'billingCycle'
 type SortDirection = 'asc' | 'desc'
@@ -24,6 +25,7 @@ export function SubscriptionList() {
   const [sortBy, setSortBy] = useState<SortOption>('nextPayment')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [filterBy, setFilterBy] = useState<FilterOption>('active')
+  const [showAddModal, setShowAddModal] = useState(false)
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this subscription?')) {
@@ -147,21 +149,40 @@ export function SubscriptionList() {
 
   if (!subscriptions || subscriptions.length === 0) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="neu-card rounded-2xl p-12 text-center border border-white/10"
-      >
-        <div className="relative inline-flex items-center justify-center w-20 h-20 mb-6">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl" />
-          <div className="relative inline-flex items-center justify-center w-full h-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-500/20">
-            <Plus className="w-10 h-10 text-purple-400" />
+      <>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="neu-card rounded-2xl p-12 text-center border border-white/10"
+        >
+          <div className="relative inline-flex items-center justify-center w-20 h-20 mb-6">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl" />
+            <div className="relative inline-flex items-center justify-center w-full h-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-500/20">
+              <Plus className="w-10 h-10 text-purple-400" />
+            </div>
           </div>
-        </div>
-        <h3 className="text-2xl font-bold text-gradient mb-2">No subscriptions yet</h3>
-        <p className="text-muted-foreground mb-6">Start tracking your subscriptions to see insights and save money</p>
-      </motion.div>
+          <h3 className="text-2xl font-bold text-gradient mb-2">No subscriptions yet</h3>
+          <p className="text-muted-foreground mb-6">Start tracking your subscriptions to see insights and save money</p>
+          <Button
+            onClick={() => setShowAddModal(true)}
+            className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+          >
+            <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl" />
+            <span className="relative flex items-center">
+              <Plus className="w-5 h-5 mr-2" />
+              Add Your First Subscription
+            </span>
+          </Button>
+        </motion.div>
+        
+        {showAddModal && (
+          <AddSubscriptionModal
+            onClose={() => setShowAddModal(false)}
+            onSave={() => setShowAddModal(false)}
+          />
+        )}
+      </>
     )
   }
 
@@ -432,6 +453,14 @@ export function SubscriptionList() {
         >
           <p className="text-muted-foreground">No subscriptions found matching "{searchTerm}"</p>
         </motion.div>
+      )}
+      
+      {/* Add Subscription Modal */}
+      {showAddModal && (
+        <AddSubscriptionModal
+          onClose={() => setShowAddModal(false)}
+          onSave={() => setShowAddModal(false)}
+        />
       )}
     </div>
   )

@@ -2,7 +2,7 @@
 // This will work with both SQLite (development) and Supabase (production)
 // Just by changing the DATABASE_URL environment variable
 
-import { getUserId } from './auth-utils'
+import { supabase } from './supabase'
 
 export interface Subscription {
   id: string
@@ -31,13 +31,20 @@ export interface SubscriptionStats {
   totalSubscriptions: number
 }
 
+async function getAuthHeaders() {
+  const { data: { session } } = await supabase.auth.getSession()
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': session?.access_token ? `Bearer ${session.access_token}` : '',
+  }
+}
+
 export const subscriptionApi = {
   // Get all subscriptions
   async getAll(): Promise<Subscription[]> {
+    const headers = await getAuthHeaders()
     const response = await fetch('/api/subscriptions', {
-      headers: {
-        'x-user-id': getUserId(),
-      },
+      headers,
     })
     if (!response.ok) throw new Error('Failed to fetch subscriptions')
     return response.json()
@@ -45,10 +52,9 @@ export const subscriptionApi = {
 
   // Get subscription stats
   async getStats(): Promise<SubscriptionStats> {
+    const headers = await getAuthHeaders()
     const response = await fetch('/api/subscriptions/stats', {
-      headers: {
-        'x-user-id': getUserId(),
-      },
+      headers,
     })
     if (!response.ok) throw new Error('Failed to fetch stats')
     return response.json()
@@ -56,26 +62,25 @@ export const subscriptionApi = {
 
   // Create a new subscription
   async create(subscription: Omit<Subscription, 'id' | 'createdAt' | 'updatedAt'>): Promise<Subscription> {
+    const headers = await getAuthHeaders()
     const response = await fetch('/api/subscriptions', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-user-id': getUserId(),
-      },
+      headers,
       body: JSON.stringify(subscription),
     })
-    if (!response.ok) throw new Error('Failed to create subscription')
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.error || 'Failed to create subscription')
+    }
     return response.json()
   },
 
   // Update a subscription
   async update(id: string, updates: Partial<Subscription>): Promise<Subscription> {
+    const headers = await getAuthHeaders()
     const response = await fetch(`/api/subscriptions/${id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-user-id': getUserId(),
-      },
+      headers,
       body: JSON.stringify(updates),
     })
     if (!response.ok) throw new Error('Failed to update subscription')
@@ -84,11 +89,10 @@ export const subscriptionApi = {
 
   // Delete a subscription
   async delete(id: string): Promise<void> {
+    const headers = await getAuthHeaders()
     const response = await fetch(`/api/subscriptions/${id}`, {
       method: 'DELETE',
-      headers: {
-        'x-user-id': getUserId(),
-      },
+      headers,
     })
     if (!response.ok) throw new Error('Failed to delete subscription')
   },

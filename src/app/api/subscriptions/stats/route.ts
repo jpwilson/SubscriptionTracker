@@ -1,18 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js'
 
 // GET /api/subscriptions/stats - Get subscription statistics
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'test-user-123'
+    // Get the authorization header
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const token = authHeader.replace('Bearer ', '')
     
-    const subscriptions = await prisma.subscription.findMany({
-      where: { 
-        userId,
-        status: 'active'
-      },
-    })
+    // Create Supabase client with the user's token
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        global: {
+          headers: {
+            Authorization: authHeader,
+          },
+        },
+      }
+    )
+
+    // Get the user from the authenticated client
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
     
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Fetch active subscriptions for the user
+    const { data: subscriptions, error } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+
+    if (error) {
+      console.error('Error fetching subscriptions:', error)
+      return NextResponse.json({ error: 'Failed to fetch subscriptions' }, { status: 500 })
+    }
+
     // Calculate statistics
     let monthlyTotal = 0
     let yearlyTotal = 0
@@ -25,14 +56,15 @@ export async function GET(request: NextRequest) {
     const thirtyDaysFromNow = new Date()
     thirtyDaysFromNow.setDate(today.getDate() + 30)
     
-    subscriptions.forEach(sub => {
-      if (sub.isTrial) activeTrials++
+    subscriptions?.forEach(sub => {
+      if (sub.is_trial) activeTrials++
       
-      if (sub.nextPaymentDate > today && sub.nextPaymentDate <= thirtyDaysFromNow) {
+      const nextPaymentDate = new Date(sub.next_payment_date)
+      if (nextPaymentDate > today && nextPaymentDate <= thirtyDaysFromNow) {
         upcomingRenewals++
       }
       
-      switch (sub.billingCycle) {
+      switch (sub.billing_cycle) {
         case 'monthly':
           monthlyTotal += sub.amount
           break
@@ -57,7 +89,7 @@ export async function GET(request: NextRequest) {
       yearlyTotal: totalAnnual,
       upcomingRenewals,
       activeTrials,
-      totalSubscriptions: subscriptions.length,
+      totalSubscriptions: subscriptions?.length || 0,
     })
   } catch (error) {
     console.error('Error calculating stats:', error)

@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { useToast } from '@/components/ui/use-toast'
-import { getUserId } from '@/lib/auth-utils'
+import { supabase } from '@/lib/supabase'
 
 export interface Category {
   id: string
@@ -13,13 +13,20 @@ export interface Category {
   updatedAt?: string
 }
 
+async function getAuthHeaders() {
+  const { data: { session } } = await supabase.auth.getSession()
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': session?.access_token ? `Bearer ${session.access_token}` : '',
+  }
+}
+
 export const categoryApi = {
   // Get all categories
   async getAll(): Promise<Category[]> {
+    const headers = await getAuthHeaders()
     const response = await fetch('/api/categories', {
-      headers: {
-        'x-user-id': getUserId(),
-      },
+      headers,
     })
     if (!response.ok) throw new Error('Failed to fetch categories')
     return response.json()
@@ -27,12 +34,10 @@ export const categoryApi = {
 
   // Create a new category
   async create(category: Omit<Category, 'id' | 'isDefault' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Category> {
+    const headers = await getAuthHeaders()
     const response = await fetch('/api/categories', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-user-id': getUserId(),
-      },
+      headers,
       body: JSON.stringify(category),
     })
     if (!response.ok) {
@@ -44,11 +49,10 @@ export const categoryApi = {
 
   // Delete a category
   async delete(id: string): Promise<void> {
+    const headers = await getAuthHeaders()
     const response = await fetch(`/api/categories/${id}`, {
       method: 'DELETE',
-      headers: {
-        'x-user-id': getUserId(),
-      },
+      headers,
     })
     if (!response.ok) {
       const error = await response.json()

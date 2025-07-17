@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Inter, Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/providers"
+import Script from 'next/script'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -26,6 +27,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <Script id="chunk-error-handler" strategy="beforeInteractive">
+          {`
+            // Handle chunk loading errors
+            window.addEventListener('error', function(e) {
+              if (e.message && e.message.includes('Loading chunk')) {
+                console.warn('Chunk loading error detected, reloading page...');
+                window.location.reload();
+              }
+            });
+          `}
+        </Script>
+      </head>
       <body className={`${plusJakarta.className} ${inter.variable} ${plusJakarta.variable} custom-scrollbar`}>
         <Providers>
           {children}

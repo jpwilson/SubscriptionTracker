@@ -33,10 +33,10 @@ export function useCreateSubscription() {
         description: 'Subscription added successfully',
       })
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: 'Error',
-        description: 'Failed to add subscription',
+        description: error.message || 'Failed to add subscription',
         variant: 'destructive',
       })
     },

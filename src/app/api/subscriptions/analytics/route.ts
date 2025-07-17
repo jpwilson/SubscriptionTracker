@@ -1,31 +1,62 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { createClient } from '@supabase/supabase-js'
 
 // GET /api/subscriptions/analytics - Get analytics data
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'test-user-123'
+    // Get the authorization header
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const token = authHeader.replace('Bearer ', '')
     const { searchParams } = new URL(request.url)
     const period = searchParams.get('period') || 'monthly'
     const timeScale = searchParams.get('timeScale') || '6months'
     
-    const subscriptions = await prisma.subscription.findMany({
-      where: { 
-        userId,
-        status: 'active'
-      },
-    })
+    // Create Supabase client with the user's token
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        global: {
+          headers: {
+            Authorization: authHeader,
+          },
+        },
+      }
+    )
+
+    // Get the user from the authenticated client
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
     
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Fetch active subscriptions for the user
+    const { data: subscriptions, error } = await supabase
+      .from('subscriptions')
+      .select('*')
+      .eq('user_id', user.id)
+      .eq('status', 'active')
+
+    if (error) {
+      console.error('Error fetching subscriptions:', error)
+      return NextResponse.json({ error: 'Failed to fetch subscriptions' }, { status: 500 })
+    }
+
     // Calculate time series data
     const now = new Date()
     const timeSeriesData = []
     const categoryData: Record<string, number> = {}
     
     // Calculate category totals first (outside the period loop)
-    subscriptions.forEach(sub => {
+    subscriptions?.forEach(sub => {
       // Convert to monthly amount
       let monthlyAmount = 0
-      switch (sub.billingCycle) {
+      switch (sub.billing_cycle) {
         case 'monthly':
           monthlyAmount = sub.amount
           break
@@ -63,6 +94,7 @@ export async function GET(request: NextRequest) {
         periodCount = 60
         break
     }
+
     for (let i = periodCount - 1; i >= 0; i--) {
       const date = new Date(now)
       let periodKey = ''
@@ -89,10 +121,10 @@ export async function GET(request: NextRequest) {
       
       // Calculate spending for this period
       let periodTotal = 0
-      subscriptions.forEach(sub => {
+      subscriptions?.forEach(sub => {
         // Convert to monthly amount
         let monthlyAmount = 0
-        switch (sub.billingCycle) {
+        switch (sub.billing_cycle) {
           case 'monthly':
             monthlyAmount = sub.amount
             break
@@ -142,7 +174,7 @@ export async function GET(request: NextRequest) {
       summary: {
         totalMonthly: categories.reduce((sum, cat) => sum + cat.amount, 0),
         totalYearly: categories.reduce((sum, cat) => sum + cat.amount * 12, 0),
-        activeSubscriptions: subscriptions.length
+        activeSubscriptions: subscriptions?.length || 0
       }
     })
   } catch (error) {
