@@ -1,6 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+export const dynamic = 'force-dynamic'
+
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, CreditCard, Link as LinkIcon, FileText, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -16,8 +18,13 @@ export default function SubscriptionsListPage() {
   const router = useRouter()
   const { data: subscriptions = [], isLoading } = useSubscriptions()
 
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+    }
+  }, [user, router])
+
   if (!user) {
-    router.push('/login')
     return null
   }
 

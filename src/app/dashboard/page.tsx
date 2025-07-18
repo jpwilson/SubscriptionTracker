@@ -82,12 +82,6 @@ export default function DashboardPage() {
               <h1 className="text-4xl font-bold text-gradient">SubTracker</h1>
               <p className="text-muted-foreground flex items-center gap-2">
                 Welcome back, {user?.email}
-                {user?.tier === 'premium' && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                    <Sparkles className="w-3 h-3" />
-                    Premium
-                  </span>
-                )}
               </p>
             </div>
           </div>

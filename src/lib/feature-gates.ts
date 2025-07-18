@@ -1,7 +1,9 @@
-import { User } from '@/providers/supabase-auth-provider'
+import { User } from '@supabase/supabase-js'
 
 export const isPremiumUser = (user: User | null): boolean => {
-  return user?.tier === 'premium'
+  // For now, we'll assume all users are free tier
+  // In production, this would check the users table
+  return false
 }
 
 export const PREMIUM_FEATURES = {

@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
@@ -7,7 +8,7 @@ import { CreditCard, Shield, ArrowLeft, Check, Zap, Building2 } from 'lucide-rea
 import { Button } from '@/components/ui/button'
 import { InternalHeader } from '@/components/internal-header'
 
-export default function PaymentPage() {
+function PaymentContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const plan = searchParams.get('plan') || 'premium'
@@ -204,5 +205,13 @@ export default function PaymentPage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PaymentContent />
+    </Suspense>
   )
 }

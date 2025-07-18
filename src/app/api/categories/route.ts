@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
+export const dynamic = 'force-dynamic'
+
 // Default categories for new users - comprehensive list
 const DEFAULT_CATEGORIES = [
   { name: 'Entertainment', color: '#8B5CF6', icon: '🎬' },
@@ -168,15 +170,8 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    if (userError || !userData) {
-      // If user doesn't exist in users table, assume free tier
-      const tier = 'free'
-      if (tier !== 'premium') {
-        return NextResponse.json({ 
-          error: 'Custom categories are a premium feature. Upgrade to create your own categories!' 
-        }, { status: 403 })
-      }
-    } else if (userData.tier !== 'premium') {
+    if (userError || !userData || userData.tier !== 'premium') {
+      // Only premium users can create custom categories
       return NextResponse.json({ 
         error: 'Custom categories are a premium feature. Upgrade to create your own categories!' 
       }, { status: 403 })

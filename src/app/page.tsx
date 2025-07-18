@@ -10,15 +10,15 @@ import Link from 'next/link'
 
 export default function LandingPage() {
   const router = useRouter()
-  const { user, isLoading } = useAuth()
+  const { user, loading } = useAuth()
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null)
   const [activeSection, setActiveSection] = useState<string>('')
   
   useEffect(() => {
-    if (!isLoading && user) {
+    if (!loading && user) {
       router.push('/dashboard')
     }
-  }, [user, isLoading, router])
+  }, [user, loading, router])
 
   useEffect(() => {
     const handleScroll = () => {

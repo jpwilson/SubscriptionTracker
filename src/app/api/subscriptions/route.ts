@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
+export const dynamic = 'force-dynamic'
+
 // GET /api/subscriptions - Get all subscriptions for the current user
 export async function GET(request: NextRequest) {
   try {
