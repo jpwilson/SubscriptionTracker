@@ -119,7 +119,7 @@ export default function PaymentPage() {
               </div>
               
               <div className="space-y-3">
-                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">What's Included</h3>
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">What&apos;s Included</h3>
                 {selectedPlan.features.map((feature, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0" />

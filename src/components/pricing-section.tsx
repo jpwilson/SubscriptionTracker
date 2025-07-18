@@ -190,7 +190,7 @@ export function PricingSection() {
             Cancel anytime. No credit card required for free plan.
           </p>
           <p className="text-xs text-purple-400 font-medium">
-            "So many dumb tiny expenses go 100% unchecked" - Enterprise customers save thousands monthly
+            &ldquo;So many dumb tiny expenses go 100% unchecked&rdquo; - Enterprise customers save thousands monthly
           </p>
         </motion.div>
       </div>

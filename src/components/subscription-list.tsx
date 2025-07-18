@@ -120,7 +120,7 @@ export function SubscriptionList() {
     })
     
     return sorted
-  }, [subscriptions, searchTerm, sortBy, sortDirection])
+  }, [subscriptions, searchTerm, sortBy, sortDirection, filterBy])
 
   // Handle sort option click
   const handleSort = (option: SortOption) => {
@@ -451,7 +451,7 @@ export function SubscriptionList() {
           animate={{ opacity: 1 }}
           className="text-center py-8"
         >
-          <p className="text-muted-foreground">No subscriptions found matching "{searchTerm}"</p>
+          <p className="text-muted-foreground">No subscriptions found matching &ldquo;{searchTerm}&rdquo;</p>
         </motion.div>
       )}
       

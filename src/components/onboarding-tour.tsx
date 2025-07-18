@@ -45,7 +45,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             <li><strong>Monthly Cost</strong>: Total monthly spending</li>
             <li><strong>Annual Cost</strong>: Projected yearly spending</li>
             <li><strong>Upcoming Renewals</strong>: Due in next 30 days</li>
-            <li><strong>Active Trials</strong>: Free trials you're tracking</li>
+            <li><strong>Active Trials</strong>: Free trials you&apos;re tracking</li>
           </ul>
         </div>
       ),
