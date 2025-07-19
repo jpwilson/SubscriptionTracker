@@ -7,6 +7,9 @@ import { supabase } from './supabase'
 export interface Subscription {
   id: string
   name: string
+  company?: string | null
+  product?: string | null
+  tier?: string | null
   amount: number
   billingCycle: string
   category: string
@@ -21,6 +24,11 @@ export interface Subscription {
   notes?: string | null
   createdAt?: string
   updatedAt?: string
+  userId?: string
+  reminderDaysBefore?: number
+  trialEndDate?: string | null
+  lastUsed?: string | null
+  usageFrequency?: string | null
 }
 
 export interface SubscriptionStats {

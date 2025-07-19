@@ -72,6 +72,9 @@ export async function GET(
       url: subscription.url,
       lastUsed: subscription.last_used,
       usageFrequency: subscription.usage_frequency,
+      company: subscription.company,
+      product: subscription.product,
+      tier: subscription.tier,
     }
 
     return NextResponse.json(formattedSubscription)
@@ -128,6 +131,9 @@ export async function PUT(
     if (data.url !== undefined) updateData.url = data.url
     if (data.lastUsed !== undefined) updateData.last_used = data.lastUsed
     if (data.usageFrequency !== undefined) updateData.usage_frequency = data.usageFrequency
+    if (data.company !== undefined) updateData.company = data.company
+    if (data.product !== undefined) updateData.product = data.product
+    if (data.tier !== undefined) updateData.tier = data.tier
 
     // Update the subscription
     const { data: subscription, error } = await supabase
@@ -165,6 +171,9 @@ export async function PUT(
       url: subscription.url,
       lastUsed: subscription.last_used,
       usageFrequency: subscription.usage_frequency,
+      company: subscription.company,
+      product: subscription.product,
+      tier: subscription.tier,
     }
 
     return NextResponse.json(formattedSubscription)

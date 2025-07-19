@@ -17,9 +17,13 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
   const createSubscription = useCreateSubscription()
   const { data: categories = [], isLoading: categoriesLoading } = useCategories()
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
+  const [showDetailedInput, setShowDetailedInput] = useState(false)
   
   const [formData, setFormData] = useState({
     name: '',
+    company: '',
+    product: '',
+    tier: '',
     amount: '',
     billingCycle: 'monthly' as 'monthly' | 'yearly' | 'weekly' | 'quarterly' | 'one-off',
     category: '',
@@ -69,8 +73,16 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
     
     const selectedCategory = categories.find(c => c.name === formData.category)
     
+    // Build the name from parts if detailed input is used
+    const subscriptionName = showDetailedInput && formData.company
+      ? `${formData.company}${formData.product ? ` - ${formData.product}` : ''}${formData.tier ? ` - ${formData.tier}` : ''}`
+      : formData.name
+
     await createSubscription.mutateAsync({
-      name: formData.name,
+      name: subscriptionName,
+      company: showDetailedInput ? formData.company : null,
+      product: showDetailedInput ? formData.product : null,
+      tier: showDetailedInput ? formData.tier : null,
       amount: parseFloat(formData.amount),
       billingCycle: formData.billingCycle,
       category: formData.category,
@@ -117,17 +129,54 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-muted-foreground mb-2">
-                Service Name
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                placeholder="e.g., Netflix, Spotify"
-                required
-              />
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-muted-foreground">
+                  Service Name
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowDetailedInput(!showDetailedInput)}
+                  className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                >
+                  {showDetailedInput ? '− Hide' : '+ Add'} details
+                </button>
+              </div>
+              
+              {!showDetailedInput ? (
+                <input
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value, company: e.target.value })}
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  placeholder="e.g., Netflix, Spotify"
+                  required
+                />
+              ) : (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    value={formData.company || formData.name}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value, name: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Company (e.g., Netflix, Spotify)"
+                    required
+                  />
+                  <input
+                    type="text"
+                    value={formData.product}
+                    onChange={(e) => setFormData({ ...formData, product: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Product (e.g., Streaming)"
+                  />
+                  <input
+                    type="text"
+                    value={formData.tier}
+                    onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    placeholder="Tier/Plan (e.g., Premium)"
+                  />
+                </div>
+              )}
             </div>
 
             <div className="grid grid-cols-2 gap-4">

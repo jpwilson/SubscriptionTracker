@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, LogOut, Loader2, Tags, BarChart3, Lightbulb } from 'lucide-react'
+import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, LogOut, Loader2, Tags, BarChart3, Lightbulb, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
@@ -109,6 +109,14 @@ export default function DashboardPage() {
             >
               <Tags className="w-5 h-5" />
               <span className="ml-2 hidden sm:inline">Categories</span>
+            </Button>
+            <Button
+              onClick={() => router.push('/profile')}
+              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-purple-400 transition-all duration-300 gradient-border"
+              title="Profile"
+            >
+              <User className="w-5 h-5" />
+              <span className="ml-2 hidden sm:inline">Profile</span>
             </Button>
             <Button
               onClick={() => setShowAddModal(true)}
