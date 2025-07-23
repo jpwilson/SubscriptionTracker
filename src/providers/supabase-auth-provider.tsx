@@ -21,18 +21,6 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  const getRedirectUrl = () => {
-    // Use environment variable in production, or construct URL on client side
-    if (process.env.NEXT_PUBLIC_SITE_URL) {
-      return `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
-    }
-    // Only access window.location on client side
-    if (typeof window !== 'undefined' && window.location) {
-      return `${window.location.origin}/auth/callback`
-    }
-    // Fallback for SSR
-    return 'https://substracker.vercel.app/auth/callback'
-  }
 
   useEffect(() => {
     // Check active sessions and sets the user
@@ -53,9 +41,6 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: getRedirectUrl(),
-      },
     })
     if (error) console.error('Error signing in with Google:', error)
   }
@@ -78,9 +63,6 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: getRedirectUrl(),
-      },
     })
     
     if (error) {
