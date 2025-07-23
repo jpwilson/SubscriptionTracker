@@ -14,6 +14,8 @@ import { ManageCategoriesModal } from '@/components/manage-categories-modal'
 import { OnboardingTour } from '@/components/onboarding-tour'
 import { DemoDataInitializer } from '@/components/demo-data'
 
+export const dynamic = 'force-dynamic'
+
 export default function DashboardPage() {
   const { user, signOut } = useAuth()
   const [showAddModal, setShowAddModal] = useState(false)

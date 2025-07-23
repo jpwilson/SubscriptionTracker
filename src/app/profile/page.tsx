@@ -11,6 +11,8 @@ import { formatCurrency } from '@/lib/utils'
 import { useSubscriptions, useSubscriptionStats } from '@/hooks/use-subscriptions'
 import { supabase } from '@/lib/supabase'
 
+export const dynamic = 'force-dynamic'
+
 export default function ProfilePage() {
   const router = useRouter()
   const { user, signOut } = useAuth()
