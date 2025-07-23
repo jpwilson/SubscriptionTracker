@@ -21,6 +21,16 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
+  const getRedirectUrl = () => {
+    if (process.env.NEXT_PUBLIC_SITE_URL) {
+      return `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+    }
+    if (typeof window !== 'undefined') {
+      return `${window.location.origin}/auth/callback`
+    }
+    return '/auth/callback'
+  }
+
   useEffect(() => {
     // Check active sessions and sets the user
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -41,7 +51,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/auth/callback`,
+        redirectTo: getRedirectUrl(),
       },
     })
     if (error) console.error('Error signing in with Google:', error)
@@ -66,7 +76,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/auth/callback`,
+        emailRedirectTo: getRedirectUrl(),
       },
     })
     
