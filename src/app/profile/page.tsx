@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic'
 
 export default function ProfilePage() {
   const router = useRouter()
-  const { user, signOut } = useAuth()
+  const { user, signOut, loading: authLoading } = useAuth()
   const { data: subscriptions = [] } = useSubscriptions()
   const { data: stats } = useSubscriptionStats()
   const [userProfile, setUserProfile] = useState<any>(null)
@@ -71,8 +71,13 @@ export default function ProfilePage() {
 
   const isFreeTier = userProfile?.tier === 'free' || !userProfile?.tier
 
+  useEffect(() => {
+    if (!user && !authLoading) {
+      router.push('/login')
+    }
+  }, [user, authLoading, router])
+
   if (!user) {
-    router.push('/login')
     return null
   }
 
