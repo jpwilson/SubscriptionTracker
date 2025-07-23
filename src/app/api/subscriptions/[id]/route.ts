@@ -99,14 +99,21 @@ export async function PUT(
     const token = authHeader.replace('Bearer ', '')
     const data = await request.json()
     
-    // Create Supabase client
+    // Create Supabase client with the user's token
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        global: {
+          headers: {
+            Authorization: authHeader,
+          },
+        },
+      }
     )
 
-    // Get the user from the token
-    const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+    // Get the user from the authenticated client
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
     
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
