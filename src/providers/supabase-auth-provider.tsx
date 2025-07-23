@@ -22,13 +22,16 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   const router = useRouter()
 
   const getRedirectUrl = () => {
+    // Use environment variable in production, or construct URL on client side
     if (process.env.NEXT_PUBLIC_SITE_URL) {
       return `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
     }
-    if (typeof window !== 'undefined') {
+    // Only access window.location on client side
+    if (typeof window !== 'undefined' && window.location) {
       return `${window.location.origin}/auth/callback`
     }
-    return '/auth/callback'
+    // Fallback for SSR
+    return 'https://substracker.vercel.app/auth/callback'
   }
 
   useEffect(() => {
