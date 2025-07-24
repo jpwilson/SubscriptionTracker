@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, CreditCard, Link as LinkIcon, FileText, Trash2, Edit3, ExternalLink, Loader2, Clock, DollarSign, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { useSubscriptions, useDeleteSubscription, useUpdateSubscription } from '@/hooks/use-subscriptions'
-import { formatCurrency } from '@/lib/utils'
+import { formatCurrency, parseLocalDate } from '@/lib/utils'
 import { format, differenceInDays } from 'date-fns'
 import { InternalHeader } from '@/components/internal-header'
 import { EditSubscriptionModal } from '@/components/edit-subscription-modal'
@@ -15,10 +15,17 @@ import { EditSubscriptionModal } from '@/components/edit-subscription-modal'
 export default function SubscriptionDetailPage({ params }: { params: { id: string } }) {
   const { user } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { data: subscriptions = [], isLoading } = useSubscriptions()
   const deleteSubscription = useDeleteSubscription()
   const updateSubscription = useUpdateSubscription()
   const [showEditModal, setShowEditModal] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('edit') === 'true') {
+      setShowEditModal(true)
+    }
+  }, [searchParams])
 
   const subscription = subscriptions.find(s => s.id === params.id)
 
@@ -58,7 +65,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
     }
   }
 
-  const daysUntilPayment = differenceInDays(new Date(subscription.nextPaymentDate), new Date())
+  const daysUntilPayment = differenceInDays(parseLocalDate(subscription.nextPaymentDate), new Date())
   const monthlyAmount = subscription.billingCycle === 'yearly' 
     ? subscription.amount / 12 
     : subscription.billingCycle === 'quarterly'
@@ -190,7 +197,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                   <div>
                     <p className="text-sm text-muted-foreground">Next Payment</p>
                     <p className="text-white font-medium">
-                      {format(new Date(subscription.nextPaymentDate), 'MMMM d, yyyy')}
+                      {format(parseLocalDate(subscription.nextPaymentDate), 'MMMM d, yyyy')}
                     </p>
                   </div>
                 </div>
@@ -208,7 +215,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                   <div>
                     <p className="text-sm text-muted-foreground">Started</p>
                     <p className="text-white font-medium">
-                      {format(new Date(subscription.startDate), 'MMMM d, yyyy')}
+                      {format(parseLocalDate(subscription.startDate), 'MMMM d, yyyy')}
                     </p>
                   </div>
                 </div>
@@ -227,7 +234,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                     <div>
                       <p className="text-sm text-muted-foreground">Ended</p>
                       <p className="text-white font-medium">
-                        {format(new Date(subscription.endDate), 'MMMM d, yyyy')}
+                        {format(parseLocalDate(subscription.endDate), 'MMMM d, yyyy')}
                       </p>
                     </div>
                   </div>
@@ -323,10 +330,15 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
       {showEditModal && subscription && (
         <EditSubscriptionModal
           subscription={subscription}
-          onClose={() => setShowEditModal(false)}
+          onClose={() => {
+            setShowEditModal(false)
+            // Clear the edit query parameter
+            router.replace(`/subscriptions/${params.id}`)
+          }}
           onSave={() => {
             setShowEditModal(false)
-            // Data will automatically refresh due to React Query
+            // Clear the edit query parameter
+            router.replace(`/subscriptions/${params.id}`)
           }}
         />
       )}

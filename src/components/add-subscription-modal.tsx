@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useCreateSubscription } from '@/hooks/use-subscriptions'
 import { useCategories } from '@/hooks/use-categories'
 import { ManageCategoriesModal } from './manage-categories-modal'
+import { formatDateForInput, parseLocalDate } from '@/lib/utils'
 
 interface AddSubscriptionModalProps {
   onClose: () => void
@@ -27,13 +28,13 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
     amount: '',
     billingCycle: 'monthly' as 'monthly' | 'yearly' | 'weekly' | 'quarterly' | 'one-off',
     category: '',
-    startDate: new Date().toISOString().split('T')[0],
+    startDate: formatDateForInput(new Date()),
     isActive: true,
     endDate: '',
     isTrial: false,
     trialDays: '7',
     creditCardAdded: false,
-    creditCardDate: new Date().toISOString().split('T')[0],
+    creditCardDate: formatDateForInput(new Date()),
     reminderEnabled: true,
     url: '',
     notes: '',
@@ -49,25 +50,56 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    const startDate = new Date(formData.startDate)
+    const startDate = parseLocalDate(formData.startDate)
+    const today = new Date()
     let nextPaymentDate = new Date(startDate)
     
     if (formData.isTrial) {
       nextPaymentDate.setDate(nextPaymentDate.getDate() + parseInt(formData.trialDays))
     } else {
-      switch (formData.billingCycle) {
-        case 'weekly':
-          nextPaymentDate.setDate(nextPaymentDate.getDate() + 7)
-          break
-        case 'monthly':
-          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1)
-          break
-        case 'quarterly':
-          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 3)
-          break
-        case 'yearly':
-          nextPaymentDate.setFullYear(nextPaymentDate.getFullYear() + 1)
-          break
+      // If the start date is in the past, calculate next payment from today
+      if (startDate < today) {
+        // Calculate how many billing cycles have passed
+        nextPaymentDate = new Date(startDate)
+        
+        switch (formData.billingCycle) {
+          case 'weekly':
+            while (nextPaymentDate < today) {
+              nextPaymentDate.setDate(nextPaymentDate.getDate() + 7)
+            }
+            break
+          case 'monthly':
+            while (nextPaymentDate < today) {
+              nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1)
+            }
+            break
+          case 'quarterly':
+            while (nextPaymentDate < today) {
+              nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 3)
+            }
+            break
+          case 'yearly':
+            while (nextPaymentDate < today) {
+              nextPaymentDate.setFullYear(nextPaymentDate.getFullYear() + 1)
+            }
+            break
+        }
+      } else {
+        // If start date is in the future, calculate next payment normally
+        switch (formData.billingCycle) {
+          case 'weekly':
+            nextPaymentDate.setDate(nextPaymentDate.getDate() + 7)
+            break
+          case 'monthly':
+            nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1)
+            break
+          case 'quarterly':
+            nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 3)
+            break
+          case 'yearly':
+            nextPaymentDate.setFullYear(nextPaymentDate.getFullYear() + 1)
+            break
+        }
       }
     }
     
@@ -88,7 +120,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       category: formData.category,
       startDate: formData.startDate,
       endDate: !formData.isActive && formData.endDate ? formData.endDate : null,
-      nextPaymentDate: nextPaymentDate.toISOString().split('T')[0],
+      nextPaymentDate: formatDateForInput(nextPaymentDate),
       isTrial: formData.isTrial,
       status: formData.isActive ? 'active' : 'cancelled',
       color: selectedCategory?.color || null,

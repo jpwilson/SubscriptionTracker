@@ -54,6 +54,9 @@ export async function GET(
       id: subscription.id,
       userId: subscription.user_id,
       name: subscription.name,
+      company: subscription.company,
+      product: subscription.product,
+      tier: subscription.tier,
       amount: subscription.amount,
       billingCycle: subscription.billing_cycle,
       category: subscription.category,
@@ -72,9 +75,6 @@ export async function GET(
       url: subscription.url,
       lastUsed: subscription.last_used,
       usageFrequency: subscription.usage_frequency,
-      company: subscription.company,
-      product: subscription.product,
-      tier: subscription.tier,
     }
 
     return NextResponse.json(formattedSubscription)
@@ -122,6 +122,9 @@ export async function PUT(
     // Convert camelCase to snake_case for database
     const updateData: any = {}
     if (data.name !== undefined) updateData.name = data.name
+    if (data.company !== undefined) updateData.company = data.company
+    if (data.product !== undefined) updateData.product = data.product
+    if (data.tier !== undefined) updateData.tier = data.tier
     if (data.amount !== undefined) updateData.amount = data.amount
     if (data.billingCycle !== undefined) updateData.billing_cycle = data.billingCycle
     if (data.category !== undefined) updateData.category = data.category
@@ -138,9 +141,6 @@ export async function PUT(
     if (data.url !== undefined) updateData.url = data.url
     if (data.lastUsed !== undefined) updateData.last_used = data.lastUsed
     if (data.usageFrequency !== undefined) updateData.usage_frequency = data.usageFrequency
-    if (data.company !== undefined) updateData.company = data.company
-    if (data.product !== undefined) updateData.product = data.product
-    if (data.tier !== undefined) updateData.tier = data.tier
 
     // Update the subscription
     const { data: subscription, error } = await supabase
@@ -160,6 +160,9 @@ export async function PUT(
       id: subscription.id,
       userId: subscription.user_id,
       name: subscription.name,
+      company: subscription.company,
+      product: subscription.product,
+      tier: subscription.tier,
       amount: subscription.amount,
       billingCycle: subscription.billing_cycle,
       category: subscription.category,
@@ -178,9 +181,6 @@ export async function PUT(
       url: subscription.url,
       lastUsed: subscription.last_used,
       usageFrequency: subscription.usage_frequency,
-      company: subscription.company,
-      product: subscription.product,
-      tier: subscription.tier,
     }
 
     return NextResponse.json(formattedSubscription)

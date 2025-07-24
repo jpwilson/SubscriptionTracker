@@ -416,7 +416,7 @@ export function SubscriptionList() {
                       className="neu-button p-2 rounded-lg text-white/70 hover:text-white transition-all duration-300"
                       onClick={(e) => {
                         e.stopPropagation()
-                        /* TODO: Add edit functionality */
+                        router.push(`/subscriptions/${sub.id}?edit=true`)
                       }}
                     >
                       <Edit2 className="w-4 h-4" />
