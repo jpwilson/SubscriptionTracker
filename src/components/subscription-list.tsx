@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Trash2, Edit2, AlertCircle, Loader2, Info, Search, ChevronDown, ArrowUp, ArrowDown, Filter } from 'lucide-react'
+import { Plus, Trash2, Edit2, AlertCircle, Loader2, Info, Search, ChevronDown, ArrowUp, ArrowDown, Filter, X } from 'lucide-react'
 import { useSubscriptions, useDeleteSubscription } from '@/hooks/use-subscriptions'
 import { useCategories } from '@/hooks/use-categories'
 import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
@@ -15,7 +15,11 @@ type SortOption = 'name' | 'price' | 'nextPayment' | 'category' | 'billingCycle'
 type SortDirection = 'asc' | 'desc'
 type FilterOption = 'all' | 'active' | 'cancelled' | 'monthly' | 'yearly'
 
-export function SubscriptionList() {
+interface SubscriptionListProps {
+  categoryFilter?: string
+}
+
+export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
   const { data: subscriptions, isLoading } = useSubscriptions()
   const { data: categories = [] } = useCategories()
   const deleteSubscription = useDeleteSubscription()
@@ -26,6 +30,12 @@ export function SubscriptionList() {
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const [filterBy, setFilterBy] = useState<FilterOption>('active')
   const [showAddModal, setShowAddModal] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>(categoryFilter)
+
+  // Update selectedCategory when categoryFilter prop changes
+  useEffect(() => {
+    setSelectedCategory(categoryFilter)
+  }, [categoryFilter])
 
   const handleDelete = (id: string) => {
     if (confirm('Are you sure you want to delete this subscription?')) {
@@ -71,6 +81,11 @@ export function SubscriptionList() {
       sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sub.category.toLowerCase().includes(searchTerm.toLowerCase())
     )
+    
+    // Filter by selected category
+    if (selectedCategory) {
+      filtered = filtered.filter(sub => sub.category === selectedCategory)
+    }
     
     // Filter by status or billing cycle
     filtered = filtered.filter(sub => {
@@ -120,7 +135,7 @@ export function SubscriptionList() {
     })
     
     return sorted
-  }, [subscriptions, searchTerm, sortBy, sortDirection, filterBy])
+  }, [subscriptions, searchTerm, sortBy, sortDirection, filterBy, selectedCategory])
 
   // Handle sort option click
   const handleSort = (option: SortOption) => {
@@ -313,6 +328,30 @@ export function SubscriptionList() {
           </div>
         </div>
       </div>
+      
+      {/* Category Filter Indicator */}
+      {selectedCategory && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 mt-4"
+        >
+          <span className="text-sm text-muted-foreground">Filtering by category:</span>
+          <div className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/50 rounded-lg">
+            <span className="text-sm font-medium text-purple-400">{selectedCategory}</span>
+            <button
+              onClick={() => {
+                setSelectedCategory(undefined)
+                // Clear the query parameter
+                router.push('/dashboard')
+              }}
+              className="text-purple-400 hover:text-purple-300 transition-colors"
+            >
+              <X className="w-3 h-3" />
+            </button>
+          </div>
+        </motion.div>
+      )}
       
       <div className="grid gap-4">
         {filteredAndSortedSubscriptions.map((sub, i) => {

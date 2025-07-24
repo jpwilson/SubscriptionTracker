@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, LogOut, Loader2, Tags, BarChart3, Lightbulb, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { useSubscriptionStats } from '@/hooks/use-subscriptions'
 import { formatCurrency } from '@/lib/utils'
@@ -16,11 +16,13 @@ import { DemoDataInitializer } from '@/components/demo-data'
 
 export const dynamic = 'force-dynamic'
 
-export default function DashboardPage() {
+function DashboardContent() {
   const { user, signOut } = useAuth()
   const [showAddModal, setShowAddModal] = useState(false)
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const categoryFilter = searchParams.get('category') || undefined
   
   // Use the new hook for stats
   const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
@@ -192,7 +194,7 @@ export default function DashboardPage() {
 
         {/* Subscriptions List */}
         <div className="subscription-list">
-          <SubscriptionList />
+          <SubscriptionList categoryFilter={categoryFilter} />
         </div>
       </div>
 
@@ -217,5 +219,29 @@ export default function DashboardPage() {
       {/* Demo Data Initializer - Now works with SQLite */}
       <DemoDataInitializer />
     </div>
+  )
+}
+
+export default function DashboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="relative mb-6"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50" />
+            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+              <TrendingUp className="w-8 h-8 text-white" />
+            </div>
+          </motion.div>
+          <p className="text-gradient text-lg font-medium">Loading dashboard...</p>
+        </div>
+      </div>
+    }>
+      <DashboardContent />
+    </Suspense>
   )
 }
