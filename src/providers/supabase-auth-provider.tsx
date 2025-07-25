@@ -30,17 +30,25 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     })
 
     // Listen for changes on auth state (sign in, sign out, etc.)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null)
       setLoading(false)
+      
+      // Handle sign in event
+      if (event === 'SIGNED_IN' && session) {
+        router.push('/dashboard')
+      }
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [router])
 
   const signInWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
     })
     if (error) console.error('Error signing in with Google:', error)
   }
