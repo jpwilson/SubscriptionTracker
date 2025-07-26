@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, LogOut, Loader2, Tags, BarChart3, Lightbulb, User } from 'lucide-react'
+import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, Loader2, Tags, BarChart3, Lightbulb, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
@@ -13,11 +13,12 @@ import { AddSubscriptionModal } from '@/components/add-subscription-modal'
 import { ManageCategoriesModal } from '@/components/manage-categories-modal'
 import { OnboardingTour } from '@/components/onboarding-tour'
 import { DemoDataInitializer } from '@/components/demo-data'
+import { MobileNavigation } from '@/components/mobile-navigation'
 
 export const dynamic = 'force-dynamic'
 
 function DashboardContent() {
-  const { user, signOut } = useAuth()
+  const { user } = useAuth()
   const [showAddModal, setShowAddModal] = useState(false)
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const router = useRouter()
@@ -27,10 +28,6 @@ function DashboardContent() {
   // Use the new hook for stats
   const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
 
-  const handleSignOut = async () => {
-    await signOut()
-    router.push('/login')
-  }
 
   if (!user) {
     return (
@@ -68,7 +65,7 @@ function DashboardContent() {
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
-      <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-20">
+      <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-24 sm:pb-20">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -83,13 +80,15 @@ function DashboardContent() {
               </div>
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-gradient">SubTracker</h1>
-              <p className="text-muted-foreground flex items-center gap-2">
+              <h1 className="text-2xl sm:text-4xl font-bold text-gradient">SubTracker</h1>
+              <p className="text-sm sm:text-base text-muted-foreground hidden sm:flex items-center gap-2">
                 Welcome back, {user?.email}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          
+          {/* Navigation buttons */}
+          <div className="hidden lg:flex items-center gap-3">
             <Button
               onClick={() => router.push('/insights')}
               className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-purple-400 transition-all duration-300 gradient-border"
@@ -122,23 +121,19 @@ function DashboardContent() {
               <User className="w-5 h-5" />
               <span className="ml-2 hidden sm:inline">Profile</span>
             </Button>
-            <Button
-              onClick={() => setShowAddModal(true)}
-              className="add-subscription-btn relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
-            >
-              <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl" />
-              <span className="relative flex items-center">
-                <Plus className="w-5 h-5 mr-2" />
-                Add Subscription
-              </span>
-            </Button>
-            <Button
-              onClick={handleSignOut}
-              className="neu-button px-3 py-2 rounded-xl border-0 text-white/70 hover:text-white transition-all duration-300"
-            >
-              <LogOut className="w-5 h-5" />
-            </Button>
           </div>
+          
+          {/* Add button visible on tablet and desktop */}
+          <Button
+            onClick={() => setShowAddModal(true)}
+            className="add-subscription-btn hidden sm:flex relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+          >
+            <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl" />
+            <span className="relative flex items-center">
+              <Plus className="w-5 h-5 mr-2" />
+              Add Subscription
+            </span>
+          </Button>
         </motion.div>
 
         {/* Stats Grid */}
@@ -218,6 +213,12 @@ function DashboardContent() {
       
       {/* Demo Data Initializer - Now works with SQLite */}
       <DemoDataInitializer />
+      
+      {/* Mobile Navigation */}
+      <MobileNavigation 
+        onAddClick={() => setShowAddModal(true)}
+        onCategoriesClick={() => setShowCategoriesModal(true)}
+      />
     </div>
   )
 }
