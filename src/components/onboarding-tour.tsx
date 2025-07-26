@@ -1,9 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride'
-import { HelpCircle } from 'lucide-react'
+import { HelpCircle, BookOpen, Route } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { SubscriptionGlossary } from './subscription-glossary'
 
 interface OnboardingTourProps {
   run?: boolean
@@ -12,6 +13,10 @@ interface OnboardingTourProps {
 
 export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps) {
   const [runTour, setRunTour] = useState(run)
+  const [showMenu, setShowMenu] = useState(false)
+  const [showGlossary, setShowGlossary] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
     // Check if user has seen the tour before
@@ -22,6 +27,23 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       return () => clearTimeout(timer)
     }
   }, [run])
+
+  useEffect(() => {
+    // Close menu when clicking outside
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        menuRef.current && 
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowMenu(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const steps: Step[] = [
     {
@@ -51,6 +73,9 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       ),
       placement: 'bottom',
       disableBeacon: true,
+      floaterProps: {
+        disableFlip: false,
+      },
     },
     {
       target: '.add-subscription-btn',
@@ -68,6 +93,9 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       ),
       placement: 'bottom',
       disableBeacon: true,
+      floaterProps: {
+        disableFlip: false,
+      },
     },
     {
       target: '.subscription-list',
@@ -83,8 +111,17 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           </ul>
         </div>
       ),
-      placement: 'top',
+      placement: 'auto',
       disableBeacon: true,
+      floaterProps: {
+        disableFlip: false,
+        autoOpen: true,
+      },
+      styles: {
+        options: {
+          width: typeof window !== 'undefined' && window.innerWidth < 500 ? 280 : 360,
+        },
+      },
     },
     {
       target: '.help-button',
@@ -95,7 +132,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           <p className="mt-2">Ready to start tracking your subscriptions? 🚀</p>
         </div>
       ),
-      placement: 'bottom',
+      placement: 'top',
       disableBeacon: true,
       floaterProps: {
         disableFlip: false,
@@ -138,6 +175,8 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           tooltip: {
             fontSize: 15,
             padding: 20,
+            maxHeight: typeof window !== 'undefined' ? window.innerHeight * 0.8 : 600,
+            overflow: 'auto',
           },
           tooltipContainer: {
             textAlign: 'left',
@@ -174,26 +213,80 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
         scrollToFirstStep
         spotlightClicks
         floaterProps={{
+          disableFlip: false,
+          autoOpen: true,
           styles: {
             floater: {
               filter: 'none',
+              maxHeight: '80vh',
+            },
+          },
+          options: {
+            preventOverflow: {
+              enabled: true,
+              boundariesElement: 'viewport',
+            },
+            flip: {
+              enabled: true,
             },
           },
         }}
       />
       
-      {/* Help Button */}
-      <Button
-        onClick={() => {
-          setRunTour(true)
-        }}
-        size="icon"
-        variant="ghost"
-        className="help-button fixed bottom-6 right-6 bg-slate-800 hover:bg-slate-700 text-white rounded-full shadow-lg z-40"
-        title="Show tour"
-      >
-        <HelpCircle className="w-5 h-5" />
-      </Button>
+      {/* Help Button and Menu */}
+      <div className="fixed bottom-6 right-6 z-40">
+        {/* Menu */}
+        {showMenu && (
+          <div 
+            ref={menuRef}
+            className="absolute bottom-full right-0 mb-2 w-48 bg-slate-800 rounded-lg shadow-xl border border-white/10 overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200"
+          >
+            <button
+              onClick={() => {
+                setRunTour(true)
+                setShowMenu(false)
+              }}
+              className="w-full px-4 py-3 text-left text-sm text-white hover:bg-slate-700 transition-colors duration-200 flex items-center gap-3"
+            >
+              <Route className="w-4 h-4 text-purple-400" />
+              <span>Take a Tour</span>
+            </button>
+            <button
+              onClick={() => {
+                setShowGlossary(true)
+                setShowMenu(false)
+              }}
+              className="w-full px-4 py-3 text-left text-sm text-white hover:bg-slate-700 transition-colors duration-200 flex items-center gap-3 border-t border-white/10"
+            >
+              <BookOpen className="w-4 h-4 text-purple-400" />
+              <span>Status Guide</span>
+            </button>
+          </div>
+        )}
+        
+        {/* Help Button */}
+        <Button
+          ref={buttonRef}
+          onClick={() => {
+            if (runTour) {
+              setRunTour(false)
+            }
+            setShowMenu(!showMenu)
+          }}
+          size="icon"
+          variant="ghost"
+          className="help-button bg-slate-800 hover:bg-slate-700 text-white rounded-full shadow-lg"
+          title="Help menu"
+        >
+          <HelpCircle className="w-5 h-5" />
+        </Button>
+      </div>
+      
+      {/* Glossary Modal */}
+      <SubscriptionGlossary 
+        isOpen={showGlossary} 
+        onClose={() => setShowGlossary(false)} 
+      />
     </>
   )
 }
