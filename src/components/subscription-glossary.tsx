@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect } from 'react'
 import { X, Info, AlertCircle, Clock, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -9,6 +10,18 @@ interface SubscriptionGlossaryProps {
 }
 
 export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryProps) {
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow
+      document.body.style.overflow = 'hidden'
+      
+      return () => {
+        document.body.style.overflow = originalStyle
+      }
+    }
+  }, [isOpen])
+
   if (!isOpen) return null
 
   const badges = [
@@ -47,7 +60,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
   ]
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -55,7 +68,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
       />
       
       {/* Modal */}
-      <div className="relative w-full max-w-2xl max-h-[90vh] bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
+      <div className="relative w-full max-w-2xl max-h-[90vh] my-8 bg-slate-900 rounded-2xl shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <h2 className="text-2xl font-bold text-gradient">Subscription Status Guide</h2>

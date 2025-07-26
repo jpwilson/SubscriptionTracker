@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { X, Loader2, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -46,6 +46,16 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       setFormData(prev => ({ ...prev, category: categories[0].name }))
     }
   }, [categories, formData.category])
+
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow
+    document.body.style.overflow = 'hidden'
+    
+    return () => {
+      document.body.style.overflow = originalStyle
+    }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -141,14 +151,15 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
   ]
 
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ type: 'spring', duration: 0.5 }}
-        className="neu-card rounded-3xl shadow-2xl w-full max-w-md border border-white/10 backdrop-blur-2xl"
+        className="neu-card rounded-3xl shadow-2xl w-full max-w-md border border-white/10 backdrop-blur-2xl my-8 max-h-[90vh] flex flex-col"
       >
-        <div className="p-6">
+        {/* Header - Fixed */}
+        <div className="p-6 pb-0 flex-shrink-0">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gradient">Add Subscription</h2>
             <button
@@ -158,7 +169,10 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
               <X className="w-5 h-5" />
             </button>
           </div>
+        </div>
 
+        {/* Scrollable form content */}
+        <div className="px-6 pb-6 overflow-y-auto flex-1">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <div className="flex items-center justify-between mb-2">

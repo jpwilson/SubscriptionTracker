@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Plus, Trash2, Loader2, Palette, Tags, Sparkles, Lock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -40,6 +40,16 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
     icon: EMOJI_OPTIONS[0],
   })
 
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow
+    document.body.style.overflow = 'hidden'
+    
+    return () => {
+      document.body.style.overflow = originalStyle
+    }
+  }, [])
+
   const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!newCategory.name.trim()) return
@@ -60,11 +70,11 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col"
+        className="bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] my-8 overflow-hidden flex flex-col"
       >
         {/* Header */}
         <div className="p-6 border-b border-slate-700">
