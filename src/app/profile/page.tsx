@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { User, CreditCard, TrendingUp, Shield, LogOut, Crown, Sparkles, ChevronRight } from 'lucide-react'
+import { User, CreditCard, TrendingUp, Shield, LogOut, Crown, Sparkles, ChevronRight, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
@@ -20,6 +20,7 @@ export default function ProfilePage() {
   const { data: stats } = useSubscriptionStats()
   const [userProfile, setUserProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [showOptionsMenu, setShowOptionsMenu] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -66,6 +67,22 @@ export default function ProfilePage() {
     router.push('/')
   }
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('.relative')) {
+        setShowOptionsMenu(false)
+      }
+    }
+
+    if (showOptionsMenu) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showOptionsMenu])
+
   const potentialSavings = subscriptions
     .filter(sub => sub.status === 'active' && !sub.isTrial)
     .reduce((total, sub) => total + (sub.amount * 0.1), 0) // Assume 10% savings potential
@@ -100,15 +117,15 @@ export default function ProfilePage() {
           className="mt-8"
         >
           {/* User Info Section */}
-          <div className="neu-card rounded-2xl p-8 border border-white/10 mb-8">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
-                  <User className="w-10 h-10 text-white" />
+          <div className="neu-card rounded-2xl p-4 sm:p-8 border border-white/10 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                  <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-3xl font-bold text-white">{user.email}</h1>
-                  <div className="flex items-center gap-2 mt-2">
+                <div className="text-center sm:text-left">
+                  <h1 className="text-xl sm:text-3xl font-bold text-white break-all sm:break-normal">{user.email}</h1>
+                  <div className="flex flex-col sm:flex-row items-center gap-2 mt-2">
                     {isFreeTier ? (
                       <span className="px-3 py-1 rounded-full bg-slate-700 text-slate-300 text-sm">
                         Free Plan
@@ -119,20 +136,56 @@ export default function ProfilePage() {
                         Premium
                       </span>
                     )}
-                    <span className="text-muted-foreground text-sm">
+                    <span className="text-muted-foreground text-xs sm:text-sm">
                       Member since {new Date(user.created_at || '').toLocaleDateString()}
                     </span>
                   </div>
                 </div>
               </div>
-              <Button
-                onClick={handleSignOut}
-                variant="ghost"
-                className="text-muted-foreground hover:text-white"
-              >
-                <LogOut className="w-4 h-4 mr-2" />
-                Sign Out
-              </Button>
+              
+              {/* Options dropdown for mobile, button for desktop */}
+              <div className="relative self-center sm:self-start">
+                <Button
+                  variant="ghost"
+                  className="text-muted-foreground hover:text-white sm:hidden"
+                  onClick={() => setShowOptionsMenu(!showOptionsMenu)}
+                >
+                  <span>Options</span>
+                  <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${showOptionsMenu ? 'rotate-180' : ''}`} />
+                </Button>
+                
+                {/* Desktop sign out button */}
+                <Button
+                  variant="ghost"
+                  className="hidden sm:inline-flex items-center text-muted-foreground hover:text-white"
+                  onClick={handleSignOut}
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sign Out
+                </Button>
+                
+                {/* Mobile dropdown menu */}
+                {showOptionsMenu && (
+                  <div className="absolute right-0 bottom-full mb-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl sm:hidden animate-in fade-in slide-in-from-bottom-1" style={{zIndex: 9999}}>
+                  {isFreeTier && (
+                    <button
+                      onClick={() => router.push('/pricing')}
+                      className="w-full flex items-center gap-2 px-4 py-3 text-sm text-white hover:bg-slate-700 transition-colors border-b border-slate-700"
+                    >
+                      <Crown className="w-4 h-4 text-purple-400" />
+                      Upgrade to Premium
+                    </button>
+                  )}
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-2 px-4 py-3 text-sm text-white hover:bg-slate-700 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Sign Out
+                  </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -194,37 +247,39 @@ export default function ProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="neu-card rounded-2xl p-8 border border-purple-500/30 mb-8 bg-gradient-to-br from-purple-500/10 to-pink-500/10"
+              className="neu-card rounded-2xl p-4 sm:p-8 border border-purple-500/30 mb-8 bg-gradient-to-br from-purple-500/10 to-pink-500/10"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold text-white mb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="flex-1">
+                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                     Unlock Premium Features
                   </h2>
-                  <p className="text-muted-foreground mb-4">
+                  <p className="text-sm sm:text-base text-muted-foreground mb-4">
                     Get advanced analytics, custom categories, and save up to 30% on your subscriptions
                   </p>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
+                  <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                     <li className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-purple-400" />
+                      <Shield className="w-4 h-4 text-purple-400 flex-shrink-0" />
                       Price change alerts & notifications
                     </li>
                     <li className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-purple-400" />
+                      <Sparkles className="w-4 h-4 text-purple-400 flex-shrink-0" />
                       AI-powered savings recommendations
                     </li>
                     <li className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-purple-400" />
+                      <TrendingUp className="w-4 h-4 text-purple-400 flex-shrink-0" />
                       Advanced spending analytics
                     </li>
                   </ul>
                 </div>
-                <div className="text-right">
-                  <p className="text-4xl font-bold text-white">$5</p>
-                  <p className="text-muted-foreground">/month</p>
+                <div className="text-center sm:text-right flex flex-col items-center sm:items-end">
+                  <div className="flex items-baseline gap-1">
+                    <p className="text-3xl sm:text-4xl font-bold text-white">$5</p>
+                    <p className="text-muted-foreground">/month</p>
+                  </div>
                   <Button
                     onClick={() => router.push('/payment?plan=premium')}
-                    className="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+                    className="mt-4 w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
                   >
                     Upgrade Now
                     <ChevronRight className="w-4 h-4 ml-2" />

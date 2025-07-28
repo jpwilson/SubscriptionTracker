@@ -204,7 +204,7 @@ export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-bold text-gradient">Your Subscriptions</h2>
+        <h2 className="text-2xl font-bold text-gradient">Your Subscriptions {subscriptions && subscriptions.length > 0 && `(${subscriptions.length})`}</h2>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           {/* Search Bar */}
           <div className="relative">
@@ -367,13 +367,13 @@ export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="neu-card rounded-2xl p-6 hover:scale-[1.02] transition-all duration-300 border border-white/10 group cursor-pointer"
+              className="neu-card rounded-2xl p-4 sm:p-6 hover:scale-[1.02] transition-all duration-300 border border-white/10 group cursor-pointer"
               onClick={() => router.push(`/subscriptions/${sub.id}`)}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-white group-hover:text-gradient transition-all duration-300">{sub.name}</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                    <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-gradient transition-all duration-300">{sub.name}</h3>
                     {sub.isTrial && !isTrialEndingSoon && (
                       <div className="relative group/badge">
                         <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg shadow-md cursor-help">
@@ -423,46 +423,50 @@ export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
                       </div>
                     )}
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs sm:text-sm text-muted-foreground">
                     <span 
-                      className="px-3 py-1 rounded-lg flex items-center gap-2 font-medium transition-all duration-300 hover:scale-105"
+                      className="px-2 sm:px-3 py-1 rounded-lg flex items-center gap-1 sm:gap-2 font-medium transition-all duration-300 hover:scale-105"
                       style={{ 
                         backgroundColor: `${getCategoryInfo(sub.category).color}20`,
                         color: getCategoryInfo(sub.category).color 
                       }}
                     >
-                      <span>{getCategoryInfo(sub.category).icon}</span>
-                      {sub.category}
+                      <span className="text-sm sm:text-base">{getCategoryInfo(sub.category).icon}</span>
+                      <span className="hidden sm:inline">{sub.category}</span>
                     </span>
-                    <span>{sub.billingCycle}</span>
+                    <span className="hidden sm:inline">{sub.billingCycle}</span>
+                    <span className="sm:hidden">{sub.billingCycle.replace('monthly', '/mo').replace('yearly', '/yr').replace('weekly', '/wk').replace('quarterly', '/qtr')}</span>
                     {sub.status === 'active' ? (
-                      <span>Next payment: {formatDate(sub.nextPaymentDate)}</span>
+                      <>
+                        <span className="hidden sm:inline">Next payment: {formatDate(sub.nextPaymentDate)}</span>
+                        <span className="sm:hidden">Next: {formatDate(sub.nextPaymentDate)}</span>
+                      </>
                     ) : (
                       sub.endDate && <span className="text-red-400">Ended: {formatDate(sub.endDate)}</span>
                     )}
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(sub.amount)}</p>
-                    <p className="text-sm text-muted-foreground">per {sub.billingCycle.replace('ly', '')}</p>
+                <div className="flex items-center justify-between sm:justify-end gap-4">
+                  <div className="text-left sm:text-right">
+                    <p className="text-xl sm:text-2xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(sub.amount)}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">per {sub.billingCycle.replace('ly', '').replace('month', 'mo')}</p>
                   </div>
                   
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
                     <Button
                       size="icon"
-                      className="neu-button p-2 rounded-lg text-white/70 hover:text-white transition-all duration-300"
+                      className="neu-button p-1.5 sm:p-2 rounded-lg text-white/70 hover:text-white transition-all duration-300"
                       onClick={(e) => {
                         e.stopPropagation()
                         router.push(`/subscriptions/${sub.id}?edit=true`)
                       }}
                     >
-                      <Edit2 className="w-4 h-4" />
+                      <Edit2 className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
                     <Button
                       size="icon"
-                      className="neu-button p-2 rounded-lg text-white/70 hover:text-red-400 transition-all duration-300"
+                      className="neu-button p-1.5 sm:p-2 rounded-lg text-white/70 hover:text-red-400 transition-all duration-300"
                       onClick={(e) => {
                         e.stopPropagation()
                         handleDelete(sub.id)
@@ -470,9 +474,9 @@ export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
                       disabled={deleteSubscription.isPending}
                     >
                       {deleteSubscription.isPending ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
                       ) : (
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
                       )}
                     </Button>
                   </div>
