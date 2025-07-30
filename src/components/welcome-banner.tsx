@@ -98,12 +98,12 @@ export function WelcomeBanner() {
                 <h3 className="text-lg font-bold text-white">Welcome to SubTracker!</h3>
               </div>
               <p className="text-sm text-gray-300 mb-3">
-                We've added some example subscriptions to help you explore the app. 
+                We&apos;ve added some example subscriptions to help you explore the app. 
                 These are just demos - feel free to delete them and add your own real subscriptions.
               </p>
               <div className="flex items-center gap-2 text-xs text-gray-400">
                 <Info className="w-4 h-4" />
-                <span>Demo subscriptions have a purple border and "EXAMPLE" badge</span>
+                <span>Demo subscriptions have a purple border and &ldquo;EXAMPLE&rdquo; badge</span>
               </div>
             </div>
             

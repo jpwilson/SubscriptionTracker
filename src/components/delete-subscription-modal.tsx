@@ -79,7 +79,7 @@ export function DeleteSubscriptionModal({ subscription, isOpen, onClose, isDemo 
 
           <div className="bg-slate-800/50 rounded-xl p-4 mb-4 border border-slate-700">
             <p className="text-sm text-gray-400">
-              <span className="font-medium text-white">Tip:</span> If you've cancelled this subscription with the provider, 
+              <span className="font-medium text-white">Tip:</span> If you&apos;ve cancelled this subscription with the provider, 
               update its status instead of deleting it. This preserves your spending history and tracks when the service ends.
             </p>
           </div>
