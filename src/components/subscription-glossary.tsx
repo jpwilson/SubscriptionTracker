@@ -26,11 +26,11 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
 
   const badges = [
     {
-      name: 'TRIAL',
+      name: 'FREE TRIAL',
       icon: <Sparkles className="w-4 h-4" />,
       color: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white',
       description: 'Free trial period is active',
-      details: 'You&apos;re currently in a free trial. You won&apos;t be charged until the trial ends.',
+      details: 'You\'re currently in a free trial. You won\'t be charged until the trial ends.',
       example: 'A 30-day free trial for a streaming service'
     },
     {
@@ -38,7 +38,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
       icon: <AlertCircle className="w-4 h-4" />,
       color: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30',
       description: 'Free trial ends within 7 days',
-      details: 'Your trial is about to expire and you&apos;ll be charged for the first time. Cancel now if you don&apos;t want to continue.',
+      details: 'Your trial is about to expire and you\'ll be charged for the first time. Cancel now if you don\'t want to continue.',
       example: 'Trial ends in 3 days - you\'ll be charged $9.99/month'
     },
     {
@@ -46,7 +46,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
       icon: <AlertCircle className="w-4 h-4" />,
       color: 'bg-orange-500/20 text-orange-400 border border-orange-500/30',
       description: 'Cancelled service ends within 7 days',
-      details: 'You&apos;ve cancelled this subscription and will lose access soon. You can still use the service until the end date.',
+      details: 'You\'ve cancelled this subscription and will lose access soon. You can still use the service until the end date.',
       example: 'You cancelled Netflix but have access until July 30th'
     },
     {
@@ -54,7 +54,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
       icon: <Info className="w-4 h-4" />,
       color: 'bg-red-500/20 text-red-400 border border-red-500/30',
       description: 'Cancelled but still have access',
-      details: 'You&apos;ve cancelled this subscription but have more than 7 days of access remaining. You won&apos;t be charged again.',
+      details: 'You\'ve cancelled this subscription but have more than 7 days of access remaining. You won\'t be charged again.',
       example: 'Cancelled on July 2nd but paid through July 30th'
     }
   ]
@@ -86,7 +86,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-100px)]">
           <p className="text-white/70 mb-6">
             SubTracker uses visual badges to help you quickly understand the status of your subscriptions. 
-            Here&apos;s what each badge means:
+            Here\'s what each badge means:
           </p>
           
           <div className="space-y-6">
@@ -125,7 +125,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
             </h3>
             <div className="space-y-2 text-sm text-white/70">
               <p>• <strong className="text-white">Regular subscriptions:</strong> No badges - they renew automatically</p>
-              <p>• <strong className="text-white">Trial periods:</strong> Start with &quot;TRIAL&quot;, change to &quot;Trial Ending Soon&quot; in the last 7 days</p>
+              <p>• <strong className="text-white">Trial periods:</strong> Start with "FREE TRIAL", change to "Trial Ending Soon" in the last 7 days</p>
               <p>• <strong className="text-white">Cancelled subscriptions:</strong> Show &quot;Unsubscribed&quot;, then &quot;Service Ending&quot; in the last 7 days</p>
               <p>• <strong className="text-white">After end date:</strong> Subscriptions are automatically removed from your list</p>
             </div>

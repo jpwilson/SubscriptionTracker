@@ -17,9 +17,10 @@ type FilterOption = 'all' | 'active' | 'cancelled' | 'monthly' | 'yearly'
 
 interface SubscriptionListProps {
   categoryFilter?: string
+  userCurrency?: string
 }
 
-export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
+export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: SubscriptionListProps) {
   const { data: subscriptions, isLoading } = useSubscriptions()
   const { data: categories = [] } = useCategories()
   const deleteSubscription = useDeleteSubscription()
@@ -374,10 +375,21 @@ export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
                 <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
                     <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-gradient transition-all duration-300">{sub.name}</h3>
+                    {sub.isDemo && (
+                      <div className="relative group/badge">
+                        <span className="px-3 py-1 text-xs font-bold bg-gray-600/30 text-gray-300 rounded-lg border border-gray-500/30 cursor-help">
+                          DEMO
+                        </span>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-200 whitespace-nowrap z-50">
+                          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-900"></div>
+                          This is a demo subscription - feel free to delete it
+                        </div>
+                      </div>
+                    )}
                     {sub.isTrial && !isTrialEndingSoon && (
                       <div className="relative group/badge">
                         <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg shadow-md cursor-help">
-                          TRIAL
+                          FREE TRIAL
                         </span>
                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-200 whitespace-nowrap z-50">
                           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-900"></div>
@@ -449,7 +461,7 @@ export function SubscriptionList({ categoryFilter }: SubscriptionListProps) {
                 
                 <div className="flex items-center justify-between sm:justify-end gap-4">
                   <div className="text-left sm:text-right">
-                    <p className="text-xl sm:text-2xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(sub.amount)}</p>
+                    <p className="text-xl sm:text-2xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(sub.amount, userCurrency)}</p>
                     <p className="text-xs sm:text-sm text-muted-foreground">per {sub.billingCycle.replace('ly', '').replace('month', 'mo')}</p>
                   </div>
                   

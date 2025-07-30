@@ -14,6 +14,7 @@ import { ManageCategoriesModal } from '@/components/manage-categories-modal'
 import { OnboardingTour } from '@/components/onboarding-tour'
 import { DemoDataInitializer } from '@/components/demo-data'
 import { MobileNavigation } from '@/components/mobile-navigation'
+import { useUserPreferences } from '@/hooks/use-user-preferences'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,6 +28,7 @@ function DashboardContent() {
   
   // Use the new hook for stats
   const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
+  const { data: preferences } = useUserPreferences()
 
 
   if (!user) {
@@ -141,13 +143,13 @@ function DashboardContent() {
           {[
             {
               title: 'Monthly Cost',
-              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.monthlyTotal),
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.monthlyTotal, preferences?.currency || 'USD'),
               icon: <Calendar className="w-5 h-5" />,
               color: 'from-blue-500 to-blue-600',
             },
             {
               title: 'Annual Cost',
-              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.yearlyTotal),
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.yearlyTotal, preferences?.currency || 'USD'),
               icon: <TrendingUp className="w-5 h-5" />,
               color: 'from-green-500 to-green-600',
             },
@@ -189,7 +191,7 @@ function DashboardContent() {
 
         {/* Subscriptions List */}
         <div className="subscription-list">
-          <SubscriptionList categoryFilter={categoryFilter} />
+          <SubscriptionList categoryFilter={categoryFilter} userCurrency={preferences?.currency} />
         </div>
       </div>
 

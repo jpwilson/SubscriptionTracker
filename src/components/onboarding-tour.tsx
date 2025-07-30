@@ -127,6 +127,23 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: '.help-button',
       content: (
         <div>
+          <h3 className="font-bold mb-2">One More Thing!</h3>
+          <p>Visit your Profile to select your preferred currency.</p>
+          <p className="mt-2 text-sm text-gray-400">We support over 30 currencies including USD, EUR, GBP, CAD, and more!</p>
+        </div>
+      ),
+      placement: 'top',
+      disableBeacon: true,
+      floaterProps: {
+        disableFlip: false,
+        hideArrow: false,
+        offset: 20,
+      },
+    },
+    {
+      target: '.help-button',
+      content: (
+        <div>
           <h3 className="font-bold mb-2">Need Help?</h3>
           <p>Click the help button anytime to see this tour again!</p>
           <p className="mt-2">Ready to start tracking your subscriptions? 🚀</p>

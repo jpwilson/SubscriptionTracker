@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { useAnalytics } from '@/hooks/use-analytics'
 import { useUserProfile } from '@/hooks/use-user-profile'
+import { useUserPreferences } from '@/hooks/use-user-preferences'
 import { formatCurrency } from '@/lib/utils'
 import { InternalHeader } from '@/components/internal-header'
 import { 
@@ -71,6 +72,7 @@ export default function AnalyticsPage() {
   const { user, signOut } = useAuth()
   const router = useRouter()
   const { data: profile } = useUserProfile()
+  const { data: preferences } = useUserPreferences()
   const [timePeriod, setTimePeriod] = useState<TimePeriod>('monthly')
   const [timeScale, setTimeScale] = useState<TimeScale>('6months')
   const [showCategorySection, setShowCategorySection] = useState(true)
@@ -78,6 +80,7 @@ export default function AnalyticsPage() {
   const [showOverall, setShowOverall] = useState(true)
   
   const isPremium = profile?.tier === 'premium'
+  const userCurrency = preferences?.currency || 'USD'
   
   const { data: analytics, isLoading } = useAnalytics(timePeriod, timeScale, selectedCategories)
 
@@ -164,14 +167,14 @@ export default function AnalyticsPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative">
                 <p className="text-muted-foreground text-sm mb-2 font-medium">Monthly Total</p>
-                <p className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(analytics.summary.totalMonthly)}</p>
+                <p className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(analytics.summary.totalMonthly, userCurrency)}</p>
               </div>
             </div>
             <div className="neu-card rounded-2xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer group border border-white/10">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative">
                 <p className="text-muted-foreground text-sm mb-2 font-medium">Yearly Total</p>
-                <p className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(analytics.summary.totalYearly)}</p>
+                <p className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{formatCurrency(analytics.summary.totalYearly, userCurrency)}</p>
               </div>
             </div>
           </motion.div>
@@ -374,7 +377,7 @@ export default function AnalyticsPage() {
                     backdropFilter: 'blur(12px)'
                   }}
                   labelStyle={{ color: '#e5e7eb' }}
-                  formatter={(value: number) => formatCurrency(value)}
+                  formatter={(value: number) => formatCurrency(value, userCurrency)}
                 />
                 {/* Overall line - show when showOverall is true */}
                 {showOverall && (
@@ -476,7 +479,7 @@ export default function AnalyticsPage() {
                             border: '1px solid #374151',
                             borderRadius: '8px'
                           }}
-                          formatter={(value: number) => formatCurrency(value)}
+                          formatter={(value: number) => formatCurrency(value, userCurrency)}
                         />
                       </PieChart>
                     </ResponsiveContainer>
@@ -505,7 +508,7 @@ export default function AnalyticsPage() {
                             />
                             <span className="text-white font-medium">{category.category}</span>
                           </div>
-                          <span className="text-white font-bold text-lg group-hover:text-gradient transition-all duration-300">{formatCurrency(category.amount)}/mo</span>
+                          <span className="text-white font-bold text-lg group-hover:text-gradient transition-all duration-300">{formatCurrency(category.amount, userCurrency)}/mo</span>
                         </motion.div>
                       ))}
                     {categoryData.length === 0 && (
@@ -541,7 +544,7 @@ export default function AnalyticsPage() {
                             backdropFilter: 'blur(12px)'
                           }}
                           labelStyle={{ color: '#e5e7eb' }}
-                          formatter={(value: number) => formatCurrency(value)}
+                          formatter={(value: number) => formatCurrency(value, userCurrency)}
                         />
                         <Bar dataKey="amount" radius={[8, 8, 8, 8]}>
                           {categoryData.map((entry, index) => (

@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { User, CreditCard, TrendingUp, Shield, LogOut, Crown, Sparkles, ChevronRight, ChevronDown } from 'lucide-react'
+import { User, CreditCard, TrendingUp, Shield, LogOut, Crown, Sparkles, ChevronRight, ChevronDown, Globe } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { InternalHeader } from '@/components/internal-header'
 import { formatCurrency } from '@/lib/utils'
 import { useSubscriptions, useSubscriptionStats } from '@/hooks/use-subscriptions'
+import { useUserPreferences, useUpdateUserPreferences, SUPPORTED_CURRENCIES } from '@/hooks/use-user-preferences'
 import { supabase } from '@/lib/supabase'
 
 export const dynamic = 'force-dynamic'
@@ -18,9 +19,12 @@ export default function ProfilePage() {
   const { user, signOut, loading: authLoading } = useAuth()
   const { data: subscriptions = [] } = useSubscriptions()
   const { data: stats } = useSubscriptionStats()
+  const { data: preferences } = useUserPreferences()
+  const updatePreferences = useUpdateUserPreferences()
   const [userProfile, setUserProfile] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [showOptionsMenu, setShowOptionsMenu] = useState(false)
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -73,15 +77,16 @@ export default function ProfilePage() {
       const target = event.target as HTMLElement
       if (!target.closest('.relative')) {
         setShowOptionsMenu(false)
+        setShowCurrencyDropdown(false)
       }
     }
 
-    if (showOptionsMenu) {
+    if (showOptionsMenu || showCurrencyDropdown) {
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showOptionsMenu])
+  }, [showOptionsMenu, showCurrencyDropdown])
 
   const potentialSavings = subscriptions
     .filter(sub => sub.status === 'active' && !sub.isTrial)
@@ -214,7 +219,7 @@ export default function ProfilePage() {
                 <div>
                   <p className="text-muted-foreground text-sm">Monthly Spend</p>
                   <p className="text-3xl font-bold text-white mt-1">
-                    {formatCurrency(stats?.monthlyTotal || 0)}
+                    {formatCurrency(stats?.monthlyTotal || 0, preferences?.currency || 'USD')}
                   </p>
                 </div>
                 <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center">
@@ -231,7 +236,7 @@ export default function ProfilePage() {
                 <div>
                   <p className="text-muted-foreground text-sm">Potential Savings</p>
                   <p className="text-3xl font-bold text-gradient mt-1">
-                    {formatCurrency(potentialSavings)}/mo
+                    {formatCurrency(potentialSavings, preferences?.currency || 'USD')}/mo
                   </p>
                 </div>
                 <div className="w-12 h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
@@ -297,6 +302,46 @@ export default function ProfilePage() {
             className="space-y-4"
           >
             <h2 className="text-xl font-bold text-white mb-4">Account Settings</h2>
+            
+            {/* Currency Settings */}
+            <div className="relative">
+              <div className="neu-card rounded-xl p-6 border border-white/10">
+                <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-purple-400" />
+                  Display Currency
+                </h3>
+                <button
+                  onClick={() => setShowCurrencyDropdown(!showCurrencyDropdown)}
+                  className="w-full sm:w-64 px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white hover:bg-slate-600 transition-colors flex items-center justify-between"
+                >
+                  <span>
+                    {SUPPORTED_CURRENCIES.find(c => c.code === (preferences?.currency || 'USD'))?.name || 'US Dollar'} ({preferences?.currency || 'USD'})
+                  </span>
+                  <ChevronDown className={`w-4 h-4 transition-transform ${showCurrencyDropdown ? 'rotate-180' : ''}`} />
+                </button>
+                <p className="text-sm text-gray-400 mt-2">All subscription amounts will be displayed in this currency</p>
+              </div>
+              
+              {showCurrencyDropdown && (
+                <div className="absolute left-0 sm:left-6 top-[120px] w-[calc(100%-48px)] sm:w-64 max-h-64 overflow-y-auto bg-slate-800 border border-slate-700 rounded-lg shadow-2xl z-[9999]">
+                  {SUPPORTED_CURRENCIES.map((currency) => (
+                    <button
+                      key={currency.code}
+                      onClick={() => {
+                        updatePreferences.mutate({ currency: currency.code })
+                        setShowCurrencyDropdown(false)
+                      }}
+                      className={`w-full px-4 py-2 text-left hover:bg-slate-700 transition-colors flex items-center justify-between ${
+                        preferences?.currency === currency.code ? 'bg-slate-700 text-purple-400' : 'text-white'
+                      }`}
+                    >
+                      <span>{currency.name}</span>
+                      <span className="text-sm text-gray-400">{currency.symbol} {currency.code}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             
             <div className="neu-card rounded-xl p-6 border border-white/10">
               <h3 className="text-lg font-semibold text-white mb-4">Email Notifications</h3>

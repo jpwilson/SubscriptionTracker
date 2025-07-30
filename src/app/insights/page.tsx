@@ -6,6 +6,7 @@ import { ArrowLeft, TrendingUp, AlertTriangle, Zap, DollarSign, Clock, BarChart2
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { useSubscriptions } from '@/hooks/use-subscriptions'
+import { useUserPreferences } from '@/hooks/use-user-preferences'
 import { isPremiumUser } from '@/lib/feature-gates'
 import { formatCurrency } from '@/lib/utils'
 
@@ -26,6 +27,8 @@ export default function InsightsPage() {
   const { user } = useAuth()
   const isPremium = isPremiumUser(user)
   const { data: subscriptions = [], isLoading } = useSubscriptions()
+  const { data: preferences } = useUserPreferences()
+  const userCurrency = preferences?.currency || 'USD'
 
   // Calculate insights based on subscriptions
   const generateInsights = (): Insight[] => {
@@ -86,7 +89,7 @@ export default function InsightsPage() {
         insights.push({
           id: `expensive-${sub.id}`,
           title: `${sub.name} costs ${percentMore}% more than average`,
-          description: `The average ${sub.category} subscription costs ${formatCurrency(average)}/month`,
+          description: `The average ${sub.category} subscription costs ${formatCurrency(average, userCurrency)}/month`,
           impact: 'medium',
           savings: monthlyAmount - average,
           icon: <DollarSign className="w-5 h-5" />,
@@ -107,7 +110,7 @@ export default function InsightsPage() {
         insights.push({
           id: `trial-${sub.id}`,
           title: `${sub.name} trial ends in ${daysUntilEnd} days`,
-          description: `Decide if you want to continue or cancel before you're charged ${formatCurrency(sub.amount)}`,
+          description: `Decide if you want to continue or cancel before you're charged ${formatCurrency(sub.amount, userCurrency)}`,
           impact: daysUntilEnd <= 3 ? 'high' : 'medium',
           icon: <Clock className="w-5 h-5" />,
           actionLabel: 'Review Trial',
@@ -125,7 +128,7 @@ export default function InsightsPage() {
       if (potentialSavings > 20) {
         insights.push({
           id: `optimize-${sub.id}`,
-          title: `Save ${formatCurrency(potentialSavings)} on ${sub.name}`,
+          title: `Save ${formatCurrency(potentialSavings, userCurrency)} on ${sub.name}`,
           description: 'Switch to annual billing and save 20%',
           impact: potentialSavings > 50 ? 'high' : 'medium',
           savings: potentialSavings,
@@ -142,7 +145,7 @@ export default function InsightsPage() {
       insights.push({
         id: 'total-high',
         title: 'Your subscription spending is above average',
-        description: `You're spending ${formatCurrency(monthlyTotal)}/month. The average person spends $133/month on subscriptions.`,
+        description: `You're spending ${formatCurrency(monthlyTotal, userCurrency)}/month. The average person spends ${formatCurrency(133, userCurrency)}/month on subscriptions.`,
         impact: 'high',
         icon: <BarChart2 className="w-5 h-5" />,
         category: 'expensive',
@@ -221,7 +224,7 @@ export default function InsightsPage() {
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold text-white">
-                    Potential Savings: {formatCurrency(totalPotentialSavings)}
+                    Potential Savings: {formatCurrency(totalPotentialSavings, userCurrency)}
                   </h2>
                   <p className="text-muted-foreground">
                     {isPremium ? 'per month with these recommendations' : 'Upgrade to unlock all insights'}
@@ -282,7 +285,7 @@ export default function InsightsPage() {
                 {insight.savings && (
                   <div className="mb-4 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
                     <p className="text-sm text-green-400 font-medium">
-                      Save {formatCurrency(insight.savings)}/month
+                      Save {formatCurrency(insight.savings, userCurrency)}/month
                     </p>
                   </div>
                 )}
