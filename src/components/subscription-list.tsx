@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { AddSubscriptionModal } from '@/components/add-subscription-modal'
+import { DeleteSubscriptionModal } from '@/components/delete-subscription-modal'
 
 type SortOption = 'name' | 'price' | 'nextPayment' | 'category' | 'billingCycle'
 type SortDirection = 'asc' | 'desc'
@@ -19,6 +20,18 @@ interface SubscriptionListProps {
   categoryFilter?: string
   userCurrency?: string
 }
+
+// Define the demo subscriptions we're looking for
+const DEMO_SUBSCRIPTIONS = [
+  { name: 'Netflix', amount: 15.99 },
+  { name: 'Spotify Premium', amount: 10.99 },
+  { name: 'Amazon Prime', amount: 139.00 },
+  { name: 'GitHub Pro', amount: 4.00 },
+  { name: 'YouTube Premium', amount: 13.99 },
+  { name: 'Disney+', amount: 10.99 },
+  { name: 'Planet Fitness', amount: 24.99 },
+  { name: 'Replit Core', amount: 180.00 },
+]
 
 export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: SubscriptionListProps) {
   const { data: subscriptions, isLoading } = useSubscriptions()
@@ -32,16 +45,29 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
   const [filterBy, setFilterBy] = useState<FilterOption>('active')
   const [showAddModal, setShowAddModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(categoryFilter)
+  const [deleteModalData, setDeleteModalData] = useState<{ subscription: any; isDemo: boolean } | null>(null)
 
   // Update selectedCategory when categoryFilter prop changes
   useEffect(() => {
     setSelectedCategory(categoryFilter)
   }, [categoryFilter])
 
-  const handleDelete = (id: string) => {
-    if (confirm('Are you sure you want to delete this subscription?')) {
-      deleteSubscription.mutate(id)
+  const handleDelete = (subscription: any) => {
+    const isDemo = isDemoSubscription(subscription)
+    if (isDemo) {
+      // Delete demo subscriptions immediately without confirmation
+      deleteSubscription.mutate(subscription.id)
+    } else {
+      // Show modal for regular subscriptions
+      setDeleteModalData({ subscription, isDemo })
     }
+  }
+
+  // Check if a subscription matches our demo data
+  const isDemoSubscription = (sub: any) => {
+    return DEMO_SUBSCRIPTIONS.some(demo => 
+      demo.name === sub.name && demo.amount === sub.amount
+    )
   }
 
   const getCategoryInfo = (categoryName: string) => {
@@ -361,6 +387,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
           const isUnsubscribed = sub.status !== 'active' && sub.endDate && new Date(sub.endDate) > new Date()
           const daysUntilEnd = sub.endDate ? getDaysUntil(sub.endDate) : null
           const isServiceEndingSoon = isUnsubscribed && daysUntilEnd !== null && daysUntilEnd <= 7 && daysUntilEnd >= 0
+          const isDemo = isDemoSubscription(sub)
           
           return (
             <motion.div
@@ -368,13 +395,26 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="neu-card rounded-2xl p-4 sm:p-6 hover:scale-[1.02] transition-all duration-300 border border-white/10 group cursor-pointer"
+              className={`neu-card rounded-2xl p-4 sm:p-6 hover:scale-[1.02] transition-all duration-300 border group cursor-pointer ${
+                isDemo ? 'border-purple-500/30 opacity-90' : 'border-white/10'
+              }`}
               onClick={() => router.push(`/subscriptions/${sub.id}`)}
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
                     <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-gradient transition-all duration-300">{sub.name}</h3>
+                    {isDemo && (
+                      <div className="relative group/badge">
+                        <span className="px-3 py-1 text-xs font-bold bg-purple-500/20 text-purple-300 rounded-lg border border-purple-500/30 cursor-help">
+                          EXAMPLE
+                        </span>
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-200 whitespace-nowrap z-50">
+                          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-gray-900"></div>
+                          This is an example subscription - feel free to delete it
+                        </div>
+                      </div>
+                    )}
                     {sub.isTrial && !isTrialEndingSoon && (
                       <div className="relative group/badge">
                         <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg shadow-md cursor-help">
@@ -470,7 +510,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
                       className="neu-button p-1.5 sm:p-2 rounded-lg text-white/70 hover:text-red-400 transition-all duration-300"
                       onClick={(e) => {
                         e.stopPropagation()
-                        handleDelete(sub.id)
+                        handleDelete(sub)
                       }}
                       disabled={deleteSubscription.isPending}
                     >
@@ -504,6 +544,16 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
         <AddSubscriptionModal
           onClose={() => setShowAddModal(false)}
           onSave={() => setShowAddModal(false)}
+        />
+      )}
+      
+      {/* Delete Subscription Modal */}
+      {deleteModalData && (
+        <DeleteSubscriptionModal
+          subscription={deleteModalData.subscription}
+          isOpen={!!deleteModalData}
+          onClose={() => setDeleteModalData(null)}
+          isDemo={deleteModalData.isDemo}
         />
       )}
     </div>

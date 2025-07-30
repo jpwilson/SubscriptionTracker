@@ -28,7 +28,7 @@ import {
 } from 'recharts'
 
 type TimePeriod = 'daily' | 'monthly' | 'quarterly' | 'yearly'
-type TimeScale = '3months' | '6months' | 'ytd' | '1year' | '5years'
+type TimeScale = '3months' | '6months' | 'ytd' | '1year' | '3years' | '5years'
 
 const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#f43f5e', '#84cc16']
 
@@ -43,6 +43,8 @@ const getValidIntervals = (timeScale: TimeScale): TimePeriod[] => {
       return ['daily', 'monthly', 'quarterly']
     case '1year':
       return ['monthly', 'quarterly']
+    case '3years':
+      return ['monthly', 'quarterly', 'yearly']
     case '5years':
       return ['monthly', 'quarterly', 'yearly']
     default:
@@ -61,6 +63,8 @@ const getDefaultInterval = (timeScale: TimeScale): TimePeriod => {
       return 'monthly'
     case '1year':
       return 'monthly'
+    case '3years':
+      return 'quarterly'
     case '5years':
       return 'yearly'
     default:
@@ -246,6 +250,24 @@ export default function AnalyticsPage() {
               size="sm"
             >
               1 Year
+            </Button>
+            <Button
+              onClick={() => {
+                if (isPremium) {
+                  setTimeScale('3years')
+                  const validIntervals = getValidIntervals('3years')
+                  if (!validIntervals.includes(timePeriod)) {
+                    setTimePeriod(getDefaultInterval('3years'))
+                  }
+                } else {
+                  router.push('/payment')
+                }
+              }}
+              variant={timeScale === '3years' ? 'default' : 'ghost'}
+              className={timeScale === '3years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+              size="sm"
+            >
+              {isPremium ? '3 Years' : '3 Years 🔒'}
             </Button>
             <Button
               onClick={() => {

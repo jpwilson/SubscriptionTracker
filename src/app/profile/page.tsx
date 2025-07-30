@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { User, CreditCard, TrendingUp, Shield, LogOut, Crown, Sparkles, ChevronRight, ChevronDown, Globe } from 'lucide-react'
+import { User, CreditCard, TrendingUp, Shield, LogOut, Crown, Sparkles, ChevronRight, ChevronDown, Globe, Download, AlertTriangle, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { InternalHeader } from '@/components/internal-header'
 import { formatCurrency } from '@/lib/utils'
-import { useSubscriptions, useSubscriptionStats } from '@/hooks/use-subscriptions'
+import { useSubscriptions, useSubscriptionStats, useDeleteSubscription } from '@/hooks/use-subscriptions'
 import { useUserPreferences, useUpdateUserPreferences, SUPPORTED_CURRENCIES } from '@/hooks/use-user-preferences'
 import { supabase } from '@/lib/supabase'
 
@@ -25,6 +25,9 @@ export default function ProfilePage() {
   const [loading, setLoading] = useState(true)
   const [showOptionsMenu, setShowOptionsMenu] = useState(false)
   const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false)
+  const [showResetModal, setShowResetModal] = useState(false)
+  const [isResetting, setIsResetting] = useState(false)
+  const deleteSubscription = useDeleteSubscription()
 
   useEffect(() => {
     if (user) {
@@ -69,6 +72,63 @@ export default function ProfilePage() {
   const handleSignOut = async () => {
     await signOut()
     router.push('/')
+  }
+
+  const handleExportData = () => {
+    if (subscriptions.length === 0) {
+      alert('No subscriptions to export')
+      return
+    }
+
+    // Create CSV content
+    const headers = ['Name', 'Amount', 'Currency', 'Billing Cycle', 'Category', 'Status', 'Start Date', 'Next Payment', 'Notes']
+    const rows = subscriptions.map(sub => [
+      sub.name,
+      sub.amount,
+      preferences?.currency || 'USD',
+      sub.billingCycle,
+      sub.category,
+      sub.status,
+      sub.startDate,
+      sub.nextPaymentDate || '',
+      sub.notes || ''
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    // Download file
+    const blob = new Blob([csvContent], { type: 'text/csv' })
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `subtracker-export-${new Date().toISOString().split('T')[0]}.csv`
+    a.click()
+    window.URL.revokeObjectURL(url)
+  }
+
+  const handleResetAccount = async () => {
+    setIsResetting(true)
+    try {
+      // Delete all subscriptions
+      for (const sub of subscriptions) {
+        await deleteSubscription.mutateAsync(sub.id)
+      }
+      
+      // Clear localStorage flags
+      localStorage.removeItem('subtracker_tour_completed')
+      localStorage.removeItem('subtracker_welcome_dismissed')
+      
+      // Reload the page to trigger demo data
+      window.location.reload()
+    } catch (error) {
+      console.error('Error resetting account:', error)
+      alert('Failed to reset account. Please try again.')
+    } finally {
+      setIsResetting(false)
+    }
   }
 
   // Close dropdown when clicking outside
@@ -364,12 +424,34 @@ export default function ProfilePage() {
             <div className="neu-card rounded-xl p-6 border border-white/10">
               <h3 className="text-lg font-semibold text-white mb-4">Data & Privacy</h3>
               <div className="space-y-3">
-                <Button variant="ghost" className="w-full justify-between">
-                  Export my data
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between hover:bg-white/10"
+                  onClick={handleExportData}
+                  disabled={subscriptions.length === 0}
+                >
+                  <span className="flex items-center gap-2">
+                    <Download className="w-4 h-4" />
+                    Export my data (CSV)
+                  </span>
                   <ChevronRight className="w-4 h-4" />
                 </Button>
-                <Button variant="ghost" className="w-full justify-between text-red-400 hover:text-red-300">
-                  Delete account
+                <Button 
+                  variant="ghost" 
+                  className="w-full justify-between text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10"
+                  onClick={() => setShowResetModal(true)}
+                >
+                  <span className="flex items-center gap-2">
+                    <RefreshCw className="w-4 h-4" />
+                    Reset account
+                  </span>
+                  <ChevronRight className="w-4 h-4" />
+                </Button>
+                <Button variant="ghost" className="w-full justify-between text-red-400 hover:text-red-300 hover:bg-red-400/10">
+                  <span className="flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4" />
+                    Delete account
+                  </span>
                   <ChevronRight className="w-4 h-4" />
                 </Button>
               </div>
@@ -377,6 +459,81 @@ export default function ProfilePage() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Reset Account Modal */}
+      {showResetModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={() => !isResetting && setShowResetModal(false)}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative w-full max-w-md bg-slate-900 rounded-2xl shadow-2xl border border-white/10 p-6"
+          >
+            <h2 className="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-6 h-6 text-yellow-400" />
+              Reset Account?
+            </h2>
+            
+            <div className="space-y-4 text-gray-300">
+              <p>This will delete all your subscriptions and reset your account to the initial demo state.</p>
+              
+              <div className="p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
+                <p className="text-sm flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <span>
+                    <strong className="text-yellow-400">Warning:</strong> This action cannot be undone. 
+                    We recommend exporting your data first.
+                  </span>
+                </p>
+              </div>
+              
+              {subscriptions.length > 0 && (
+                <Button
+                  variant="outline"
+                  className="w-full border-purple-500/30 hover:bg-purple-500/10"
+                  onClick={() => {
+                    handleExportData()
+                    // Don't close modal - let user decide
+                  }}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Export Data First
+                </Button>
+              )}
+              
+              <p className="text-sm">Your account settings and preferences will be preserved.</p>
+            </div>
+            
+            <div className="flex gap-3 mt-6">
+              <Button
+                variant="ghost"
+                className="flex-1"
+                onClick={() => setShowResetModal(false)}
+                disabled={isResetting}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black"
+                onClick={handleResetAccount}
+                disabled={isResetting}
+              >
+                {isResetting ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                    Resetting...
+                  </>
+                ) : (
+                  'Reset Account'
+                )}
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }

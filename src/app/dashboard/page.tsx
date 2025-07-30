@@ -14,6 +14,7 @@ import { ManageCategoriesModal } from '@/components/manage-categories-modal'
 import { OnboardingTour } from '@/components/onboarding-tour'
 import { DemoDataInitializer } from '@/components/demo-data'
 import { MobileNavigation } from '@/components/mobile-navigation'
+import { WelcomeBanner } from '@/components/welcome-banner'
 import { useUserPreferences } from '@/hooks/use-user-preferences'
 
 export const dynamic = 'force-dynamic'
@@ -137,6 +138,9 @@ function DashboardContent() {
             </span>
           </Button>
         </motion.div>
+
+        {/* Welcome Banner for new users */}
+        <WelcomeBanner />
 
         {/* Stats Grid */}
         <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
