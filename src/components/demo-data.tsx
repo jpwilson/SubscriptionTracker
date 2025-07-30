@@ -27,7 +27,6 @@ export function DemoDataInitializer() {
           status: 'active',
           color: '#E50914',
           icon: '🎬',
-          isDemo: true,
         },
         {
           name: 'Spotify Premium',
@@ -41,7 +40,6 @@ export function DemoDataInitializer() {
           status: 'active',
           color: '#1DB954',
           icon: '🎵',
-          isDemo: true,
         },
         {
           name: 'Amazon Prime',
@@ -55,7 +53,6 @@ export function DemoDataInitializer() {
           status: 'active',
           color: '#FF9900',
           icon: '📦',
-          isDemo: true,
         },
         {
           name: 'GitHub Pro',
@@ -69,7 +66,6 @@ export function DemoDataInitializer() {
           status: 'active',
           color: '#24292e',
           icon: '💻',
-          isDemo: true,
         },
         {
           name: 'YouTube Premium',
@@ -83,7 +79,6 @@ export function DemoDataInitializer() {
           status: 'active',
           color: '#FF0000',
           icon: '▶️',
-          isDemo: true,
         },
         {
           name: 'Disney+',
@@ -98,7 +93,6 @@ export function DemoDataInitializer() {
           color: '#113CCF',
           icon: '🏰',
           notes: 'Cancelled last month, service ends in 3 days',
-          isDemo: true,
         },
         {
           name: 'Planet Fitness',
@@ -113,7 +107,6 @@ export function DemoDataInitializer() {
           color: '#7B2FBE',
           icon: '💪',
           notes: 'Black Card membership',
-          isDemo: true,
         },
         {
           name: 'Replit Core',
@@ -128,7 +121,6 @@ export function DemoDataInitializer() {
           color: '#F26207',
           icon: '🔧',
           notes: 'Unsubscribed but still have access until January 2026',
-          isDemo: true,
         },
       ]
       
