@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { InternalHeader } from '@/components/internal-header'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { supabase } from '@/lib/supabase'
+import Image from 'next/image'
 
 function PaymentContent() {
   const searchParams = useSearchParams()
@@ -283,7 +284,13 @@ function PaymentContent() {
               </p>
               
               <div className="flex items-center justify-center gap-4 pt-4">
-                <img src="https://cdn.brandfolder.io/KGT2DTA4/at/8vbr8k4mr5xjwk4hxq4t9vs/Powered_by_Stripe_-_blurple.svg" alt="Powered by Stripe" className="h-6" />
+                <Image 
+                  src="https://cdn.brandfolder.io/KGT2DTA4/at/8vbr8k4mr5xjwk4hxq4t9vs/Powered_by_Stripe_-_blurple.svg" 
+                  alt="Powered by Stripe" 
+                  width={120}
+                  height={24}
+                  className="h-6 w-auto"
+                />
               </div>
             </div>
           </motion.div>
