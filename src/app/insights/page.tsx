@@ -232,7 +232,10 @@ export default function InsightsPage() {
                 </div>
               </div>
               {!isPremium && (
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg">
+                <Button 
+                  onClick={() => router.push('/payment')}
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+                >
                   <Sparkles className="w-4 h-4 mr-2" />
                   Upgrade to Premium
                 </Button>
@@ -331,7 +334,10 @@ export default function InsightsPage() {
             <p className="text-muted-foreground mb-4">
               Upgrade to Premium to unlock all recommendations and maximize your savings
             </p>
-            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg">
+            <Button 
+              onClick={() => router.push('/payment')}
+              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+            >
               Upgrade for $5/month
             </Button>
           </motion.div>

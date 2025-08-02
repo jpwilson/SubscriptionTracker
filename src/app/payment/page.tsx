@@ -1,24 +1,29 @@
 'use client'
 
-import { Suspense } from 'react'
+import { Suspense, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
-import { CreditCard, Shield, ArrowLeft, Check, Zap, Building2 } from 'lucide-react'
+import { CreditCard, Shield, ArrowLeft, Check, Sparkles, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { InternalHeader } from '@/components/internal-header'
+import { useAuth } from '@/providers/supabase-auth-provider'
+import { supabase } from '@/lib/supabase'
 
 function PaymentContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const plan = searchParams.get('plan') || 'premium'
+  const { user } = useAuth()
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'annual' | 'lifetime'>('annual')
+  const [isLoading, setIsLoading] = useState(false)
   
   const plans = {
-    premium: {
-      name: 'Premium',
-      price: '$5',
+    monthly: {
+      name: 'Monthly',
+      price: '$8',
       period: '/month',
-      description: 'Perfect for individuals tracking multiple subscriptions',
+      stripePriceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_MONTHLY || '',
+      description: 'Flexible monthly billing',
       features: [
         'Unlimited subscriptions',
         'Custom categories',
@@ -27,46 +32,83 @@ function PaymentContent() {
         'Export data',
         'Priority support'
       ],
-      icon: <Zap className="w-6 h-6" />,
+      badge: null,
       color: 'from-purple-500 to-pink-500'
     },
-    forever: {
-      name: 'Forever',
+    annual: {
+      name: 'Annual',
+      price: '$60',
+      period: '/year',
+      stripePriceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ANNUAL || '',
+      description: 'Best value - Save 37%',
+      features: [
+        'Everything in Monthly',
+        'Save $36 per year',
+        'Same features, better price',
+        'Cancel anytime'
+      ],
+      badge: 'BEST VALUE',
+      color: 'from-green-500 to-emerald-500'
+    },
+    lifetime: {
+      name: 'Lifetime',
       price: '$250',
       period: 'one-time',
-      description: 'Lifetime access with all premium features',
+      stripePriceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_LIFETIME || '',
+      description: 'Pay once, use forever',
       features: [
         'Everything in Premium',
         'Lifetime updates',
         'Early access to new features',
         'No recurring fees ever',
-        'Priority feature requests',
-        'Exclusive badge'
+        'Priority feature requests'
       ],
-      icon: <Shield className="w-6 h-6" />,
+      badge: 'LIMITED OFFER',
       color: 'from-yellow-500 to-orange-500'
-    },
-    enterprise: {
-      name: 'Enterprise',
-      price: '$200',
-      period: '/month',
-      description: 'For teams and businesses managing subscriptions',
-      features: [
-        'Everything in Premium',
-        'Unlimited team members',
-        'Admin dashboard',
-        'SSO authentication',
-        'API access',
-        'Dedicated support',
-        'Custom integrations',
-        'SLA guarantee'
-      ],
-      icon: <Building2 className="w-6 h-6" />,
-      color: 'from-blue-500 to-cyan-500'
     }
   }
   
-  const selectedPlan = plans[plan as keyof typeof plans] || plans.premium
+  const currentPlan = plans[selectedPlan]
+
+  const handleCheckout = async () => {
+    if (!user) {
+      router.push('/login')
+      return
+    }
+
+    setIsLoading(true)
+    try {
+      // Get the session token
+      const { data: { session } } = await supabase.auth.getSession()
+      console.log('Session token exists:', !!session?.access_token)
+      
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': session?.access_token ? `Bearer ${session.access_token}` : '',
+        },
+        body: JSON.stringify({
+          priceId: currentPlan.stripePriceId,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.url) {
+        // Redirect to Stripe Checkout
+        window.location.href = data.url
+      } else {
+        console.error('No checkout URL returned')
+        alert('Error creating checkout session. Please try again.')
+      }
+    } catch (error) {
+      console.error('Checkout error:', error)
+      alert('Error creating checkout session. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -94,34 +136,87 @@ function PaymentContent() {
           </Button>
         </motion.div>
 
+        {/* Plan Selection */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <h1 className="text-3xl font-bold text-gradient text-center mb-2">Choose Your Plan</h1>
+          <p className="text-center text-muted-foreground mb-8">Save money. Track subscriptions. Take control.</p>
+          
+          {/* Plan Selector */}
+          <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {Object.entries(plans).map(([key, plan]) => (
+              <motion.button
+                key={key}
+                onClick={() => setSelectedPlan(key as 'monthly' | 'annual' | 'lifetime')}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative neu-card rounded-2xl p-6 border transition-all duration-300 ${
+                  selectedPlan === key 
+                    ? 'border-purple-500 shadow-lg shadow-purple-500/20' 
+                    : 'border-white/10 hover:border-white/20'
+                }`}
+              >
+                {plan.badge && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <span className={`px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r ${plan.color} text-white shadow-lg`}>
+                      {plan.badge}
+                    </span>
+                  </div>
+                )}
+                
+                <h3 className="text-xl font-bold text-white mb-2">{plan.name}</h3>
+                <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
+                
+                <div className="flex items-baseline justify-center gap-1 mb-4">
+                  <span className="text-3xl font-bold text-white">{plan.price}</span>
+                  <span className="text-muted-foreground text-sm">{plan.period}</span>
+                </div>
+                
+                {key === 'annual' && (
+                  <p className="text-xs text-green-400 font-medium">
+                    $5/mo billed annually
+                  </p>
+                )}
+                
+                <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${plan.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none`} />
+              </motion.button>
+            ))}
+          </div>
+        </motion.div>
+
         <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* Plan Summary */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.1 }}
-          >
-            <h1 className="text-3xl font-bold text-gradient mb-6">Complete Your Purchase</h1>
-            
+          >            
             <div className="neu-card rounded-2xl p-6 border border-white/10 mb-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className={`p-3 rounded-xl bg-gradient-to-r ${selectedPlan.color} text-white`}>
-                  {selectedPlan.icon}
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-white">{selectedPlan.name} Plan</h2>
-                  <p className="text-muted-foreground">{selectedPlan.description}</p>
-                </div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-2xl font-bold text-white">{currentPlan.name} Plan</h2>
+                {currentPlan.badge && (
+                  <span className={`px-3 py-1 text-xs font-bold rounded-full bg-gradient-to-r ${currentPlan.color} text-white`}>
+                    {currentPlan.badge}
+                  </span>
+                )}
               </div>
               
-              <div className="flex items-baseline gap-2 mb-6">
-                <span className="text-4xl font-bold text-gradient">{selectedPlan.price}</span>
-                <span className="text-muted-foreground">{selectedPlan.period}</span>
+              <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-4xl font-bold text-gradient">{currentPlan.price}</span>
+                <span className="text-muted-foreground">{currentPlan.period}</span>
               </div>
+              {selectedPlan === 'annual' && (
+                <p className="text-sm text-green-400 font-medium mb-4">
+                  $5/mo billed annually
+                </p>
+              )}
               
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">What&apos;s Included</h3>
-                {selectedPlan.features.map((feature, i) => (
+                {currentPlan.features.map((feature, i) => (
                   <div key={i} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-400 flex-shrink-0" />
                     <span className="text-white">{feature}</span>
@@ -152,39 +247,44 @@ function PaymentContent() {
           >
             <h2 className="text-xl font-bold text-white mb-6">Payment Details</h2>
             
-            {/* Stripe Placeholder */}
-            <div className="bg-slate-800/50 rounded-xl p-12 border-2 border-dashed border-slate-600 text-center">
-              <CreditCard className="w-12 h-12 text-slate-500 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-white mb-2">Stripe Payment Form</h3>
-              <p className="text-muted-foreground text-sm mb-6">
-                Secure payment processing will be embedded here
+            {/* Stripe Checkout Info */}
+            <div className="bg-slate-800/50 rounded-xl p-8 text-center mb-6">
+              <Shield className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">Secure Checkout with Stripe</h3>
+              <p className="text-muted-foreground text-sm">
+                You&apos;ll be redirected to Stripe&apos;s secure checkout page
               </p>
-              
-              <div className="space-y-4 max-w-sm mx-auto">
-                <div className="h-12 bg-slate-700 rounded-lg animate-pulse" />
-                <div className="h-12 bg-slate-700 rounded-lg animate-pulse" />
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="h-12 bg-slate-700 rounded-lg animate-pulse" />
-                  <div className="h-12 bg-slate-700 rounded-lg animate-pulse" />
-                </div>
-                <div className="h-12 bg-slate-700 rounded-lg animate-pulse" />
-              </div>
             </div>
             
-            <div className="mt-6">
+            <div className="space-y-4">
               <Button
+                onClick={handleCheckout}
                 className="w-full relative px-6 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
-                disabled
+                disabled={isLoading}
               >
                 <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <span className="relative">
-                  Complete Purchase
+                <span className="relative flex items-center justify-center">
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-5 h-5 mr-2" />
+                      Continue to Checkout
+                    </>
+                  )}
                 </span>
               </Button>
               
-              <p className="text-xs text-muted-foreground text-center mt-4">
+              <p className="text-xs text-muted-foreground text-center">
                 By purchasing, you agree to our Terms of Service and Privacy Policy
               </p>
+              
+              <div className="flex items-center justify-center gap-4 pt-4">
+                <img src="https://cdn.brandfolder.io/KGT2DTA4/at/8vbr8k4mr5xjwk4hxq4t9vs/Powered_by_Stripe_-_blurple.svg" alt="Powered by Stripe" className="h-6" />
+              </div>
             </div>
           </motion.div>
         </div>
