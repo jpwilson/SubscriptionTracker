@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-07-30.basil',
-})
-
 export async function POST(request: NextRequest) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2025-07-30.basil',
+  })
   try {
     const { priceId } = await request.json()
 
