@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Calendar, CreditCard, Link as LinkIcon, FileText, Trash2, Edit3, ExternalLink, Loader2, Clock, DollarSign, AlertCircle } from 'lucide-react'
+import { Calendar, CreditCard, Link as LinkIcon, FileText, Settings, Edit3, ExternalLink, Loader2, Clock, DollarSign, AlertCircle, TrendingUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
@@ -11,6 +11,8 @@ import { formatCurrency, parseLocalDate } from '@/lib/utils'
 import { format, differenceInDays } from 'date-fns'
 import { InternalHeader } from '@/components/internal-header'
 import { EditSubscriptionModal } from '@/components/edit-subscription-modal'
+import { ManageSubscriptionModal } from '@/components/manage-subscription-modal'
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts'
 
 export default function SubscriptionDetailPage({ params }: { params: { id: string } }) {
   const { user } = useAuth()
@@ -20,6 +22,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
   const deleteSubscription = useDeleteSubscription()
   const updateSubscription = useUpdateSubscription()
   const [showEditModal, setShowEditModal] = useState(false)
+  const [showManageModal, setShowManageModal] = useState(false)
 
   useEffect(() => {
     if (searchParams.get('edit') === 'true') {
@@ -58,21 +61,89 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
     )
   }
 
-  const handleDelete = async () => {
-    if (confirm('Are you sure you want to delete this subscription?')) {
-      await deleteSubscription.mutateAsync(subscription.id)
-      router.push('/subscriptions')
+  // Generate mock price history data for now
+  // In production, this would come from querying related subscriptions
+  const generatePriceHistory = () => {
+    if (!subscription) return []
+    
+    const history = []
+    const startDate = new Date(subscription.startDate)
+    const today = new Date()
+    const monthsDiff = (today.getFullYear() - startDate.getFullYear()) * 12 + (today.getMonth() - startDate.getMonth())
+    
+    // Add historical data points
+    for (let i = 0; i <= Math.min(monthsDiff, 24); i++) {
+      const date = new Date(startDate)
+      date.setMonth(date.getMonth() + i)
+      
+      // Simulate price changes
+      let price = subscription.amount
+      if (subscription.previousAmount && i < 6) {
+        price = subscription.previousAmount
+      }
+      
+      // Add gap if subscription was cancelled
+      if (subscription.status === 'cancelled' && subscription.cancellationDate) {
+        const cancelDate = new Date(subscription.cancellationDate)
+        if (date > cancelDate && subscription.endDate) {
+          const endDate = new Date(subscription.endDate)
+          if (date > endDate) {
+            price = 0
+          }
+        }
+      }
+      
+      history.push({
+        date: format(date, 'MMM yyyy'),
+        price: price,
+        formattedPrice: formatCurrency(price)
+      })
     }
+    
+    return history
   }
 
-  const daysUntilPayment = differenceInDays(parseLocalDate(subscription.nextPaymentDate), new Date())
-  const monthlyAmount = subscription.billingCycle === 'yearly' 
-    ? subscription.amount / 12 
-    : subscription.billingCycle === 'quarterly'
-    ? subscription.amount / 3
-    : subscription.billingCycle === 'weekly'
-    ? subscription.amount * 4.33
-    : subscription.amount
+  // Calculate the actual next payment date (ensure it's in the future)
+  const calculateNextPaymentDate = () => {
+    if (!subscription || subscription.status === 'cancelled') return null
+    
+    let nextDate = parseLocalDate(subscription.nextPaymentDate)
+    const today = new Date()
+    
+    // If the next payment date is in the past, calculate the next future occurrence
+    while (nextDate < today) {
+      switch (subscription.billingCycle) {
+        case 'weekly':
+          nextDate.setDate(nextDate.getDate() + 7)
+          break
+        case 'monthly':
+          nextDate.setMonth(nextDate.getMonth() + 1)
+          break
+        case 'quarterly':
+          nextDate.setMonth(nextDate.getMonth() + 3)
+          break
+        case 'yearly':
+          nextDate.setFullYear(nextDate.getFullYear() + 1)
+          break
+        default:
+          return nextDate // For one-off, return as is
+      }
+    }
+    
+    return nextDate
+  }
+  
+  const actualNextPaymentDate = subscription ? calculateNextPaymentDate() : null
+  const daysUntilPayment = actualNextPaymentDate ? differenceInDays(actualNextPaymentDate, new Date()) : 0
+  const monthlyAmount = subscription ? (
+    subscription.billingCycle === 'yearly' 
+      ? subscription.amount / 12 
+      : subscription.billingCycle === 'quarterly'
+      ? subscription.amount / 3
+      : subscription.billingCycle === 'weekly'
+      ? subscription.amount * 4.33
+      : subscription.amount
+  ) : 0
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -101,11 +172,11 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
               Edit
             </Button>
             <Button
-              onClick={handleDelete}
-              className="neu-button px-4 py-2 rounded-xl text-red-400 hover:text-red-300"
+              onClick={() => setShowManageModal(true)}
+              className="neu-button px-4 py-2 rounded-xl text-orange-400 hover:text-orange-300"
             >
-              <Trash2 className="w-4 h-4 mr-2" />
-              Delete
+              <Settings className="w-4 h-4 mr-2" />
+              Manage
             </Button>
             </div>
           </div>
@@ -182,6 +253,78 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
             </div>
           </motion.div>
 
+          {/* Price History Chart */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="neu-card rounded-2xl p-6 border border-white/10"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-gradient">Price History</h2>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <TrendingUp className="w-4 h-4" />
+                <span>Lifetime tracking</span>
+              </div>
+            </div>
+            
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={generatePriceHistory()}>
+                  <defs>
+                    <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#333" />
+                  <XAxis 
+                    dataKey="date" 
+                    stroke="#666"
+                    style={{ fontSize: '12px' }}
+                  />
+                  <YAxis 
+                    stroke="#666"
+                    style={{ fontSize: '12px' }}
+                    tickFormatter={(value) => `$${value}`}
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#1a1a1a', 
+                      border: '1px solid #333',
+                      borderRadius: '8px'
+                    }}
+                    labelStyle={{ color: '#999' }}
+                    itemStyle={{ color: '#fff' }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="price"
+                    stroke="#8B5CF6"
+                    strokeWidth={2}
+                    fill="url(#priceGradient)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            
+            {subscription.previousAmount && (
+              <div className="mt-4 p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">
+                <p className="text-sm text-purple-300">
+                  Price changed from {formatCurrency(subscription.previousAmount)} to {formatCurrency(subscription.amount)}
+                </p>
+              </div>
+            )}
+            
+            {subscription.status === 'cancelled' && subscription.endDate && (
+              <div className="mt-4 p-3 rounded-xl bg-orange-500/10 border border-orange-500/30">
+                <p className="text-sm text-orange-300">
+                  Service will end on {format(parseLocalDate(subscription.endDate), 'MMMM d, yyyy')}
+                </p>
+              </div>
+            )}
+          </motion.div>
+
           {/* Payment Details */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -197,7 +340,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                   <div>
                     <p className="text-sm text-muted-foreground">Next Payment</p>
                     <p className="text-white font-medium">
-                      {format(parseLocalDate(subscription.nextPaymentDate), 'MMMM d, yyyy')}
+                      {actualNextPaymentDate ? format(actualNextPaymentDate, 'MMMM d, yyyy') : 'N/A'}
                     </p>
                   </div>
                 </div>
@@ -338,6 +481,16 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
           onSave={() => {
             setShowEditModal(false)
             // Clear the edit query parameter
+            router.replace(`/subscriptions/${params.id}`)
+          }}
+        />
+      )}
+      
+      {showManageModal && subscription && (
+        <ManageSubscriptionModal
+          subscription={subscription}
+          onClose={() => {
+            setShowManageModal(false)
             router.replace(`/subscriptions/${params.id}`)
           }}
         />
