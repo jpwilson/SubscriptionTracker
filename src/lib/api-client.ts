@@ -29,6 +29,10 @@ export interface Subscription {
   trialEndDate?: string | null
   lastUsed?: string | null
   usageFrequency?: string | null
+  cancellationDate?: string | null
+  subscriptionGroupId?: string | null
+  previousAmount?: number | null
+  isReactivation?: boolean
 }
 
 export interface SubscriptionStats {

@@ -97,7 +97,16 @@ export async function PUT(
     }
 
     const token = authHeader.replace('Bearer ', '')
-    const data = await request.json()
+    
+    let data
+    try {
+      data = await request.json()
+    } catch (e) {
+      console.error('Failed to parse request body:', e)
+      return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+    }
+    
+    console.log('Update request data:', data)
     
     // Create Supabase client with the user's token
     const supabase = createClient(
@@ -130,7 +139,7 @@ export async function PUT(
     if (data.category !== undefined) updateData.category = data.category
     if (data.startDate !== undefined) updateData.start_date = data.startDate
     if (data.endDate !== undefined) updateData.end_date = data.endDate
-    if (data.nextPaymentDate !== undefined) updateData.next_payment_date = data.nextPaymentDate
+    if (data.nextPaymentDate !== undefined) updateData.next_payment_date = data.nextPaymentDate === null ? null : data.nextPaymentDate
     if (data.isTrial !== undefined) updateData.is_trial = data.isTrial
     if (data.trialEndDate !== undefined) updateData.trial_end_date = data.trialEndDate
     if (data.reminderDaysBefore !== undefined) updateData.reminder_days_before = data.reminderDaysBefore
@@ -141,7 +150,13 @@ export async function PUT(
     if (data.url !== undefined) updateData.url = data.url
     if (data.lastUsed !== undefined) updateData.last_used = data.lastUsed
     if (data.usageFrequency !== undefined) updateData.usage_frequency = data.usageFrequency
+    if (data.cancellationDate !== undefined) updateData.cancellation_date = data.cancellationDate
+    if (data.subscriptionGroupId !== undefined) updateData.subscription_group_id = data.subscriptionGroupId
+    if (data.previousAmount !== undefined) updateData.previous_amount = data.previousAmount
+    if (data.isReactivation !== undefined) updateData.is_reactivation = data.isReactivation
 
+    console.log('Update data being sent to database:', updateData)
+    
     // Update the subscription
     const { data: subscription, error } = await supabase
       .from('subscriptions')
@@ -151,7 +166,12 @@ export async function PUT(
       .select()
       .single()
 
-    if (error || !subscription) {
+    if (error) {
+      console.error('Database update error:', error)
+      return NextResponse.json({ error: error.message || 'Failed to update subscription' }, { status: 500 })
+    }
+    
+    if (!subscription) {
       return NextResponse.json({ error: 'Subscription not found' }, { status: 404 })
     }
 
@@ -181,6 +201,10 @@ export async function PUT(
       url: subscription.url,
       lastUsed: subscription.last_used,
       usageFrequency: subscription.usage_frequency,
+      cancellationDate: subscription.cancellation_date,
+      subscriptionGroupId: subscription.subscription_group_id,
+      previousAmount: subscription.previous_amount,
+      isReactivation: subscription.is_reactivation,
     }
 
     return NextResponse.json(formattedSubscription)
