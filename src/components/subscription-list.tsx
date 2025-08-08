@@ -8,7 +8,7 @@ import { useCategories } from '@/hooks/use-categories'
 import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
-import { format } from 'date-fns'
+import { format, differenceInDays, parseISO } from 'date-fns'
 import { AddSubscriptionModal } from '@/components/add-subscription-modal'
 import { DeleteSubscriptionModal } from '@/components/delete-subscription-modal'
 
@@ -483,7 +483,11 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
                         <span className="sm:hidden">Next: {formatDate(sub.nextPaymentDate)}</span>
                       </>
                     ) : (
-                      sub.endDate && <span className="text-red-400">Ended: {formatDate(sub.endDate)}</span>
+                      sub.endDate && (
+                        <span className={new Date(sub.endDate) > new Date() ? "text-orange-400" : "text-red-400"}>
+                          {new Date(sub.endDate) > new Date() ? 'Ends' : 'Ended'}: {formatDate(sub.endDate)}
+                        </span>
+                      )
                     )}
                   </div>
                 </div>
@@ -505,21 +509,24 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
                     >
                       <Edit2 className="w-3 h-3 sm:w-4 sm:h-4" />
                     </Button>
-                    <Button
-                      size="icon"
-                      className="neu-button p-1.5 sm:p-2 rounded-lg text-white/70 hover:text-red-400 transition-all duration-300"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDelete(sub)
-                      }}
-                      disabled={deleteSubscription.isPending}
-                    >
-                      {deleteSubscription.isPending ? (
-                        <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                      )}
-                    </Button>
+                    {/* Only show delete button for demo subscriptions */}
+                    {isDemo && (
+                      <Button
+                        size="icon"
+                        className="neu-button p-1.5 sm:p-2 rounded-lg text-white/70 hover:text-red-400 transition-all duration-300"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDelete(sub)
+                        }}
+                        disabled={deleteSubscription.isPending}
+                      >
+                        {deleteSubscription.isPending ? (
+                          <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
+                        ) : (
+                          <Trash2 className="w-3 h-3 sm:w-4 sm:h-4" />
+                        )}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

@@ -2,12 +2,13 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { X, Loader2, Plus } from 'lucide-react'
+import { X, Loader2, Plus, RefreshCw, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { useCreateSubscription } from '@/hooks/use-subscriptions'
+import { useCreateSubscription, useSubscriptions } from '@/hooks/use-subscriptions'
 import { useCategories } from '@/hooks/use-categories'
 import { ManageCategoriesModal } from './manage-categories-modal'
-import { formatDateForInput, parseLocalDate } from '@/lib/utils'
+import { formatDateForInput, parseLocalDate, formatCurrency } from '@/lib/utils'
+import { format } from 'date-fns'
 
 interface AddSubscriptionModalProps {
   onClose: () => void
@@ -16,9 +17,12 @@ interface AddSubscriptionModalProps {
 
 export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalProps) {
   const createSubscription = useCreateSubscription()
+  const { data: subscriptions = [] } = useSubscriptions()
   const { data: categories = [], isLoading: categoriesLoading } = useCategories()
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
   const [showDetailedInput, setShowDetailedInput] = useState(false)
+  const [matchingSubscription, setMatchingSubscription] = useState<any>(null)
+  const [showReactivatePrompt, setShowReactivatePrompt] = useState(false)
   
   const [formData, setFormData] = useState({
     name: '',
@@ -46,6 +50,27 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       setFormData(prev => ({ ...prev, category: categories[0].name }))
     }
   }, [categories, formData.category])
+
+  // Check for matching cancelled/expired subscriptions
+  const checkForMatchingSubscription = (name: string, company: string) => {
+    if (!name && !company) return
+    
+    const searchTerm = company || name
+    const match = subscriptions.find(sub => {
+      const isInactive = sub.status === 'cancelled' || sub.status === 'expired'
+      const nameMatch = sub.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                       sub.company?.toLowerCase().includes(searchTerm.toLowerCase())
+      return isInactive && nameMatch
+    })
+    
+    if (match) {
+      setMatchingSubscription(match)
+      setShowReactivatePrompt(true)
+    } else {
+      setMatchingSubscription(null)
+      setShowReactivatePrompt(false)
+    }
+  }
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -137,6 +162,10 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       icon: selectedCategory?.icon || null,
       url: formData.url || null,
       notes: formData.notes || null,
+      // Link to previous subscription if reactivating
+      subscriptionGroupId: matchingSubscription?.subscriptionGroupId || matchingSubscription?.id || null,
+      isReactivation: !!matchingSubscription,
+      previousAmount: matchingSubscription?.amount || null,
     })
     
     onSave()
@@ -192,7 +221,11 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 <input
                   type="text"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value, company: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, name: e.target.value, company: e.target.value })
+                    checkForMatchingSubscription(e.target.value, e.target.value)
+                  }}
+                  onBlur={(e) => checkForMatchingSubscription(e.target.value, formData.company)}
                   className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   placeholder="e.g., Netflix, Spotify"
                   required
@@ -224,6 +257,32 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 </div>
               )}
             </div>
+
+            {/* Show reactivation prompt if matching subscription found */}
+            {showReactivatePrompt && matchingSubscription && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30"
+              >
+                <div className="flex items-start gap-3">
+                  <RefreshCw className="w-5 h-5 text-purple-400 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-purple-300 mb-1">
+                      Previous Subscription Found
+                    </p>
+                    <p className="text-xs text-gray-400 mb-2">
+                      You had {matchingSubscription.name} before ({formatCurrency(matchingSubscription.amount)}/{matchingSubscription.billingCycle})
+                      {matchingSubscription.endDate && ` - Ended ${format(new Date(matchingSubscription.endDate), 'MMM yyyy')}`}
+                    </p>
+                    <p className="text-xs text-purple-300">
+                      <Info className="w-3 h-3 inline mr-1" />
+                      We&apos;ll link this to your previous subscription for complete history tracking
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div>
