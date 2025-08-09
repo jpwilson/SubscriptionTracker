@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, Trash2, Edit2, AlertCircle, Loader2, Info, Search, ChevronDown, ArrowUp, ArrowDown, Filter, X } from 'lucide-react'
+import { Plus, Trash2, Edit2, AlertCircle, Loader2, Info, Search, ChevronDown, ArrowUp, ArrowDown, Filter, X, List, Calendar } from 'lucide-react'
 import { useSubscriptions, useDeleteSubscription } from '@/hooks/use-subscriptions'
 import { useCategories } from '@/hooks/use-categories'
 import { formatCurrency, formatDate, getDaysUntil } from '@/lib/utils'
@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { format, differenceInDays, parseISO } from 'date-fns'
 import { AddSubscriptionModal } from '@/components/add-subscription-modal'
 import { DeleteSubscriptionModal } from '@/components/delete-subscription-modal'
+import { CalendarView } from '@/components/calendar-view'
 
 type SortOption = 'name' | 'price' | 'nextPayment' | 'category' | 'billingCycle'
 type SortDirection = 'asc' | 'desc'
@@ -46,6 +47,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
   const [showAddModal, setShowAddModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(categoryFilter)
   const [deleteModalData, setDeleteModalData] = useState<{ subscription: any; isDemo: boolean } | null>(null)
+  const [viewType, setViewType] = useState<'list' | 'calendar'>('list')
 
   // Update selectedCategory when categoryFilter prop changes
   useEffect(() => {
@@ -231,7 +233,34 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <h2 className="text-2xl font-bold text-gradient">Your Subscriptions {subscriptions && subscriptions.length > 0 && `(${subscriptions.length})`}</h2>
+        <div className="flex items-center gap-4">
+          <h2 className="text-2xl font-bold text-gradient">Your Subscriptions {subscriptions && subscriptions.length > 0 && `(${subscriptions.length})`}</h2>
+          {/* View Toggle */}
+          <div className="flex items-center gap-1 p-1 bg-white/5 rounded-xl">
+            <button
+              onClick={() => setViewType('list')}
+              className={`px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all ${
+                viewType === 'list' 
+                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <List className="w-4 h-4" />
+              <span className="hidden sm:inline text-sm">List</span>
+            </button>
+            <button
+              onClick={() => setViewType('calendar')}
+              className={`px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all ${
+                viewType === 'calendar' 
+                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              <Calendar className="w-4 h-4" />
+              <span className="hidden sm:inline text-sm">Calendar</span>
+            </button>
+          </div>
+        </div>
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           {/* Search Bar */}
           <div className="relative">
@@ -245,8 +274,9 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
             />
           </div>
           
-          {/* Sort Dropdown */}
-          <div className="relative group">
+          {/* Sort Dropdown - Only show in list view */}
+          {viewType === 'list' && (
+            <div className="relative group">
             <button className="flex items-center gap-2 px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white hover:bg-slate-600 transition-colors w-full sm:w-auto justify-between sm:justify-center">
               <span className="text-sm">
                 Sort: {sortBy === 'nextPayment' ? 'Next Payment' : 
@@ -309,6 +339,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
               </button>
             </div>
           </div>
+          )}
           
           {/* Filter Dropdown */}
           <div className="relative group">
@@ -380,8 +411,10 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
         </motion.div>
       )}
       
-      <div className="grid gap-4">
-        {filteredAndSortedSubscriptions.map((sub, i) => {
+      {/* Conditionally render list or calendar view */}
+      {viewType === 'list' ? (
+        <div className="grid gap-4">
+          {filteredAndSortedSubscriptions.map((sub, i) => {
           const daysUntilRenewal = getDaysUntil(sub.nextPaymentDate)
           const isTrialEndingSoon = sub.isTrial && daysUntilRenewal <= 7 && daysUntilRenewal >= 0
           const isUnsubscribed = sub.status !== 'active' && sub.endDate && new Date(sub.endDate) > new Date()
@@ -532,11 +565,18 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
               </div>
             </motion.div>
           )
-        })}
-      </div>
+          })}
+        </div>
+      ) : (
+        /* Calendar View */
+        <CalendarView 
+          subscriptions={filteredAndSortedSubscriptions} 
+          userCurrency={userCurrency} 
+        />
+      )}
       
       {/* No results message */}
-      {filteredAndSortedSubscriptions.length === 0 && searchTerm && (
+      {viewType === 'list' && filteredAndSortedSubscriptions.length === 0 && searchTerm && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
