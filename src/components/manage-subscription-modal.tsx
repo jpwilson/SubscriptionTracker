@@ -6,7 +6,7 @@ import { X, AlertTriangle, Calendar, Info } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useUpdateSubscription } from '@/hooks/use-subscriptions'
 import { format, addMonths, addYears, parseISO } from 'date-fns'
-import { Subscription } from '@/hooks/use-subscriptions'
+import { type Subscription } from '@/lib/api-client'
 import { useToast } from '@/components/ui/use-toast'
 
 interface ManageSubscriptionModalProps {
