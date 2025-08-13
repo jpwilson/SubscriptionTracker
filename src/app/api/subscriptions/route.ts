@@ -47,32 +47,66 @@ export async function GET(request: NextRequest) {
     }
 
     // Convert snake_case to camelCase for frontend compatibility
-    const formattedSubscriptions = subscriptions?.map(sub => ({
-      id: sub.id,
-      userId: sub.user_id,
-      name: sub.name,
-      company: sub.company,
-      product: sub.product,
-      tier: sub.tier,
-      amount: sub.amount,
-      billingCycle: sub.billing_cycle,
-      category: sub.category,
-      startDate: sub.start_date,
-      endDate: sub.end_date,
-      nextPaymentDate: sub.next_payment_date,
-      isTrial: sub.is_trial,
-      trialEndDate: sub.trial_end_date,
-      reminderDaysBefore: sub.reminder_days_before,
-      notes: sub.notes,
-      status: sub.status,
-      createdAt: sub.created_at,
-      updatedAt: sub.updated_at,
-      color: sub.color,
-      icon: sub.icon,
-      url: sub.url,
-      lastUsed: sub.last_used,
-      usageFrequency: sub.usage_frequency,
-    })) || []
+    const formattedSubscriptions = subscriptions?.map(sub => {
+      // Calculate actual next payment date (ensure it's in the future)
+      let nextPaymentDate = sub.next_payment_date
+      if (sub.status === 'active' && nextPaymentDate) {
+        const today = new Date()
+        let nextDate = new Date(nextPaymentDate)
+        
+        // If the next payment date is in the past, calculate the next future occurrence
+        while (nextDate < today) {
+          switch (sub.billing_cycle) {
+            case 'weekly':
+              nextDate.setDate(nextDate.getDate() + 7)
+              break
+            case 'monthly':
+              nextDate.setMonth(nextDate.getMonth() + 1)
+              break
+            case 'quarterly':
+              nextDate.setMonth(nextDate.getMonth() + 3)
+              break
+            case 'yearly':
+              nextDate.setFullYear(nextDate.getFullYear() + 1)
+              break
+            default:
+              break // For one-off, keep as is
+          }
+        }
+        nextPaymentDate = nextDate.toISOString()
+      }
+      
+      return {
+        id: sub.id,
+        userId: sub.user_id,
+        name: sub.name,
+        company: sub.company,
+        product: sub.product,
+        tier: sub.tier,
+        amount: sub.amount,
+        billingCycle: sub.billing_cycle,
+        category: sub.category,
+        startDate: sub.start_date,
+        endDate: sub.end_date,
+        nextPaymentDate: nextPaymentDate,
+        isTrial: sub.is_trial,
+        trialEndDate: sub.trial_end_date,
+        reminderDaysBefore: sub.reminder_days_before,
+        notes: sub.notes,
+        status: sub.status,
+        createdAt: sub.created_at,
+        updatedAt: sub.updated_at,
+        color: sub.color,
+        icon: sub.icon,
+        url: sub.url,
+        lastUsed: sub.last_used,
+        usageFrequency: sub.usage_frequency,
+        cancellationDate: sub.cancellation_date,
+        subscriptionGroupId: sub.subscription_group_id,
+        previousAmount: sub.previous_amount,
+        isReactivation: sub.is_reactivation,
+      }
+    }) || []
 
     return NextResponse.json(formattedSubscriptions)
   } catch (error) {

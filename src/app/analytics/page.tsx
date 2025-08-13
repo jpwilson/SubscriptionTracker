@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart3, LineChart, LogOut, Loader2, ChevronDown, ChevronUp } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,7 @@ import { useUserProfile } from '@/hooks/use-user-profile'
 import { useUserPreferences } from '@/hooks/use-user-preferences'
 import { formatCurrency } from '@/lib/utils'
 import { InternalHeader } from '@/components/internal-header'
+import { MobileNavigation } from '@/components/mobile-navigation'
 import { 
   BarChart, 
   Bar, 
@@ -82,11 +83,24 @@ export default function AnalyticsPage() {
   const [showCategorySection, setShowCategorySection] = useState(true)
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [showOverall, setShowOverall] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   
   const isPremium = profile?.tier === 'premium'
   const userCurrency = preferences?.currency || 'USD'
   
   const { data: analytics, isLoading } = useAnalytics(timePeriod, timeScale, selectedCategories)
+  
+  // Check if mobile on mount and window resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   const handleSignOut = async () => {
     await signOut()
@@ -126,23 +140,23 @@ export default function AnalyticsPage() {
         <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
-      <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+      <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-24 sm:pb-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-8"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8"
         >
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 mb-4 sm:mb-0">
             <InternalHeader />
-            <div className="ml-8">
-              <h1 className="text-4xl font-bold text-gradient">Analytics</h1>
-              <p className="text-muted-foreground">Track your subscription spending</p>
+            <div className="sm:ml-8">
+              <h1 className="text-2xl sm:text-4xl font-bold text-gradient">Analytics</h1>
+              <p className="text-sm sm:text-base text-muted-foreground hidden sm:block">Track your subscription spending</p>
             </div>
           </div>
           <Button
             onClick={handleSignOut}
-            className="neu-button px-3 py-2 rounded-xl border-0 text-white/70 hover:text-white transition-all duration-300"
+            className="neu-button px-3 py-2 rounded-xl border-0 text-white/70 hover:text-white transition-all duration-300 hidden sm:flex"
           >
             <LogOut className="w-5 h-5" />
           </Button>
@@ -189,12 +203,12 @@ export default function AnalyticsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row gap-4 mb-8"
+          className="flex flex-col gap-4 mb-8"
         >
           {/* Time Scale Toggle */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-muted-foreground">Time Range</label>
-            <div className="flex neu-card rounded-xl p-1 border border-white/10">
+            <label className="text-sm font-medium text-muted-foreground text-center sm:text-left">Time Range</label>
+            <div className="flex flex-wrap justify-center sm:justify-start neu-card rounded-xl p-1 border border-white/10">
               <Button
                 onClick={() => {
                   setTimeScale('3months')
@@ -204,10 +218,11 @@ export default function AnalyticsPage() {
                   }
                 }}
                 variant={timeScale === '3months' ? 'default' : 'ghost'}
-                className={timeScale === '3months' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+                className={`${timeScale === '3months' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
                 size="sm"
               >
-                3 Months
+                <span className="hidden sm:inline">3 Months</span>
+                <span className="sm:hidden">3M</span>
               </Button>
             <Button
               onClick={() => {
@@ -218,10 +233,11 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '6months' ? 'default' : 'ghost'}
-              className={timeScale === '6months' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+              className={`${timeScale === '6months' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
-              6 Months
+              <span className="hidden sm:inline">6 Months</span>
+              <span className="sm:hidden">6M</span>
             </Button>
             <Button
               onClick={() => {
@@ -232,7 +248,7 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === 'ytd' ? 'default' : 'ghost'}
-              className={timeScale === 'ytd' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+              className={`${timeScale === 'ytd' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
               YTD
@@ -246,10 +262,11 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '1year' ? 'default' : 'ghost'}
-              className={timeScale === '1year' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+              className={`${timeScale === '1year' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
-              1 Year
+              <span className="hidden sm:inline">1 Year</span>
+              <span className="sm:hidden">1Y</span>
             </Button>
             <Button
               onClick={() => {
@@ -264,10 +281,11 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '3years' ? 'default' : 'ghost'}
-              className={timeScale === '3years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+              className={`${timeScale === '3years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
-              {isPremium ? '3 Years' : '3 Years 🔒'}
+              <span className="hidden sm:inline">{isPremium ? '3 Years' : '3 Years 🔒'}</span>
+              <span className="sm:hidden">{isPremium ? '3Y' : '3Y🔒'}</span>
             </Button>
             <Button
               onClick={() => {
@@ -282,24 +300,25 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '5years' ? 'default' : 'ghost'}
-              className={timeScale === '5years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+              className={`${timeScale === '5years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
-              {isPremium ? '5 Years' : '5 Years 🔒'}
+              <span className="hidden sm:inline">{isPremium ? '5 Years' : '5 Years 🔒'}</span>
+              <span className="sm:hidden">{isPremium ? '5Y' : '5Y🔒'}</span>
             </Button>
             </div>
           </div>
 
           {/* Time Period Filter */}
           <div className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-muted-foreground">Interval</label>
-            <div className="flex neu-card rounded-xl p-1 border border-white/10">
+            <label className="text-sm font-medium text-muted-foreground text-center sm:text-left">Interval</label>
+            <div className="flex justify-center sm:justify-start neu-card rounded-xl p-1 border border-white/10">
             {getValidIntervals(timeScale).map((period) => (
               <Button
                 key={period}
                 onClick={() => setTimePeriod(period)}
                 variant={timePeriod === period ? 'default' : 'ghost'}
-                className={timePeriod === period ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'}
+                className={`${timePeriod === period ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm`}
                 size="sm"
               >
                 {period.charAt(0).toUpperCase() + period.slice(1)}
@@ -316,18 +335,18 @@ export default function AnalyticsPage() {
           transition={{ delay: 0.3 }}
           className="neu-card rounded-2xl p-6 mb-8 border border-white/10"
         >
-          <div className="flex items-start justify-between mb-6">
-            <h2 className="text-2xl font-bold text-gradient">Spending Over Time</h2>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-6 gap-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-gradient">Spending Over Time</h2>
             
             {/* Category Filter */}
             {categoryData.length > 0 && (
               <div className="flex flex-col gap-2">
-                <p className="text-sm text-muted-foreground font-medium">Filter by Category</p>
-                <div className="flex flex-wrap gap-2 max-w-sm">
+                <p className="text-xs sm:text-sm text-muted-foreground font-medium">Filter by Category</p>
+                <div className="flex flex-wrap gap-2 max-w-full sm:max-w-sm">
                   {/* Overall button */}
                   <button
                     onClick={() => setShowOverall(!showOverall)}
-                    className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    className={`px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
                       showOverall
                         ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                         : 'neu-button text-white/70 hover:text-white'
@@ -347,7 +366,7 @@ export default function AnalyticsPage() {
                             : [...prev, cat.category]
                         )
                       }}
-                      className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                      className={`px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
                         selectedCategories.includes(cat.category)
                           ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
                           : 'neu-button text-white/70 hover:text-white'
@@ -362,7 +381,7 @@ export default function AnalyticsPage() {
                         setSelectedCategories([])
                         setShowOverall(true)
                       }}
-                      className="px-3 py-1 rounded-lg text-sm font-medium text-purple-400 hover:text-purple-300 transition-all duration-200"
+                      className="px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium text-purple-400 hover:text-purple-300 transition-all duration-200"
                     >
                       Clear all
                     </button>
@@ -466,7 +485,7 @@ export default function AnalyticsPage() {
             className="flex items-center justify-between mb-6 cursor-pointer"
             onClick={() => setShowCategorySection(!showCategorySection)}
           >
-            <h2 className="text-2xl font-bold text-gradient">Category Analysis</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-gradient">Category Analysis</h2>
             <Button variant="ghost" size="icon" className="text-purple-400">
               {showCategorySection ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </Button>
@@ -476,8 +495,8 @@ export default function AnalyticsPage() {
             <>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Pie Chart */}
-                <div className="neu-card rounded-2xl p-6 border border-white/10">
-                  <h2 className="text-2xl font-bold text-gradient mb-6">Category Distribution</h2>
+                <div className="neu-card rounded-2xl p-4 sm:p-6 border border-white/10">
+                  <h2 className="text-lg sm:text-2xl font-bold text-gradient mb-4 sm:mb-6">Category Distribution</h2>
                   <div className="h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -486,10 +505,38 @@ export default function AnalyticsPage() {
                           cx="50%"
                           cy="50%"
                           labelLine={false}
-                          outerRadius={100}
+                          outerRadius={80}
                           fill="#8884d8"
                           dataKey="amount"
-                          label={({ category, percent }) => `${category} ${(percent * 100).toFixed(0)}%`}
+                          label={(props) => {
+                            // Only show labels on desktop
+                            const RADIAN = Math.PI / 180
+                            const { cx, cy, midAngle, innerRadius, outerRadius, percent, index } = props
+                            
+                            if (isMobile) {
+                              // On mobile, only show percentage for slices > 15%
+                              if (percent < 0.15) return null
+                              const radius = innerRadius + (outerRadius - innerRadius) * 0.5
+                              const x = cx + radius * Math.cos(-midAngle * RADIAN)
+                              const y = cy + radius * Math.sin(-midAngle * RADIAN)
+                              
+                              return (
+                                <text 
+                                  x={x} 
+                                  y={y} 
+                                  fill="white" 
+                                  textAnchor={x > cx ? 'start' : 'end'} 
+                                  dominantBaseline="central"
+                                  className="text-xs font-bold"
+                                >
+                                  {`${(percent * 100).toFixed(0)}%`}
+                                </text>
+                              )
+                            }
+                            
+                            // Desktop: show full labels
+                            return `${categoryData[index].category} ${(percent * 100).toFixed(0)}%`
+                          }}
                         >
                           {categoryData.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -497,20 +544,47 @@ export default function AnalyticsPage() {
                         </Pie>
                         <Tooltip 
                           contentStyle={{ 
-                            backgroundColor: '#1f2937', 
-                            border: '1px solid #374151',
-                            borderRadius: '8px'
+                            backgroundColor: 'rgba(0,0,0,0.9)', 
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            borderRadius: '8px',
+                            backdropFilter: 'blur(12px)'
                           }}
-                          formatter={(value: number) => formatCurrency(value, userCurrency)}
+                          formatter={(value: number, name: string) => [
+                            formatCurrency(value, userCurrency),
+                            name
+                          ]}
                         />
+                        {/* Legend only on desktop */}
+                        {!isMobile && (
+                          <Legend 
+                            wrapperStyle={{
+                              paddingTop: '20px',
+                            }}
+                          />
+                        )}
                       </PieChart>
                     </ResponsiveContainer>
+                  </div>
+                  {/* Mobile Legend */}
+                  <div className="sm:hidden mt-4 grid grid-cols-2 gap-2">
+                    {categoryData.slice(0, 6).map((cat, index) => (
+                      <div key={cat.category} className="flex items-center gap-2">
+                        <div 
+                          className="w-3 h-3 rounded-full" 
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        />
+                        <span className="text-xs text-white/80">{cat.category}</span>
+                      </div>
+                    ))}
+                    {categoryData.length > 6 && (
+                      <div className="col-span-2 text-xs text-gray-500 text-center">+{categoryData.length - 6} more</div>
+                    )}
                   </div>
                 </div>
 
                 {/* Category List */}
-                <div className="neu-card rounded-2xl p-6 border border-white/10">
-                  <h2 className="text-2xl font-bold text-gradient mb-6">Monthly Spending by Category</h2>
+                <div className="neu-card rounded-2xl p-4 sm:p-6 border border-white/10">
+                  <h2 className="text-lg sm:text-2xl font-bold text-gradient mb-4 sm:mb-6">Monthly Spending by Category</h2>
                   <div className="space-y-4">
                     {categoryData
                       .sort((a, b) => b.amount - a.amount)
@@ -543,8 +617,9 @@ export default function AnalyticsPage() {
               {/* Category Bar Chart */}
               {categoryData.length > 0 && (
                 <div className="mt-8">
-                  <h3 className="text-xl font-bold text-gradient mb-4">Category Comparison</h3>
-                  <div className="h-[300px]">
+                  <h3 className="text-lg sm:text-xl font-bold text-gradient mb-4">Category Comparison</h3>
+                  {/* Desktop: Regular Bar Chart */}
+                  <div className="hidden sm:block h-[300px]">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={categoryData} layout="horizontal">
                         <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
@@ -576,12 +651,64 @@ export default function AnalyticsPage() {
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
+                  
+                  {/* Mobile: Horizontal Scrollable Bar Chart */}
+                  <div className="sm:hidden">
+                    <div className="overflow-x-auto -mx-4 px-4">
+                      <div className="h-[250px]" style={{ width: Math.max(400, categoryData.length * 60) }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart data={categoryData} margin={{ top: 20, right: 20, bottom: 60, left: 20 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                            <XAxis 
+                              dataKey="category"
+                              stroke="rgba(255,255,255,0.5)"
+                              tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 10 }}
+                              angle={-45}
+                              textAnchor="end"
+                              height={80}
+                            />
+                            <YAxis 
+                              stroke="rgba(255,255,255,0.5)"
+                              tick={{ fill: 'rgba(255,255,255,0.7)', fontSize: 10 }}
+                              tickFormatter={(value) => value >= 1000 ? `$${(value/1000).toFixed(0)}k` : `$${value}`}
+                              width={45}
+                            />
+                            <Tooltip 
+                              contentStyle={{ 
+                                backgroundColor: 'rgba(0,0,0,0.95)', 
+                                border: '1px solid rgba(255,255,255,0.2)',
+                                borderRadius: '12px',
+                                backdropFilter: 'blur(12px)',
+                                fontSize: '12px'
+                              }}
+                              labelStyle={{ color: '#e5e7eb' }}
+                              formatter={(value: number) => formatCurrency(value, userCurrency)}
+                            />
+                            <Bar dataKey="amount" radius={[8, 8, 0, 0]}>
+                              {categoryData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                              ))}
+                            </Bar>
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
+                    {categoryData.length > 6 && (
+                      <p className="text-xs text-gray-400 text-center mt-2">← Swipe to see all categories →</p>
+                    )}
+                  </div>
                 </div>
               )}
             </>
           )}
         </motion.div>
       </div>
+      
+      {/* Mobile Navigation */}
+      <MobileNavigation 
+        onAddClick={() => router.push('/dashboard')}
+        onCategoriesClick={() => router.push('/dashboard')}
+      />
     </div>
   )
 }

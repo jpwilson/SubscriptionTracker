@@ -38,9 +38,13 @@ export interface Subscription {
 export interface SubscriptionStats {
   monthlyTotal: number
   yearlyTotal: number
-  upcomingRenewals: number
-  activeTrials: number
   totalSubscriptions: number
+  monthlyCount: number
+  yearlyCount: number
+  weeklyCount: number
+  quarterlyCount: number
+  annualRenewalsNext14Days: number
+  activeTrials: number
 }
 
 async function getAuthHeaders() {

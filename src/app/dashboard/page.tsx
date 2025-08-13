@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, Loader2, Tags, BarChart3, Lightbulb, User } from 'lucide-react'
+import { Plus, TrendingUp, Calendar, AlertTriangle, Sparkles, Loader2, Tags, BarChart3, Lightbulb, User, CreditCard, DollarSign, ListChecks, Gift } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
@@ -55,7 +55,12 @@ function DashboardContent() {
   const displayStats = stats || {
     monthlyTotal: 0,
     yearlyTotal: 0,
-    upcomingRenewals: 0,
+    totalSubscriptions: 0,
+    monthlyCount: 0,
+    yearlyCount: 0,
+    weeklyCount: 0,
+    quarterlyCount: 0,
+    annualRenewalsNext14Days: 0,
     activeTrials: 0,
   }
 
@@ -142,31 +147,146 @@ function DashboardContent() {
         {/* Welcome Banner for new users */}
         <WelcomeBanner />
 
-        {/* Stats Grid */}
-        <div className="stats-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Mobile Stats Section - Compact View */}
+        <div className="block sm:hidden mb-6">
+          {/* Subscription Count - Prominent on Mobile */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-4"
+          >
+            <p className="text-5xl font-bold text-gradient">
+              {statsLoading ? '-' : displayStats.totalSubscriptions}
+            </p>
+            <p className="text-muted-foreground text-sm">Active Subscriptions</p>
+          </motion.div>
+          
+          {/* Compact Stats Grid for Mobile */}
+          <div className="grid grid-cols-2 gap-3">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="neu-card rounded-xl p-4 border border-white/10"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <Calendar className="w-4 h-4 text-blue-400" />
+                <span className="text-xs text-muted-foreground">Monthly</span>
+              </div>
+              <p className="text-lg font-bold text-white">
+                {statsLoading ? '...' : formatCurrency(displayStats.monthlyTotal, preferences?.currency || 'USD')}
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.15 }}
+              className="neu-card rounded-xl p-4 border border-white/10"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <DollarSign className="w-4 h-4 text-green-400" />
+                <span className="text-xs text-muted-foreground">Yearly</span>
+              </div>
+              <p className="text-lg font-bold text-white">
+                {statsLoading ? '...' : formatCurrency(displayStats.yearlyTotal, preferences?.currency || 'USD')}
+              </p>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="neu-card rounded-xl p-4 border border-white/10"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <ListChecks className="w-4 h-4 text-yellow-400" />
+                    <span className="text-xs text-muted-foreground">Breakdown</span>
+                  </div>
+                  <div className="text-sm font-medium text-white">
+                    {statsLoading ? '...' : (
+                      <>
+                        {displayStats.yearlyCount > 0 && `${displayStats.yearlyCount} Annual`}
+                        {displayStats.yearlyCount > 0 && displayStats.monthlyCount > 0 && ', '}
+                        {displayStats.monthlyCount > 0 && `${displayStats.monthlyCount} Monthly`}
+                      </>
+                    )}
+                  </div>
+                </div>
+                {displayStats.annualRenewalsNext14Days > 0 && (
+                  <div className="text-xs font-bold text-yellow-400">
+                    ⚠️ {displayStats.annualRenewalsNext14Days}
+                  </div>
+                )}
+              </div>
+            </motion.div>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.25 }}
+              className="neu-card rounded-xl p-4 border border-white/10"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <Gift className="w-4 h-4 text-purple-400" />
+                <span className="text-xs text-muted-foreground">Trials</span>
+              </div>
+              <div className="text-xs">
+                <div className="text-gray-400">Free: 0</div>
+                <div className="text-gray-400">Discounted: 0</div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Desktop/Tablet Stats Grid */}
+        <div className="stats-grid hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
             {
               title: 'Monthly Cost',
               value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.monthlyTotal, preferences?.currency || 'USD'),
-              icon: <Calendar className="w-5 h-5" />,
+              icon: <CreditCard className="w-5 h-5" />,
               color: 'from-blue-500 to-blue-600',
             },
             {
               title: 'Annual Cost',
               value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : formatCurrency(displayStats.yearlyTotal, preferences?.currency || 'USD'),
-              icon: <TrendingUp className="w-5 h-5" />,
+              icon: <DollarSign className="w-5 h-5" />,
               color: 'from-green-500 to-green-600',
             },
             {
-              title: 'Upcoming Renewals',
-              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : displayStats.upcomingRenewals,
-              icon: <AlertTriangle className="w-5 h-5" />,
+              title: 'Subscription Breakdown',
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                <div className="space-y-1">
+                  <div className="text-3xl font-bold">{displayStats.totalSubscriptions}</div>
+                  <div className="text-sm text-muted-foreground">
+                    {displayStats.yearlyCount > 0 && `${displayStats.yearlyCount} Annual`}
+                    {displayStats.yearlyCount > 0 && displayStats.monthlyCount > 0 && ', '}
+                    {displayStats.monthlyCount > 0 && `${displayStats.monthlyCount} Monthly`}
+                    {displayStats.weeklyCount > 0 && `, ${displayStats.weeklyCount} Weekly`}
+                    {displayStats.quarterlyCount > 0 && `, ${displayStats.quarterlyCount} Quarterly`}
+                  </div>
+                  {displayStats.annualRenewalsNext14Days > 0 && (
+                    <div className="text-sm font-bold text-yellow-400">
+                      ⚠️ {displayStats.annualRenewalsNext14Days} annual renewal{displayStats.annualRenewalsNext14Days > 1 ? 's' : ''} in next 14 days
+                    </div>
+                  )}
+                </div>
+              ),
+              icon: <ListChecks className="w-5 h-5" />,
               color: 'from-yellow-500 to-yellow-600',
             },
             {
-              title: 'Active Trials',
-              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : displayStats.activeTrials,
-              icon: <Sparkles className="w-5 h-5" />,
+              title: 'Trials',
+              value: statsLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : (
+                <div className="space-y-0.5">
+                  <div className="text-sm text-muted-foreground">Free: 0</div>
+                  <div className="text-sm text-muted-foreground">Discounted: 0</div>
+                </div>
+              ),
+              icon: <Gift className="w-5 h-5" />,
               color: 'from-purple-500 to-purple-600',
             },
           ].map((stat, i) => (
@@ -187,7 +307,7 @@ function DashboardContent() {
                     <span className="relative text-white">{stat.icon}</span>
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{stat.value}</p>
+                <div className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{stat.value}</div>
               </div>
             </motion.div>
           ))}
@@ -195,7 +315,11 @@ function DashboardContent() {
 
         {/* Subscriptions List */}
         <div className="subscription-list">
-          <SubscriptionList categoryFilter={categoryFilter} userCurrency={preferences?.currency} />
+          <SubscriptionList 
+            categoryFilter={categoryFilter} 
+            userCurrency={preferences?.currency}
+            totalSubscriptions={displayStats.totalSubscriptions}
+          />
         </div>
       </div>
 

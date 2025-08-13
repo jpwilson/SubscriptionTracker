@@ -12,6 +12,7 @@ import { format, differenceInDays, parseISO } from 'date-fns'
 import { AddSubscriptionModal } from '@/components/add-subscription-modal'
 import { DeleteSubscriptionModal } from '@/components/delete-subscription-modal'
 import { CalendarView } from '@/components/calendar-view'
+import { SubscriptionSections } from '@/components/subscription-sections'
 
 type SortOption = 'name' | 'price' | 'nextPayment' | 'category' | 'billingCycle'
 type SortDirection = 'asc' | 'desc'
@@ -20,6 +21,7 @@ type FilterOption = 'all' | 'active' | 'cancelled' | 'monthly' | 'yearly'
 interface SubscriptionListProps {
   categoryFilter?: string
   userCurrency?: string
+  totalSubscriptions?: number
 }
 
 // Define the demo subscriptions we're looking for
@@ -34,7 +36,7 @@ const DEMO_SUBSCRIPTIONS = [
   { name: 'Replit Core', amount: 180.00 },
 ]
 
-export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: SubscriptionListProps) {
+export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSubscriptions }: SubscriptionListProps) {
   const { data: subscriptions, isLoading } = useSubscriptions()
   const { data: categories = [] } = useCategories()
   const deleteSubscription = useDeleteSubscription()
@@ -117,18 +119,17 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
     }
     
     // Filter by status or billing cycle
+    // Only show truly active subscriptions in main list (cancelled ones go to separate sections)
     filtered = filtered.filter(sub => {
-      const isActive = sub.status === 'active' || (sub.status !== 'active' && sub.endDate && new Date(sub.endDate) > new Date())
-      
       switch (filterBy) {
         case 'active':
-          return isActive
+          return sub.status === 'active' // Only truly active, not cancelled with remaining access
         case 'cancelled':
-          return !isActive || (sub.status !== 'active' && sub.endDate && new Date(sub.endDate) <= new Date())
+          return sub.status === 'cancelled' || sub.status === 'deleted'
         case 'monthly':
-          return sub.billingCycle === 'monthly' && isActive
+          return sub.billingCycle === 'monthly' && sub.status === 'active'
         case 'yearly':
-          return sub.billingCycle === 'yearly' && isActive
+          return sub.billingCycle === 'yearly' && sub.status === 'active'
         case 'all':
         default:
           return true
@@ -137,6 +138,22 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
     
     // Sort subscriptions
     const sorted = [...filtered].sort((a, b) => {
+      // First, separate active from cancelled
+      const aIsActive = a.status === 'active'
+      const bIsActive = b.status === 'active'
+      
+      // Always put cancelled subscriptions at the bottom
+      if (aIsActive && !bIsActive) return -1
+      if (!aIsActive && bIsActive) return 1
+      
+      // For cancelled subscriptions, sort by end date if available
+      if (!aIsActive && !bIsActive) {
+        if (a.endDate && b.endDate) {
+          return new Date(b.endDate).getTime() - new Date(a.endDate).getTime() // Most recent first
+        }
+      }
+      
+      // Normal sorting for active subscriptions
       let result = 0
       
       switch (sortBy) {
@@ -147,7 +164,12 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
           result = getMonthlyAmount(a) - getMonthlyAmount(b)
           break
         case 'nextPayment':
-          result = new Date(a.nextPaymentDate).getTime() - new Date(b.nextPaymentDate).getTime()
+          // For cancelled subscriptions, they don't have meaningful next payment dates
+          if (!aIsActive || !bIsActive) {
+            result = 0
+          } else {
+            result = new Date(a.nextPaymentDate).getTime() - new Date(b.nextPaymentDate).getTime()
+          }
           break
         case 'category':
           result = a.category.localeCompare(b.category)
@@ -233,31 +255,33 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-        <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-bold text-gradient">Your Subscriptions {subscriptions && subscriptions.length > 0 && `(${subscriptions.length})`}</h2>
-          {/* View Toggle */}
-          <div className="flex items-center gap-1 p-1 bg-white/5 rounded-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+          <h2 className="text-2xl font-bold text-gradient">
+            Your Subscriptions
+          </h2>
+          {/* View Toggle - More prominent */}
+          <div className="flex items-center gap-1 p-1.5 bg-white/5 rounded-xl border border-purple-500/20 shadow-lg shadow-purple-500/10">
             <button
               onClick={() => setViewType('list')}
-              className={`px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all ${
+              className={`px-3.5 py-2 rounded-lg flex items-center gap-2 transition-all font-medium ${
                 viewType === 'list' 
-                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border border-purple-400/40 shadow-md' 
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
               }`}
             >
               <List className="w-4 h-4" />
-              <span className="hidden sm:inline text-sm">List</span>
+              <span className="text-sm">List</span>
             </button>
             <button
               onClick={() => setViewType('calendar')}
-              className={`px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all ${
+              className={`px-3.5 py-2 rounded-lg flex items-center gap-2 transition-all font-medium ${
                 viewType === 'calendar' 
-                  ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30' 
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border border-purple-400/40 shadow-md' 
+                  : 'text-gray-400 hover:text-white hover:bg-white/10'
               }`}
             >
               <Calendar className="w-4 h-4" />
-              <span className="hidden sm:inline text-sm">Calendar</span>
+              <span className="text-sm">Calendar</span>
             </button>
           </div>
         </div>
@@ -585,6 +609,12 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD' }: Subsc
           <p className="text-muted-foreground">No subscriptions found matching &ldquo;{searchTerm}&rdquo;</p>
         </motion.div>
       )}
+      
+      {/* Cancelled and Past Subscriptions Sections */}
+      <SubscriptionSections 
+        subscriptions={subscriptions || []} 
+        userCurrency={userCurrency}
+      />
       
       {/* Add Subscription Modal */}
       {showAddModal && (

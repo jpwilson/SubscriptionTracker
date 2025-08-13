@@ -52,32 +52,45 @@ export async function GET(request: NextRequest) {
     let weeklyTotal = 0
     let quarterlyTotal = 0
     let activeTrials = 0
-    let upcomingRenewals = 0
+    
+    // Count subscriptions by billing cycle
+    let monthlyCount = 0
+    let yearlyCount = 0
+    let weeklyCount = 0
+    let quarterlyCount = 0
+    let annualRenewalsNext14Days = 0
     
     const today = new Date()
-    const thirtyDaysFromNow = new Date()
-    thirtyDaysFromNow.setDate(today.getDate() + 30)
+    const fourteenDaysFromNow = new Date()
+    fourteenDaysFromNow.setDate(today.getDate() + 14)
     
     subscriptions?.forEach(sub => {
       if (sub.is_trial) activeTrials++
       
-      const nextPaymentDate = new Date(sub.next_payment_date)
-      if (nextPaymentDate > today && nextPaymentDate <= thirtyDaysFromNow) {
-        upcomingRenewals++
+      // Check for annual renewals in next 14 days
+      if (sub.billing_cycle === 'yearly') {
+        const nextPaymentDate = new Date(sub.next_payment_date)
+        if (nextPaymentDate > today && nextPaymentDate <= fourteenDaysFromNow) {
+          annualRenewalsNext14Days++
+        }
       }
       
       switch (sub.billing_cycle) {
         case 'monthly':
           monthlyTotal += sub.amount
+          monthlyCount++
           break
         case 'yearly':
           yearlyTotal += sub.amount
+          yearlyCount++
           break
         case 'weekly':
           weeklyTotal += sub.amount
+          weeklyCount++
           break
         case 'quarterly':
           quarterlyTotal += sub.amount
+          quarterlyCount++
           break
       }
     })
@@ -89,9 +102,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       monthlyTotal: totalMonthly,
       yearlyTotal: totalAnnual,
-      upcomingRenewals,
-      activeTrials,
       totalSubscriptions: subscriptions?.length || 0,
+      monthlyCount,
+      yearlyCount,
+      weeklyCount,
+      quarterlyCount,
+      annualRenewalsNext14Days,
+      activeTrials,
     })
   } catch (error) {
     console.error('Error calculating stats:', error)
