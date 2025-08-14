@@ -631,7 +631,7 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2024 SubTracker. All rights reserved.</p>
+          <p>&copy; 2025 SubTracker. All rights reserved.</p>
         </div>
       </footer>
     </div>
