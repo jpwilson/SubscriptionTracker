@@ -2,11 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, Plus, Trash2, Loader2, Palette, Tags, Sparkles, Lock } from 'lucide-react'
+import { X, Plus, Trash2, Loader2, Palette, Tags, Sparkles, Lock, RefreshCw } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useCategories, useCreateCategory, useDeleteCategory, type Category } from '@/hooks/use-categories'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { isPremiumUser } from '@/lib/feature-gates'
+import { supabase } from '@/lib/supabase'
+import { useQueryClient } from '@tanstack/react-query'
+import { useToast } from '@/components/ui/use-toast'
 
 interface ManageCategoriesModalProps {
   onClose: () => void
@@ -32,8 +35,11 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
   const { data: categories = [], isLoading } = useCategories()
   const createCategory = useCreateCategory()
   const deleteCategory = useDeleteCategory()
+  const queryClient = useQueryClient()
+  const { toast } = useToast()
   
   const [showAddForm, setShowAddForm] = useState(false)
+  const [isResetting, setIsResetting] = useState(false)
   const [newCategory, setNewCategory] = useState({
     name: '',
     color: COLOR_OPTIONS[0],
@@ -66,6 +72,57 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
   const handleDeleteCategory = async (categoryId: string) => {
     if (confirm('Are you sure you want to delete this category? Any subscriptions using this category will be moved to "Other".')) {
       await deleteCategory.mutateAsync(categoryId)
+    }
+  }
+
+  const handleResetCategories = async () => {
+    if (!confirm('This will reset all categories to the default set. Your custom categories will be deleted. Continue?')) {
+      return
+    }
+    
+    try {
+      setIsResetting(true)
+      
+      // Get auth token
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) {
+        toast({
+          title: 'Error',
+          description: 'You must be signed in to reset categories',
+          variant: 'destructive',
+        })
+        return
+      }
+
+      // Call the reset API
+      const response = await fetch('/api/categories/reset', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.access_token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to reset categories')
+      }
+
+      // Refresh the categories
+      await queryClient.invalidateQueries({ queryKey: ['categories'] })
+      
+      toast({
+        title: 'Success',
+        description: 'Categories reset! Now includes SaaS Products, Utilities, Housing, and Auto & Transport.',
+      })
+    } catch (error) {
+      console.error('Error resetting categories:', error)
+      toast({
+        title: 'Error',
+        description: 'Failed to reset categories',
+        variant: 'destructive',
+      })
+    } finally {
+      setIsResetting(false)
     }
   }
 
