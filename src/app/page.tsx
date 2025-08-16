@@ -202,7 +202,7 @@ export default function LandingPage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full neu-card border border-purple-500/20 mb-6">
               <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-sm text-purple-300">Save 30% on average with smart tracking</span>
+              <span className="text-sm text-purple-300">Save 30% on average • Bank-level security</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
@@ -452,10 +452,6 @@ export default function LandingPage() {
                   <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
                   <span>Basic analytics</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
-                  <span>3 insights</span>
-                </li>
               </ul>
               <Link href="/login">
                 <Button className="w-full neu-button text-sm">Start Free</Button>
@@ -496,6 +492,10 @@ export default function LandingPage() {
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-purple-500" />
                   <span className="font-medium">Advanced analytics</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="w-5 h-5 text-purple-500" />
+                  <span className="font-medium">Auto import</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-purple-500" />
@@ -631,7 +631,8 @@ export default function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. All rights reserved.</p>
+          <p>&copy; 2025 SubTracker. Privacy-first subscription tracking.</p>
+          <p className="text-xs mt-2 text-gray-500">Your spending data never leaves your control</p>
         </div>
       </footer>
     </div>
