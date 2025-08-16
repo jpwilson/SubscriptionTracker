@@ -93,7 +93,7 @@ function DashboardContent() {
                 Welcome back, {user?.email}
               </p>
               <p className="text-xs text-gray-500 hidden sm:block mt-1">
-                🔒 Your data is encrypted and secure
+                🔐 Encrypted • No third-party sharing
               </p>
             </div>
           </div>

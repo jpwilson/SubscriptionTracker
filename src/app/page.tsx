@@ -292,7 +292,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-tight overflow-visible">
               Everything You Need to Save Money
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
@@ -417,7 +417,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-tight overflow-visible">
               Simple, Transparent Pricing
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
@@ -498,7 +498,7 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-purple-500" />
-                  <span className="font-medium">Auto import</span>
+                  <span className="font-medium">Auto import subscriptions</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-purple-500" />
