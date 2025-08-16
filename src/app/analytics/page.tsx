@@ -152,6 +152,7 @@ export default function AnalyticsPage() {
             <div className="sm:ml-8">
               <h1 className="text-2xl sm:text-4xl font-bold text-gradient">Analytics</h1>
               <p className="text-sm sm:text-base text-muted-foreground hidden sm:block">Track your subscription spending</p>
+              <p className="text-xs text-gray-500 hidden sm:block">📊 Analytics processed locally • No data sharing</p>
             </div>
           </div>
           <Button

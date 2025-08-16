@@ -92,6 +92,9 @@ function DashboardContent() {
               <p className="text-sm sm:text-base text-muted-foreground hidden sm:flex items-center gap-2">
                 Welcome back, {user?.email}
               </p>
+              <p className="text-xs text-gray-500 hidden sm:block mt-1">
+                🔒 Your data is encrypted and secure
+              </p>
             </div>
           </div>
           

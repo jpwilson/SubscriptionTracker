@@ -298,6 +298,9 @@ export default function LandingPage() {
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
               Powerful features designed to help you track, manage, and optimize your subscriptions
             </p>
+            <p className="text-sm text-gray-500 mt-2">
+              🔐 No third-party access • Your financial insights stay private
+            </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
