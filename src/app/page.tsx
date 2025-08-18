@@ -292,7 +292,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-tight overflow-visible">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-relaxed py-2">
               Everything You Need to Save Money
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
@@ -417,7 +417,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-tight overflow-visible">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-relaxed py-2">
               Simple, Transparent Pricing
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
@@ -607,7 +607,7 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="neu-card rounded-3xl p-12 text-center border border-purple-500/20"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-relaxed py-2">
               Ready to Save Money?
             </h2>
             <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
