@@ -9,7 +9,7 @@ import { format, addMonths, addYears, parseISO } from 'date-fns'
 import { type Subscription } from '@/lib/api-client'
 import { useToast } from '@/components/ui/use-toast'
 import { useQueryClient } from '@tanstack/react-query'
-import { createClient } from '@supabase/supabase-js'
+import { supabase } from '@/lib/supabase'
 
 interface ManageSubscriptionModalProps {
   subscription: Subscription
@@ -20,10 +20,6 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
   const updateSubscription = useUpdateSubscription()
   const { toast } = useToast()
   const queryClient = useQueryClient()
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
   const [selectedAction, setSelectedAction] = useState<'cancel' | 'delete' | 'reactivate' | null>(null)
   const [endDate, setEndDate] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
