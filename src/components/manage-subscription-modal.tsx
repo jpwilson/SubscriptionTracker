@@ -118,21 +118,19 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
         throw new Error('Failed to delete subscription')
       }
       
+      // Store the success message in sessionStorage to show after navigation
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('deletionSuccess', JSON.stringify({
+          title: "Subscription deleted",
+          description: `${subscriptionName} has been permanently removed`
+        }))
+      }
+      
       // Invalidate queries to refresh the list
       await queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
       
-      // Navigate to dashboard first, then show success toast
+      // Navigate to dashboard
       router.push('/dashboard')
-      
-      // Show success toast after navigation
-      setTimeout(() => {
-        toast({
-          title: "Subscription deleted",
-          description: `${subscriptionName} has been permanently removed`
-        })
-      }, 100)
-      
-      onClose()
     } catch (error) {
       console.error('Error deleting subscription:', error)
       toast({

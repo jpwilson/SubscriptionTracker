@@ -16,6 +16,7 @@ import { DemoDataInitializer } from '@/components/demo-data'
 import { MobileNavigation } from '@/components/mobile-navigation'
 import { WelcomeBanner } from '@/components/welcome-banner'
 import { useUserPreferences } from '@/hooks/use-user-preferences'
+import { useToast } from '@/components/ui/use-toast'
 
 export const dynamic = 'force-dynamic'
 
@@ -26,11 +27,26 @@ function DashboardContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const categoryFilter = searchParams.get('category') || undefined
+  const { toast } = useToast()
   
   // Use the new hook for stats
   const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
   const { data: preferences } = useUserPreferences()
 
+  // Check for deletion success message
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const deletionSuccess = sessionStorage.getItem('deletionSuccess')
+      if (deletionSuccess) {
+        const message = JSON.parse(deletionSuccess)
+        toast({
+          title: message.title,
+          description: message.description,
+        })
+        sessionStorage.removeItem('deletionSuccess')
+      }
+    }
+  }, [toast])
 
   if (!user) {
     return (
