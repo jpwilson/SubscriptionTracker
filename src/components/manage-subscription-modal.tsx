@@ -8,6 +8,8 @@ import { useUpdateSubscription } from '@/hooks/use-subscriptions'
 import { format, addMonths, addYears, parseISO } from 'date-fns'
 import { type Subscription } from '@/lib/api-client'
 import { useToast } from '@/components/ui/use-toast'
+import { useQueryClient } from '@tanstack/react-query'
+import { createClient } from '@supabase/supabase-js'
 
 interface ManageSubscriptionModalProps {
   subscription: Subscription
@@ -17,12 +19,17 @@ interface ManageSubscriptionModalProps {
 export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscriptionModalProps) {
   const updateSubscription = useUpdateSubscription()
   const { toast } = useToast()
+  const queryClient = useQueryClient()
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
   const [selectedAction, setSelectedAction] = useState<'cancel' | 'delete' | 'reactivate' | null>(null)
   const [endDate, setEndDate] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
   
   // Check if subscription is already cancelled
-  const isAlreadyCancelled = subscription.status === 'cancelled' || subscription.status === 'deleted'
+  const isAlreadyCancelled = subscription.status === 'cancelled'
 
   // Calculate suggested end date based on billing cycle
   const getSuggestedEndDate = () => {
@@ -100,19 +107,25 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
 
     setIsProcessing(true)
     try {
-      // For now, we'll mark it as deleted by setting a specific status
-      // In a real implementation, you might want to soft-delete or actually delete
-      await updateSubscription.mutateAsync({
-        id: subscription.id,
-        updates: {
-          status: 'deleted',
-          endDate: new Date().toISOString()
-        }
+      // Actually delete the subscription from the database
+      const response = await fetch(`/api/subscriptions/${subscription.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${await supabase.auth.getSession().then(s => s.data.session?.access_token)}`,
+        },
       })
+
+      if (!response.ok) {
+        throw new Error('Failed to delete subscription')
+      }
+
       toast({
         title: "Subscription deleted",
         description: "The subscription has been permanently removed"
       })
+      
+      // Invalidate queries to refresh the list
+      await queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
       onClose()
     } catch (error) {
       console.error('Error deleting subscription:', error)

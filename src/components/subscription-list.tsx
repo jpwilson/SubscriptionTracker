@@ -125,7 +125,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
         case 'active':
           return sub.status === 'active' // Only truly active, not cancelled with remaining access
         case 'cancelled':
-          return sub.status === 'cancelled' || sub.status === 'deleted'
+          return sub.status === 'cancelled'
         case 'monthly':
           return sub.billingCycle === 'monthly' && sub.status === 'active'
         case 'yearly':

@@ -25,7 +25,7 @@ export function SubscriptionSections({ subscriptions, userCurrency = 'USD' }: Su
   )
   
   const pastSubscriptions = subscriptions.filter(sub => 
-    (sub.status === 'cancelled' || sub.status === 'deleted') && 
+    sub.status === 'cancelled' && 
     (!sub.endDate || new Date(sub.endDate) <= new Date())
   )
   
