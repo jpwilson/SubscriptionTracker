@@ -10,6 +10,7 @@ import { type Subscription } from '@/lib/api-client'
 import { useToast } from '@/components/ui/use-toast'
 import { useQueryClient } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
+import { useRouter } from 'next/navigation'
 
 interface ManageSubscriptionModalProps {
   subscription: Subscription
@@ -20,6 +21,7 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
   const updateSubscription = useUpdateSubscription()
   const { toast } = useToast()
   const queryClient = useQueryClient()
+  const router = useRouter()
   const [selectedAction, setSelectedAction] = useState<'cancel' | 'delete' | 'reactivate' | null>(null)
   const [endDate, setEndDate] = useState('')
   const [isProcessing, setIsProcessing] = useState(false)
@@ -97,11 +99,12 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
   }
 
   const handleDelete = async () => {
-    if (!confirm('This will permanently delete all history for this subscription. Are you sure?')) {
-      return
-    }
-
+    // The delete confirmation is handled by the modal UI itself (selectedAction === 'delete')
+    // No need for browser confirm dialog
+    
     setIsProcessing(true)
+    const subscriptionName = subscription.name
+    
     try {
       // Actually delete the subscription from the database
       const response = await fetch(`/api/subscriptions/${subscription.id}`, {
@@ -114,14 +117,21 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
       if (!response.ok) {
         throw new Error('Failed to delete subscription')
       }
-
-      toast({
-        title: "Subscription deleted",
-        description: "The subscription has been permanently removed"
-      })
       
       // Invalidate queries to refresh the list
       await queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
+      
+      // Navigate to dashboard first, then show success toast
+      router.push('/dashboard')
+      
+      // Show success toast after navigation
+      setTimeout(() => {
+        toast({
+          title: "Subscription deleted",
+          description: `${subscriptionName} has been permanently removed`
+        })
+      }, 100)
+      
       onClose()
     } catch (error) {
       console.error('Error deleting subscription:', error)
@@ -130,7 +140,6 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
         description: "Please try again or contact support",
         variant: "destructive"
       })
-    } finally {
       setIsProcessing(false)
     }
   }
