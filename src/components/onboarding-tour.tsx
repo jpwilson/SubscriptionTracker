@@ -50,8 +50,9 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: 'body',
       content: (
         <div className="text-center">
-          <h2 className="text-xl font-bold mb-2">Welcome to SubTracker! 🎉</h2>
-          <p>Let me show you around your new subscription management tool.</p>
+          <h2 className="text-xl font-bold mb-2">Welcome to SubTracker! 💰</h2>
+          <p>Start saving money by taking control of your subscriptions.</p>
+          <p className="text-sm text-purple-400 mt-2">The average person saves $273/month!</p>
         </div>
       ),
       placement: 'center',
@@ -61,13 +62,13 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: '.stats-grid',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Your Financial Overview</h3>
-          <p>These cards show your subscription costs at a glance:</p>
+          <h3 className="font-bold mb-2">Your Money Dashboard</h3>
+          <p>See exactly where your money goes each month:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
             <li><strong>Monthly Cost</strong>: Total monthly spending</li>
-            <li><strong>Annual Cost</strong>: Projected yearly spending</li>
-            <li><strong>Upcoming Renewals</strong>: Due in next 30 days</li>
-            <li><strong>Active Trials</strong>: Free trials you&apos;re tracking</li>
+            <li><strong>Annual Cost</strong>: What you'll spend this year</li>
+            <li><strong>Subscription Breakdown</strong>: Count by billing cycle</li>
+            <li><strong>Active Trials</strong>: Never miss a cancellation</li>
           </ul>
         </div>
       ),
@@ -81,14 +82,15 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: '.add-subscription-btn',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Add Your Subscriptions</h3>
-          <p>Click here to add a new subscription. You can track:</p>
+          <h3 className="font-bold mb-2">Track Everything</h3>
+          <p>Add all your subscriptions in seconds:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-            <li>Service name and cost</li>
-            <li>Billing cycle (weekly, monthly, yearly, etc.)</li>
-            <li>Categories (Entertainment, Software, etc.)</li>
-            <li>Free trial periods</li>
+            <li>Netflix, Spotify, gym memberships</li>
+            <li>SaaS tools, AI services, cloud storage</li>
+            <li>Free trials you might forget to cancel</li>
+            <li>Any recurring payment you have</li>
           </ul>
+          <p className="text-xs text-purple-400 mt-2">💡 Tip: Start with your biggest expenses</p>
         </div>
       ),
       placement: 'bottom',
@@ -101,13 +103,13 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: '.subscription-list',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Your Subscriptions</h3>
-          <p>All your subscriptions appear here. You can:</p>
+          <h3 className="font-bold mb-2">Stay in Control</h3>
+          <p>Never be surprised by a charge again:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-            <li>See upcoming payment dates</li>
-            <li>Spot expiring trials with warning badges</li>
-            <li>Delete subscriptions you no longer need</li>
-            <li>View costs per billing period</li>
+            <li>🔔 Get alerts before renewals</li>
+            <li>⚠️ See trials ending soon</li>
+            <li>📊 Track spending patterns</li>
+            <li>🗑️ Cancel forgotten subscriptions</li>
           </ul>
         </div>
       ),
@@ -124,15 +126,20 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       },
     },
     {
-      target: '.help-button',
+      target: '[title="Profile"]',
       content: (
         <div>
-          <h3 className="font-bold mb-2">One More Thing!</h3>
-          <p>Visit your Profile to select your preferred currency.</p>
-          <p className="mt-2 text-sm text-gray-400">We support over 30 currencies including USD, EUR, GBP, CAD, and more!</p>
+          <h3 className="font-bold mb-2">Customize Your Experience</h3>
+          <p>Visit your Profile to:</p>
+          <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+            <li>Select your preferred <span className="text-purple-400 font-bold">currency</span> (30+ supported)</li>
+            <li>Export all your data anytime</li>
+            <li>Manage your account settings</li>
+          </ul>
+          <p className="text-xs text-gray-400 mt-2">Your data is always yours to keep!</p>
         </div>
       ),
-      placement: 'top',
+      placement: 'bottom',
       disableBeacon: true,
       floaterProps: {
         disableFlip: false,
