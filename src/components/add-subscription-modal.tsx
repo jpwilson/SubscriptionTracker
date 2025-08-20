@@ -12,7 +12,7 @@ import { format } from 'date-fns'
 
 interface AddSubscriptionModalProps {
   onClose: () => void
-  onSave: () => void
+  onSave: (name: string, amount: string, billingCycle: string) => void
 }
 
 export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalProps) {
@@ -168,7 +168,9 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       previousAmount: matchingSubscription?.amount || null,
     })
     
-    onSave()
+    // Pass the subscription details to parent for toast
+    const formattedAmount = `$${formData.amount}`
+    onSave(subscriptionName, formattedAmount, formData.billingCycle)
   }
 
   const billingCycles = [

@@ -16,7 +16,7 @@ import { DemoDataInitializer } from '@/components/demo-data'
 import { MobileNavigation } from '@/components/mobile-navigation'
 import { WelcomeBanner } from '@/components/welcome-banner'
 import { useUserPreferences } from '@/hooks/use-user-preferences'
-import { useToast } from '@/components/ui/use-toast'
+import { CenterToast } from '@/components/center-toast'
 
 export const dynamic = 'force-dynamic'
 
@@ -24,10 +24,11 @@ function DashboardContent() {
   const { user } = useAuth()
   const [showAddModal, setShowAddModal] = useState(false)
   const [showCategoriesModal, setShowCategoriesModal] = useState(false)
+  const [deletionMessage, setDeletionMessage] = useState<{ title: string; description: string } | null>(null)
+  const [creationMessage, setCreationMessage] = useState<{ title: string; description: string } | null>(null)
   const router = useRouter()
   const searchParams = useSearchParams()
   const categoryFilter = searchParams.get('category') || undefined
-  const { toast } = useToast()
   
   // Use the new hook for stats
   const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
@@ -39,14 +40,11 @@ function DashboardContent() {
       const deletionSuccess = sessionStorage.getItem('deletionSuccess')
       if (deletionSuccess) {
         const message = JSON.parse(deletionSuccess)
-        toast({
-          title: message.title,
-          description: message.description,
-        })
+        setDeletionMessage(message)
         sessionStorage.removeItem('deletionSuccess')
       }
     }
-  }, [toast])
+  }, [])
 
   if (!user) {
     return (
@@ -346,7 +344,13 @@ function DashboardContent() {
       {showAddModal && (
         <AddSubscriptionModal
           onClose={() => setShowAddModal(false)}
-          onSave={() => setShowAddModal(false)}
+          onSave={(subscriptionName, amount, billingCycle) => {
+            setShowAddModal(false)
+            setCreationMessage({
+              title: 'Success',
+              description: `${subscriptionName} for ${amount} per ${billingCycle} has been created`
+            })
+          }}
         />
       )}
 
@@ -368,6 +372,26 @@ function DashboardContent() {
         onAddClick={() => setShowAddModal(true)}
         onCategoriesClick={() => setShowCategoriesModal(true)}
       />
+      
+      {/* Center Toast for Deletion */}
+      {deletionMessage && (
+        <CenterToast
+          title={deletionMessage.title}
+          description={deletionMessage.description}
+          type="delete"
+          onClose={() => setDeletionMessage(null)}
+        />
+      )}
+      
+      {/* Center Toast for Creation */}
+      {creationMessage && (
+        <CenterToast
+          title={creationMessage.title}
+          description={creationMessage.description}
+          type="success"
+          onClose={() => setCreationMessage(null)}
+        />
+      )}
     </div>
   )
 }
