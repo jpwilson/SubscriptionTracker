@@ -66,7 +66,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           <p>See exactly where your money goes each month:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
             <li><strong>Monthly Cost</strong>: Total monthly spending</li>
-            <li><strong>Annual Cost</strong>: What you'll spend this year</li>
+            <li><strong>Annual Cost</strong>: What you&apos;ll spend this year</li>
             <li><strong>Subscription Breakdown</strong>: Count by billing cycle</li>
             <li><strong>Active Trials</strong>: Never miss a cancellation</li>
           </ul>
