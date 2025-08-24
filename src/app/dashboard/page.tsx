@@ -259,7 +259,8 @@ function DashboardContent() {
         </div>
 
         {/* Desktop/Tablet Stats Grid */}
-        <div className="stats-grid hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="stats-grid-wrapper">
+          <div className="stats-grid hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {[
             {
               title: 'Monthly Cost',
@@ -328,6 +329,7 @@ function DashboardContent() {
               </div>
             </motion.div>
           ))}
+          </div>
         </div>
 
         {/* Subscriptions List */}

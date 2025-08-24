@@ -11,20 +11,35 @@ import { format, parseISO } from 'date-fns'
 interface SubscriptionSectionsProps {
   subscriptions: Subscription[]
   userCurrency?: string
+  selectedCategory?: string
+  selectedCategories?: string[]
 }
 
-export function SubscriptionSections({ subscriptions, userCurrency = 'USD' }: SubscriptionSectionsProps) {
+export function SubscriptionSections({ 
+  subscriptions, 
+  userCurrency = 'USD',
+  selectedCategory,
+  selectedCategories = []
+}: SubscriptionSectionsProps) {
   const router = useRouter()
   const [isPastCollapsed, setIsPastCollapsed] = useState(true)
   
+  // Filter subscriptions by category first
+  let filteredSubscriptions = subscriptions
+  if (selectedCategory) {
+    filteredSubscriptions = subscriptions.filter(sub => sub.category === selectedCategory)
+  } else if (selectedCategories.length > 0) {
+    filteredSubscriptions = subscriptions.filter(sub => selectedCategories.includes(sub.category))
+  }
+  
   // Separate subscriptions into categories
-  const cancelledButActive = subscriptions.filter(sub => 
+  const cancelledButActive = filteredSubscriptions.filter(sub => 
     sub.status === 'cancelled' && 
     sub.endDate && 
     new Date(sub.endDate) > new Date()
   )
   
-  const pastSubscriptions = subscriptions.filter(sub => 
+  const pastSubscriptions = filteredSubscriptions.filter(sub => 
     sub.status === 'cancelled' && 
     (!sub.endDate || new Date(sub.endDate) <= new Date())
   )

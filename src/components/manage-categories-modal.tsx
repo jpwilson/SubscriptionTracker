@@ -10,6 +10,7 @@ import { isPremiumUser } from '@/lib/feature-gates'
 import { supabase } from '@/lib/supabase'
 import { useQueryClient } from '@tanstack/react-query'
 import { useToast } from '@/components/ui/use-toast'
+import { useRouter } from 'next/navigation'
 
 interface ManageCategoriesModalProps {
   onClose: () => void
@@ -37,6 +38,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
   const deleteCategory = useDeleteCategory()
   const queryClient = useQueryClient()
   const { toast } = useToast()
+  const router = useRouter()
   
   const [showAddForm, setShowAddForm] = useState(false)
   const [isResetting, setIsResetting] = useState(false)
@@ -126,6 +128,11 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
     }
   }
 
+  const handleCategoryClick = (categoryName: string) => {
+    router.push(`/dashboard?category=${encodeURIComponent(categoryName)}`)
+    onClose()
+  }
+
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 overflow-y-auto">
       <motion.div
@@ -178,26 +185,55 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                         Add Custom Category
                       </Button>
                     ) : (
-                      <div className="p-4 neu-card rounded-xl border border-purple-500/20">
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className="p-2 rounded-lg bg-purple-500/20">
-                            <Lock className="w-5 h-5 text-purple-400" />
+                      <div className="p-6 neu-card rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-pink-900/20">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500/30 to-pink-500/30">
+                            <Sparkles className="w-6 h-6 text-purple-300" />
                           </div>
                           <div>
-                            <h4 className="text-sm font-semibold text-white flex items-center gap-2">
-                              Add New Category
-                              <Sparkles className="w-4 h-4 text-purple-400" />
+                            <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                              Unlock Custom Categories
+                              <span className="text-xs px-2 py-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-semibold">PRO</span>
                             </h4>
-                            <p className="text-xs text-muted-foreground">
-                              Upgrade to create custom categories or subcategories
+                            <p className="text-sm text-purple-300">
+                              Take control of your subscription organization
                             </p>
                           </div>
                         </div>
+                        
+                        <div className="space-y-3 mb-5">
+                          <div className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div>
+                            <p className="text-sm text-gray-300">
+                              <span className="font-semibold text-white">Create unlimited categories</span> - Design your perfect organization system with custom categories that match your lifestyle
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 flex-shrink-0"></div>
+                            <p className="text-sm text-gray-300">
+                              <span className="font-semibold text-white">Add subcategories</span> - Drill down with subcategories like &quot;Work → Software&quot; or &quot;Entertainment → Streaming&quot;
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div>
+                            <p className="text-sm text-gray-300">
+                              <span className="font-semibold text-white">Custom icons & colors</span> - Personalize each category with unique emojis and colors for instant visual recognition
+                            </p>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 flex-shrink-0"></div>
+                            <p className="text-sm text-gray-300">
+                              <span className="font-semibold text-white">Better insights</span> - See spending breakdowns by your custom categories to identify savings opportunities
+                            </p>
+                          </div>
+                        </div>
+                        
                         <Button
-                          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+                          onClick={() => router.push('/pricing')}
+                          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-xl hover:scale-[1.02] transition-all duration-300 py-3 font-semibold"
                         >
-                          <Sparkles className="w-4 h-4 mr-2" />
-                          Upgrade to Premium
+                          <Sparkles className="w-5 h-5 mr-2" />
+                          Upgrade to Premium - $5/month
                         </Button>
                       </div>
                     )}
@@ -307,7 +343,8 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                     key={category.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors"
+                    className="flex items-center justify-between p-4 bg-slate-700/30 rounded-lg hover:bg-slate-700/50 transition-colors cursor-pointer group"
+                    onClick={() => handleCategoryClick(category.name)}
                   >
                     <div className="flex items-center gap-3">
                       <div
@@ -317,7 +354,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                         {category.icon}
                       </div>
                       <div>
-                        <p className="text-white font-medium">{category.name}</p>
+                        <p className="text-white font-medium group-hover:text-purple-400 transition-colors">{category.name}</p>
                         {category.isDefault && (
                           <p className="text-xs text-gray-400">Default category</p>
                         )}
@@ -325,7 +362,10 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                     </div>
                     {!category.isDefault && (
                       <Button
-                        onClick={() => handleDeleteCategory(category.id)}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDeleteCategory(category.id)
+                        }}
                         variant="ghost"
                         size="icon"
                         className="text-gray-400 hover:text-red-400 hover:bg-red-400/10"

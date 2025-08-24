@@ -48,6 +48,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
   const [filterBy, setFilterBy] = useState<FilterOption>('active')
   const [showAddModal, setShowAddModal] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>(categoryFilter)
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [deleteModalData, setDeleteModalData] = useState<{ subscription: any; isDemo: boolean } | null>(null)
   const [viewType, setViewType] = useState<'list' | 'calendar'>('list')
 
@@ -116,6 +117,8 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
     // Filter by selected category
     if (selectedCategory) {
       filtered = filtered.filter(sub => sub.category === selectedCategory)
+    } else if (selectedCategories.length > 0) {
+      filtered = filtered.filter(sub => selectedCategories.includes(sub.category))
     }
     
     // Filter by status or billing cycle
@@ -186,7 +189,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
     })
     
     return sorted
-  }, [subscriptions, searchTerm, sortBy, sortDirection, filterBy, selectedCategory])
+  }, [subscriptions, searchTerm, sortBy, sortDirection, filterBy, selectedCategory, selectedCategories])
 
   // Handle sort option click
   const handleSort = (option: SortOption) => {
@@ -371,7 +374,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               <Filter className="w-4 h-4" />
               <ChevronDown className="w-3 h-3" />
             </button>
-            <div className="absolute right-0 top-full mt-2 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 overflow-hidden">
+            <div className="absolute right-0 top-full mt-2 w-64 bg-slate-800 border border-slate-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 overflow-hidden max-h-[500px] overflow-y-auto">
               <div className="text-xs font-semibold text-gray-400 px-4 pt-3 pb-1 uppercase tracking-wider">Status</div>
               <button
                 onClick={() => setFilterBy('active')}
@@ -402,36 +405,92 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               </button>
               <button
                 onClick={() => setFilterBy('yearly')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'yearly' ? 'text-purple-400 bg-slate-700/50' : 'text-white'}`}
+                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'yearly' ? 'text-purple-400 bg-slate-700/50' : 'text-white'} mb-2`}
               >
                 Yearly Only
               </button>
+              
+              <div className="border-t border-slate-700"></div>
+              <div className="text-xs font-semibold text-gray-400 px-4 pt-3 pb-1 uppercase tracking-wider">Categories</div>
+              <div className="px-4 pb-2 space-y-1">
+                {categories.map((category) => (
+                  <label
+                    key={category.id}
+                    className="flex items-center gap-2 py-1 hover:bg-slate-700/50 rounded px-2 cursor-pointer transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(category.name)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectedCategories([...selectedCategories, category.name])
+                        } else {
+                          setSelectedCategories(selectedCategories.filter(c => c !== category.name))
+                        }
+                      }}
+                      className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500 focus:ring-2"
+                    />
+                    <div className="flex items-center gap-2 flex-1">
+                      <span
+                        className="w-5 h-5 rounded flex items-center justify-center text-xs"
+                        style={{ backgroundColor: category.color }}
+                      >
+                        {category.icon}
+                      </span>
+                      <span className="text-sm text-white">{category.name}</span>
+                    </div>
+                  </label>
+                ))}
+                {selectedCategories.length > 0 && (
+                  <button
+                    onClick={() => setSelectedCategories([])}
+                    className="w-full text-left px-2 py-1 text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                  >
+                    Clear all
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
       
       {/* Category Filter Indicator */}
-      {selectedCategory && (
+      {(selectedCategory || selectedCategories.length > 0) && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-2 mt-4"
+          className="flex items-center gap-2 mt-4 flex-wrap"
         >
-          <span className="text-sm text-muted-foreground">Filtering by category:</span>
-          <div className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/50 rounded-lg">
-            <span className="text-sm font-medium text-purple-400">{selectedCategory}</span>
-            <button
-              onClick={() => {
-                setSelectedCategory(undefined)
-                // Clear the query parameter
-                router.push('/dashboard')
-              }}
-              className="text-purple-400 hover:text-purple-300 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
+          <span className="text-sm text-muted-foreground">Filtering by:</span>
+          {selectedCategory && (
+            <div className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/50 rounded-lg">
+              <span className="text-sm font-medium text-purple-400">{selectedCategory}</span>
+              <button
+                onClick={() => {
+                  setSelectedCategory(undefined)
+                  // Clear the query parameter
+                  router.push('/dashboard')
+                }}
+                className="text-purple-400 hover:text-purple-300 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          )}
+          {selectedCategories.map((cat) => (
+            <div key={cat} className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/50 rounded-lg">
+              <span className="text-sm font-medium text-purple-400">{cat}</span>
+              <button
+                onClick={() => {
+                  setSelectedCategories(selectedCategories.filter(c => c !== cat))
+                }}
+                className="text-purple-400 hover:text-purple-300 transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          ))}
         </motion.div>
       )}
       
@@ -593,10 +652,12 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
         </div>
       ) : (
         /* Calendar View */
-        <CalendarView 
-          subscriptions={filteredAndSortedSubscriptions} 
-          userCurrency={userCurrency} 
-        />
+        <div className="calendar-view-wrapper">
+          <CalendarView 
+            subscriptions={filteredAndSortedSubscriptions} 
+            userCurrency={userCurrency} 
+          />
+        </div>
       )}
       
       {/* No results message */}
@@ -614,6 +675,8 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
       <SubscriptionSections 
         subscriptions={subscriptions || []} 
         userCurrency={userCurrency}
+        selectedCategory={selectedCategory}
+        selectedCategories={selectedCategories}
       />
       
       {/* Add Subscription Modal */}

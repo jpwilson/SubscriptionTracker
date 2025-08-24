@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, TrendingUp, AlertTriangle, Zap, DollarSign, Clock, BarChart2, Lightbulb, Target, Sparkles } from 'lucide-react'
+import { ArrowLeft, TrendingUp, AlertTriangle, Zap, DollarSign, Clock, BarChart2, Lightbulb, Target, Sparkles, Lock, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { useSubscriptions } from '@/hooks/use-subscriptions'
@@ -209,8 +209,8 @@ export default function InsightsPage() {
           <div className="w-10" /> {/* Spacer for centering */}
         </motion.div>
 
-        {/* Potential Savings Banner */}
-        {totalPotentialSavings > 0 && (
+        {/* Potential Savings Banner - Only for premium users */}
+        {isPremium && totalPotentialSavings > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -227,120 +227,204 @@ export default function InsightsPage() {
                     Potential Savings: {formatCurrency(totalPotentialSavings, userCurrency)}
                   </h2>
                   <p className="text-muted-foreground">
-                    {isPremium ? 'per month with these recommendations' : 'Upgrade to unlock all insights'}
+                    per month with these recommendations
                   </p>
                 </div>
               </div>
-              {!isPremium && (
-                <Button 
-                  onClick={() => router.push('/payment')}
-                  className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
-                >
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  Upgrade to Premium
-                </Button>
-              )}
             </div>
           </motion.div>
         )}
 
-        {/* Insights Grid */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {insights.length === 0 ? (
+        {/* Insights Grid - Blurred for non-premium users */}
+        {!isPremium ? (
+          <div className="relative">
+            {/* Blurred background content */}
+            <div className="filter blur-md select-none pointer-events-none">
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {insights.slice(0, 6).map((insight, index) => (
+                  <motion.div
+                    key={insight.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`neu-card p-6 rounded-2xl border ${
+                      insight.impact === 'high' ? 'border-red-500/20' :
+                      insight.impact === 'medium' ? 'border-yellow-500/20' :
+                      'border-purple-500/20'
+                    }`}
+                  >
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`p-3 rounded-xl ${
+                        insight.impact === 'high' ? 'bg-red-500/20 text-red-400' :
+                        insight.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-purple-500/20 text-purple-400'
+                      }`}>
+                        {insight.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-white mb-1">{insight.title}</h3>
+                        <p className="text-sm text-muted-foreground">{insight.description}</p>
+                      </div>
+                    </div>
+                    {insight.savings && (
+                      <div className="mb-4 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                        <p className="text-sm text-green-400 font-medium">
+                          Save {formatCurrency(insight.savings, userCurrency)}/month
+                        </p>
+                      </div>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Premium upgrade overlay */}
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="col-span-full text-center py-12"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="absolute inset-0 flex items-center justify-center p-4"
             >
-              <TrendingUp className="w-16 h-16 text-purple-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Great job!</h3>
-              <p className="text-muted-foreground">
-                Your subscriptions are well-optimized. Keep tracking to maintain your savings.
-              </p>
-            </motion.div>
-          ) : (
-            insights.map((insight, index) => (
-              <motion.div
-                key={insight.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.05 }}
-                className={`neu-card p-6 rounded-2xl border ${
-                  insight.impact === 'high' ? 'border-red-500/20' :
-                  insight.impact === 'medium' ? 'border-yellow-500/20' :
-                  'border-purple-500/20'
-                } ${!isPremium && index > 2 ? 'opacity-60' : ''}`}
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className={`p-3 rounded-xl ${
-                    insight.impact === 'high' ? 'bg-red-500/20 text-red-400' :
-                    insight.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                    'bg-purple-500/20 text-purple-400'
-                  }`}>
-                    {insight.icon}
+              <div className="max-w-2xl w-full neu-card p-8 rounded-3xl border border-purple-500/30 bg-background/95 backdrop-blur-sm">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-lg">
+                    <Lock className="w-8 h-8 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-white mb-1">{insight.title}</h3>
-                    <p className="text-sm text-muted-foreground">{insight.description}</p>
+                  <h2 className="text-3xl font-bold text-gradient mb-2">Unlock Smart Insights</h2>
+                  <p className="text-lg text-muted-foreground">Transform your subscription spending with AI-powered recommendations</p>
+                </div>
+
+                <div className="space-y-3 mb-8">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">Detect Unused Subscriptions</p>
+                      <p className="text-sm text-muted-foreground">Identify subscriptions you haven&apos;t used in 30+ days and save instantly</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">Find Cheaper Alternatives</p>
+                      <p className="text-sm text-muted-foreground">Discover similar services at lower prices based on your usage patterns</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">Optimize Billing Cycles</p>
+                      <p className="text-sm text-muted-foreground">Save 20-30% by switching to annual plans for frequently used services</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">Track Trial Expirations</p>
+                      <p className="text-sm text-muted-foreground">Never get charged for forgotten trials with proactive alerts</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">Duplicate Service Detection</p>
+                      <p className="text-sm text-muted-foreground">Find overlapping services and consolidate to save money</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-white font-medium">Personalized Spending Analysis</p>
+                      <p className="text-sm text-muted-foreground">Get custom recommendations based on your spending habits and preferences</p>
+                    </div>
                   </div>
                 </div>
 
-                {insight.savings && (
-                  <div className="mb-4 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                    <p className="text-sm text-green-400 font-medium">
-                      Save {formatCurrency(insight.savings, userCurrency)}/month
+                <div className="text-center">
+                  <div className="mb-4">
+                    <p className="text-2xl font-bold text-white">
+                      Average user saves {formatCurrency(47, userCurrency)}/month
                     </p>
+                    <p className="text-sm text-muted-foreground">That&apos;s {formatCurrency(564, userCurrency)}/year!</p>
                   </div>
-                )}
-
-                {insight.actionLabel && (
-                  <Button
-                    className={`w-full ${
-                      !isPremium && index > 2 
-                        ? 'bg-gray-600 cursor-not-allowed' 
-                        : insight.actionType === 'cancel' 
-                          ? 'bg-red-500 hover:bg-red-600' 
-                          : 'bg-purple-600 hover:bg-purple-700'
-                    }`}
-                    disabled={!isPremium && index > 2}
+                  <Button 
+                    onClick={() => router.push('/payment')}
+                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-8 py-6 text-lg font-semibold"
                   >
-                    {!isPremium && index > 2 ? (
-                      <>
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Premium Feature
-                      </>
-                    ) : (
-                      insight.actionLabel
-                    )}
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Unlock Insights for $5/month
                   </Button>
-                )}
-              </motion.div>
-            ))
-          )}
-        </div>
+                  <p className="text-xs text-muted-foreground mt-3">Cancel anytime • Instant access • No hidden fees</p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        ) : (
+          /* Premium users see the full insights */
+          <>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {insights.length === 0 ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="col-span-full text-center py-12"
+                >
+                  <TrendingUp className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">Great job!</h3>
+                  <p className="text-muted-foreground">
+                    Your subscriptions are well-optimized. Keep tracking to maintain your savings.
+                  </p>
+                </motion.div>
+              ) : (
+                insights.map((insight, index) => (
+                  <motion.div
+                    key={insight.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    className={`neu-card p-6 rounded-2xl border ${
+                      insight.impact === 'high' ? 'border-red-500/20' :
+                      insight.impact === 'medium' ? 'border-yellow-500/20' :
+                      'border-purple-500/20'
+                    }`}
+                  >
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`p-3 rounded-xl ${
+                        insight.impact === 'high' ? 'bg-red-500/20 text-red-400' :
+                        insight.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
+                        'bg-purple-500/20 text-purple-400'
+                      }`}>
+                        {insight.icon}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-white mb-1">{insight.title}</h3>
+                        <p className="text-sm text-muted-foreground">{insight.description}</p>
+                      </div>
+                    </div>
 
-        {/* Free tier limitation notice */}
-        {!isPremium && insights.length > 3 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="mt-8 p-6 neu-card rounded-2xl text-center border border-purple-500/20"
-          >
-            <Sparkles className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold mb-2">
-              {insights.length - 3} More Insights Available
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              Upgrade to Premium to unlock all recommendations and maximize your savings
-            </p>
-            <Button 
-              onClick={() => router.push('/payment')}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
-            >
-              Upgrade for $5/month
-            </Button>
-          </motion.div>
+                    {insight.savings && (
+                      <div className="mb-4 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
+                        <p className="text-sm text-green-400 font-medium">
+                          Save {formatCurrency(insight.savings, userCurrency)}/month
+                        </p>
+                      </div>
+                    )}
+
+                    {insight.actionLabel && (
+                      <Button
+                        className={`w-full ${
+                          insight.actionType === 'cancel' 
+                            ? 'bg-red-500 hover:bg-red-600' 
+                            : 'bg-purple-600 hover:bg-purple-700'
+                        }`}
+                      >
+                        {insight.actionLabel}
+                      </Button>
+                    )}
+                  </motion.div>
+                ))
+              )}
+            </div>
+          </>
         )}
       </div>
     </div>

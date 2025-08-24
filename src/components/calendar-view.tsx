@@ -122,7 +122,7 @@ export function CalendarView({ subscriptions, userCurrency = 'USD' }: CalendarVi
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   return (
-    <div className="space-y-6">
+    <div className="calendar-view-container space-y-6">
       {/* Calendar Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-4">

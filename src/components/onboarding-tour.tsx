@@ -15,6 +15,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
   const [runTour, setRunTour] = useState(run)
   const [showMenu, setShowMenu] = useState(false)
   const [showGlossary, setShowGlossary] = useState(false)
+  const [currentStep, setCurrentStep] = useState(0)
   const menuRef = useRef<HTMLDivElement>(null)
   const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -23,7 +24,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
     const hasSeenTour = localStorage.getItem('subtracker_tour_completed')
     if (!hasSeenTour && !run) {
       // Auto-start tour for first-time users after a short delay
-      const timer = setTimeout(() => setRunTour(true), 1500)
+      const timer = setTimeout(() => setRunTour(true), 2000)
       return () => clearTimeout(timer)
     }
   }, [run])
@@ -50,9 +51,9 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: 'body',
       content: (
         <div className="text-center">
-          <h2 className="text-xl font-bold mb-2">Welcome to SubTracker! 💰</h2>
+          <h2 className="text-xl font-bold mb-2" style={{ color: '#a78bfa' }}>Welcome to SubTracker! 💰</h2>
           <p>Start saving money by taking control of your subscriptions.</p>
-          <p className="text-sm text-purple-400 mt-2">The average person saves $273/month!</p>
+          <p className="text-sm text-purple-400 mt-2">Studies show tracking cuts costs by 10-30%</p>
         </div>
       ),
       placement: 'center',
@@ -62,8 +63,8 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
       target: '.stats-grid',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Your Money Dashboard</h3>
-          <p>See exactly where your money goes each month:</p>
+          <h3 className="font-bold mb-2" style={{ color: '#60a5fa' }}>Your Money Dashboard</h3>
+          <p>Get a quick overview:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
             <li><strong>Monthly Cost</strong>: Total monthly spending</li>
             <li><strong>Annual Cost</strong>: What you&apos;ll spend this year</li>
@@ -72,17 +73,36 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           </ul>
         </div>
       ),
-      placement: 'bottom',
+      placement: 'auto',
       disableBeacon: true,
       floaterProps: {
         disableFlip: false,
       },
     },
     {
+      target: '.subscription-list h2',
+      content: (
+        <div>
+          <h3 className="font-bold mb-2" style={{ color: '#ec4899' }}>The Heart of the App</h3>
+          <p>This is your subscription dashboard where you can:</p>
+          <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
+            <li>Click any subscription to <strong>view/edit</strong> details</li>
+            <li>View all subscriptions in a <strong className="text-yellow-400 text-base">List</strong> or <strong className="text-yellow-400 text-base">Calendar</strong></li>
+            <li>Search and filter your subscriptions</li>
+            <li>Sort by price, date, or category</li>
+            <li>See upcoming payments at a glance</li>
+          </ul>
+          <p className="text-xs text-purple-400 mt-2">💡 Try switching between List and Calendar views!</p>
+        </div>
+      ),
+      placement: 'auto',
+      disableBeacon: true,
+    },
+    {
       target: '.add-subscription-btn',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Track Everything</h3>
+          <h3 className="font-bold mb-2" style={{ color: '#10b981' }}>Add Subscription</h3>
           <p>Add all your subscriptions in seconds:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
             <li>Netflix, Spotify, gym memberships</li>
@@ -93,43 +113,17 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           <p className="text-xs text-purple-400 mt-2">💡 Tip: Start with your biggest expenses</p>
         </div>
       ),
-      placement: 'bottom',
-      disableBeacon: true,
-      floaterProps: {
-        disableFlip: false,
-      },
-    },
-    {
-      target: '.subscription-list',
-      content: (
-        <div>
-          <h3 className="font-bold mb-2">Stay in Control</h3>
-          <p>Never be surprised by a charge again:</p>
-          <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-            <li>🔔 Get alerts before renewals</li>
-            <li>⚠️ See trials ending soon</li>
-            <li>📊 Track spending patterns</li>
-            <li>🗑️ Cancel forgotten subscriptions</li>
-          </ul>
-        </div>
-      ),
       placement: 'auto',
       disableBeacon: true,
       floaterProps: {
         disableFlip: false,
-        autoOpen: true,
-      },
-      styles: {
-        options: {
-          width: typeof window !== 'undefined' && window.innerWidth < 500 ? 280 : 360,
-        },
       },
     },
     {
       target: '[title="Profile"]',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Customize Your Experience</h3>
+          <h3 className="font-bold mb-2" style={{ color: '#8b5cf6' }}>Customize Your Experience</h3>
           <p>Visit your Profile to:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
             <li>Select your preferred <span className="text-purple-400 font-bold">currency</span> (30+ supported)</li>
@@ -139,36 +133,60 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           <p className="text-xs text-gray-400 mt-2">Your data is always yours to keep!</p>
         </div>
       ),
-      placement: 'bottom',
+      placement: 'auto',
       disableBeacon: true,
       floaterProps: {
         disableFlip: false,
-        hideArrow: false,
-        offset: 20,
       },
     },
     {
       target: '.help-button',
       content: (
         <div>
-          <h3 className="font-bold mb-2">Need Help?</h3>
+          <h3 className="font-bold mb-2" style={{ color: '#06b6d4' }}>Need Help?</h3>
           <p>Click the help button anytime to see this tour again!</p>
           <p className="mt-2">Ready to start tracking your subscriptions? 🚀</p>
         </div>
       ),
-      placement: 'top',
+      placement: 'center',
       disableBeacon: true,
-      floaterProps: {
-        disableFlip: false,
-        hideArrow: false,
-        offset: 20,
-      },
     },
   ]
 
   const handleJoyrideCallback = (data: CallBackProps) => {
-    const { status } = data
+    const { status, index, action } = data
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED]
+
+    // Update current step
+    if (action === 'next' || action === 'prev') {
+      setCurrentStep(index)
+    }
+
+    // When we reach the subscription list step (index 2), trigger calendar view
+    if (index === 2 && (action === 'next' || action === 'start')) {
+      // Switch to calendar view
+      setTimeout(() => {
+        const calendarButtons = document.querySelectorAll('button')
+        calendarButtons.forEach(button => {
+          if (button.textContent?.includes('Calendar') || button.querySelector('[title*="Calendar"]')) {
+            button.click()
+          }
+        })
+      }, 100)
+    }
+    
+    // When we move to step 4 (index 3), switch back to list view
+    if (index === 3 && action === 'next') {
+      // Switch back to list view
+      setTimeout(() => {
+        const listButtons = document.querySelectorAll('button')
+        listButtons.forEach(button => {
+          if (button.textContent?.includes('List') || button.querySelector('[title*="List"]')) {
+            button.click()
+          }
+        })
+      }, 100)
+    }
 
     if (finishedStatuses.includes(status)) {
       localStorage.setItem('subtracker_tour_completed', 'true')
@@ -183,16 +201,18 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
         steps={steps}
         run={runTour}
         continuous
-        showProgress
+        showProgress={false}
         showSkipButton
+        disableScrolling
+        disableOverlay
         callback={handleJoyrideCallback}
         styles={{
           options: {
-            arrowColor: '#6366f1',
-            backgroundColor: '#1e293b',
-            primaryColor: '#6366f1',
+            arrowColor: '#8b5cf6',
+            backgroundColor: '#2d3748',
+            primaryColor: '#8b5cf6',
             textColor: '#ffffff',
-            overlayColor: 'rgba(0, 0, 0, 0.5)',
+            overlayColor: 'rgba(0, 0, 0, 0.7)',
             width: typeof window !== 'undefined' && window.innerWidth < 500 ? 300 : 380,
             zIndex: 10000,
           },
@@ -201,6 +221,9 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             padding: 20,
             maxHeight: typeof window !== 'undefined' ? window.innerHeight * 0.8 : 600,
             overflow: 'auto',
+            borderRadius: 12,
+            boxShadow: '0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15), 0 0 80px rgba(255, 255, 255, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.3)',
+            border: '1px solid rgba(139, 92, 246, 0.2)',
           },
           tooltipContainer: {
             textAlign: 'left',
@@ -208,10 +231,13 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           tooltipContent: {
             padding: '8px 0',
           },
+          tooltipFooter: {
+            marginTop: '15px',
+          },
           buttonNext: {
-            backgroundColor: '#6366f1',
+            backgroundColor: '#8b5cf6',
             fontSize: 14,
-            borderRadius: 4,
+            borderRadius: 8,
             padding: '8px 16px',
           },
           buttonBack: {
@@ -235,7 +261,25 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
         disableCloseOnEsc
         hideCloseButton
         scrollToFirstStep
-        spotlightClicks
+        spotlightClicks={false}
+        scrollDuration={400}
+        tooltipComponent={({ continuous, index, step, backProps, closeProps, primaryProps, skipProps, tooltipProps, isLastStep }) => (
+          <div {...tooltipProps} style={{ backgroundColor: '#2d3748', color: '#ffffff', borderRadius: '12px', padding: '20px', boxShadow: '0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15), 0 0 80px rgba(255, 255, 255, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.3)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+            <div>{step.content}</div>
+            <div style={{ marginTop: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <button {...skipProps} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '14px', cursor: 'pointer' }}>Skip Tour</button>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                  {index > 0 && <button {...backProps} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '14px', cursor: 'pointer' }}>Back</button>}
+                  <button {...primaryProps} style={{ backgroundColor: '#8b5cf6', color: 'white', border: 'none', borderRadius: '8px', padding: '8px 16px', fontSize: '14px', cursor: 'pointer' }}>{isLastStep ? 'Get Started' : 'Next'}</button>
+                </div>
+              </div>
+              <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '12px', color: '#94a3b8' }}>
+                {index + 1} of {steps.length}
+              </div>
+            </div>
+          </div>
+        )}
         floaterProps={{
           disableFlip: false,
           autoOpen: true,
