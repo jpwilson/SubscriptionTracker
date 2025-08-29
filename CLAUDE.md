@@ -1,5 +1,12 @@
 # SubTracker Project Context
 
+## Development Guidelines
+
+### IMPORTANT: Development Server
+- **NEVER run `npm run dev` yourself** - Always ask the user to run it
+- If you need to test something, ask: "Please run `npm run dev` so we can test the changes"
+- The user manages the development server, not the assistant
+
 ## Business Goals & Priorities
 
 ### Primary Objective: Make Money 💰
