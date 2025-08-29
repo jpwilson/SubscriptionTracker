@@ -15,6 +15,7 @@ export default function LandingPage() {
   const [activeSection, setActiveSection] = useState<string>('')
   const [subscriptionCount, setSubscriptionCount] = useState(8)
   const [estimatedSavings, setEstimatedSavings] = useState(0)
+  const [colorTheme, setColorTheme] = useState<'purple' | 'blue' | 'orange' | 'green' | 'gold' | 'neutral'>('purple')
   const [selectedCategories, setSelectedCategories] = useState<Record<string, number>>({
     'Entertainment': 2,
     'Productivity': 1,
@@ -47,6 +48,53 @@ export default function LandingPage() {
     'Music': 0.20, // 20% savings (family plans)
     'Gaming': 0.35 // 35% savings (rotation strategy)
   }
+
+  const colorThemes = {
+    purple: {
+      primary: 'from-purple-500 to-pink-500',
+      accent: 'purple-400',
+      button: 'bg-gradient-to-r from-purple-500 to-pink-500',
+      border: 'border-purple-500/20',
+      bg: 'from-purple-900/20 to-pink-900/20'
+    },
+    blue: {
+      primary: 'from-blue-500 to-cyan-500',
+      accent: 'cyan-400',
+      button: 'bg-gradient-to-r from-blue-500 to-cyan-500',
+      border: 'border-cyan-500/20',
+      bg: 'from-blue-900/20 to-cyan-900/20'
+    },
+    orange: {
+      primary: 'from-orange-500 to-amber-500',
+      accent: 'amber-400',
+      button: 'bg-gradient-to-r from-orange-500 to-amber-500',
+      border: 'border-orange-500/20',
+      bg: 'from-orange-900/20 to-amber-900/20'
+    },
+    green: {
+      primary: 'from-emerald-500 to-teal-500',
+      accent: 'emerald-400',
+      button: 'bg-gradient-to-r from-emerald-500 to-teal-500',
+      border: 'border-emerald-500/20',
+      bg: 'from-emerald-900/20 to-teal-900/20'
+    },
+    gold: {
+      primary: 'from-yellow-500 to-amber-600',
+      accent: 'yellow-400',
+      button: 'bg-gradient-to-r from-yellow-500 to-amber-600',
+      border: 'border-yellow-500/20',
+      bg: 'from-yellow-900/20 to-amber-900/20'
+    },
+    neutral: {
+      primary: 'from-slate-400 to-gray-500',
+      accent: 'slate-400',
+      button: 'bg-gradient-to-r from-slate-500 to-gray-600',
+      border: 'border-slate-500/20',
+      bg: 'from-slate-800/20 to-gray-800/20'
+    }
+  }
+
+  const theme = colorThemes[colorTheme]
   
   useEffect(() => {
     // Calculate total subscriptions and estimated savings
@@ -233,25 +281,31 @@ export default function LandingPage() {
 
   const testimonials = [
     {
-      quote: "I saved $147 last month by finding 3 forgotten subscriptions I wasn't even using!",
-      author: "Sarah M.",
+      quote: "I had no idea I was paying for 3 streaming services I never used! SubTracker found $147 in monthly savings in under 5 minutes. It's like getting a raise without asking my boss!",
+      author: "Sarah Mitchell",
+      role: "Marketing Manager",
       location: "San Francisco",
       savings: "$147/mo",
-      rating: 5
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=1"
     },
     {
-      quote: "The price increase alerts alone paid for premium 10x over. Never getting surprise-charged again.",
-      author: "James K.",
+      quote: "Got an alert that Disney+ was raising prices BEFORE it happened. Switched my whole family to a bundle and saved $89/month. This app pays for itself 20x over.",
+      author: "James Kim",
+      role: "Software Engineer",
       location: "New York",
       savings: "$89/mo",
-      rating: 5
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=3"
     },
     {
-      quote: "Finally canceled that gym membership I kept 'forgetting' about. This app literally pays for itself.",
-      author: "Alex R.",
+      quote: "My 'subscription creep' was out of control - $426/month! Now I'm down to $198 and haven't missed a single service. Wish I'd found this years ago.",
+      author: "Alexandra Rivera",
+      role: "Small Business Owner",
       location: "Austin",
-      savings: "$62/mo",
-      rating: 5
+      savings: "$228/mo",
+      rating: 5,
+      image: "https://i.pravatar.cc/150?img=5"
     }
   ]
 
@@ -266,11 +320,30 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Color Theme Toggle - DEVELOPMENT ONLY */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-20 right-4 z-50 p-3 bg-black/80 rounded-lg border border-white/20">
+          <p className="text-xs text-gray-400 mb-2">Dev Theme Test</p>
+          <select 
+            value={colorTheme} 
+            onChange={(e) => setColorTheme(e.target.value as any)}
+            className="bg-black/50 text-white text-xs px-2 py-1 rounded border border-white/20"
+          >
+            <option value="purple">Purple (Default)</option>
+            <option value="blue">Blue & Teal</option>
+            <option value="orange">Orange & Amber</option>
+            <option value="green">Green & Mint</option>
+            <option value="gold">Gold & Sapphire</option>
+            <option value="neutral">Neutral & Slate</option>
+          </select>
+        </div>
+      )}
+      
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className={`absolute top-1/4 -left-20 w-96 h-96 bg-${theme.accent}/20 rounded-full blur-3xl animate-float`} />
+        <div className={`absolute bottom-1/4 -right-20 w-96 h-96 bg-${theme.accent}/20 rounded-full blur-3xl animate-float`} style={{ animationDelay: '3s' }} />
       </div>
 
       {/* Navigation */}
@@ -282,8 +355,8 @@ export default function LandingPage() {
               className="flex items-center gap-3 cursor-pointer group"
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
-                <div className="relative inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-xl">
+                <div className={`absolute inset-0 bg-gradient-to-r ${theme.primary} rounded-xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity`} />
+                <div className={`relative inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br ${theme.primary} rounded-xl shadow-xl`}>
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -374,7 +447,7 @@ export default function LandingPage() {
               <Link href="/login">
                 <Button 
                   size="lg" 
-                  className="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 group"
+                  className={`w-full sm:w-auto ${theme.button} text-white hover:shadow-lg hover:shadow-${theme.accent}/25 transition-all duration-300 group`}
                 >
                   <span className="flex items-center gap-2">
                     Start Free - No Card Required
@@ -460,20 +533,29 @@ export default function LandingPage() {
                 viewport={{ once: true }}
                 className="neu-card rounded-xl p-6 border border-white/10"
               >
-                <div className="flex mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  ))}
-                </div>
-                <p className="text-gray-300 mb-4 italic">&ldquo;{testimonial.quote}&rdquo;</p>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold text-white">{testimonial.author}</p>
-                    <p className="text-sm text-gray-400">{testimonial.location}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm text-gray-400">Saves</p>
-                    <p className="font-bold text-green-400">{testimonial.savings}</p>
+                <div className="flex items-start gap-4">
+                  <img 
+                    src={testimonial.image} 
+                    alt={testimonial.author}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
+                  />
+                  <div className="flex-1">
+                    <div className="flex mb-2">
+                      {[...Array(testimonial.rating)].map((_, i) => (
+                        <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+                      ))}
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3 italic">&ldquo;{testimonial.quote}&rdquo;</p>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-semibold text-white text-sm">{testimonial.author}</p>
+                        <p className="text-xs text-gray-400">{testimonial.role} • {testimonial.location}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-400">Saves</p>
+                        <p className="font-bold text-green-400 text-sm">{testimonial.savings}</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
