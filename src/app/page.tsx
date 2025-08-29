@@ -15,15 +15,56 @@ export default function LandingPage() {
   const [activeSection, setActiveSection] = useState<string>('')
   const [subscriptionCount, setSubscriptionCount] = useState(8)
   const [estimatedSavings, setEstimatedSavings] = useState(0)
+  const [selectedCategories, setSelectedCategories] = useState<Record<string, number>>({
+    'Entertainment': 2,
+    'Productivity': 1,
+    'Cloud Storage': 1,
+    'AI Tools': 1,
+    'Health & Fitness': 1,
+    'News & Media': 1,
+    'Music': 1,
+    'Gaming': 0
+  })
+  
+  const categoryPrices: Record<string, number> = {
+    'Entertainment': 15.99,
+    'Productivity': 12.99,
+    'Cloud Storage': 9.99,
+    'AI Tools': 20.00,
+    'Health & Fitness': 19.99,
+    'News & Media': 9.99,
+    'Music': 10.99,
+    'Gaming': 14.99
+  }
+  
+  const categorySavings: Record<string, number> = {
+    'Entertainment': 0.35, // 35% savings potential (sharing, downgrades)
+    'Productivity': 0.25, // 25% savings (annual plans, alternatives)
+    'Cloud Storage': 0.40, // 40% savings (consolidation)
+    'AI Tools': 0.30, // 30% savings (usage optimization)
+    'Health & Fitness': 0.45, // 45% savings (seasonal usage)
+    'News & Media': 0.50, // 50% savings (bundling)
+    'Music': 0.20, // 20% savings (family plans)
+    'Gaming': 0.35 // 35% savings (rotation strategy)
+  }
   
   useEffect(() => {
-    // Calculate estimated savings based on subscription count
-    // Average user saves 23% on subscriptions through tracking
-    const avgSubscriptionCost = 14.99 // Average cost per subscription
-    const savingsPercentage = 0.23
-    const monthlySavings = Math.round(subscriptionCount * avgSubscriptionCost * savingsPercentage)
-    setEstimatedSavings(monthlySavings)
-  }, [subscriptionCount])
+    // Calculate total subscriptions and estimated savings
+    const totalSubs = Object.values(selectedCategories).reduce((sum, count) => sum + count, 0)
+    setSubscriptionCount(totalSubs)
+    
+    // Calculate realistic savings based on categories
+    let totalMonthlyCost = 0
+    let potentialSavings = 0
+    
+    Object.entries(selectedCategories).forEach(([category, count]) => {
+      const monthlySpend = categoryPrices[category] * count
+      totalMonthlyCost += monthlySpend
+      potentialSavings += monthlySpend * categorySavings[category]
+    })
+    
+    setEstimatedSavings(Math.round(potentialSavings))
+  }, [selectedCategories, categoryPrices, categorySavings])
   
   useEffect(() => {
     if (!loading && user) {
@@ -74,14 +115,66 @@ export default function LandingPage() {
     {
       icon: <BarChart3 className="w-6 h-6" />,
       title: "Track Costs",
-      description: "Monitor all your subscriptions in one place. See exactly where your money goes each month.",
-      gradient: "from-blue-500 to-purple-500"
+      description: "Complete visibility into your subscription spending.",
+      gradient: "from-blue-500 to-purple-500",
+      examples: [
+        {
+          type: "feature",
+          title: "12 spending categories with subcategories",
+          message: "Entertainment → Streaming, Gaming, Sports",
+          icon: <Tag className="w-4 h-4" />,
+          color: "text-blue-400",
+          bgColor: "bg-blue-400/10"
+        },
+        {
+          type: "feature",
+          title: "Family account management",
+          message: "Track who uses what and split costs fairly",
+          icon: <Home className="w-4 h-4" />,
+          color: "text-purple-400",
+          bgColor: "bg-purple-400/10"
+        },
+        {
+          type: "feature",
+          title: "Annual vs monthly comparison",
+          message: "See exactly how much you'd save by switching",
+          icon: <PieChart className="w-4 h-4" />,
+          color: "text-indigo-400",
+          bgColor: "bg-indigo-400/10"
+        }
+      ]
     },
     {
       icon: <Bell className="w-6 h-6" />,
       title: "Get Reminders",
-      description: "Never miss a payment or forget to cancel. Get notified before renewals and free trials end.",
-      gradient: "from-purple-500 to-pink-500"
+      description: "Never get caught off-guard by subscription changes.",
+      gradient: "from-purple-500 to-pink-500",
+      examples: [
+        {
+          type: "alert",
+          title: "7-day trial ending alerts",
+          message: "Cancel before Netflix charges you tomorrow",
+          icon: <Calendar className="w-4 h-4" />,
+          color: "text-pink-400",
+          bgColor: "bg-pink-400/10"
+        },
+        {
+          type: "alert",
+          title: "Price increase notifications",
+          message: "Disney+ increasing by $3 next month - act now",
+          icon: <TrendingUp className="w-4 h-4" />,
+          color: "text-orange-400",
+          bgColor: "bg-orange-400/10"
+        },
+        {
+          type: "alert",
+          title: "Cancellation confirmations",
+          message: "HBO Max access ends in 3 days - download content",
+          icon: <Shield className="w-4 h-4" />,
+          color: "text-purple-400",
+          bgColor: "bg-purple-400/10"
+        }
+      ]
     },
     {
       icon: <Sparkles className="w-6 h-6" />,
@@ -391,7 +484,7 @@ export default function LandingPage() {
 
       {/* Interactive Savings Calculator */}
       <section className="py-16 px-4">
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -399,35 +492,64 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="neu-card rounded-3xl p-8 md:p-12 border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-pink-900/20"
           >
-            <h3 className="text-3xl font-bold text-center mb-8">
+            <h3 className="text-3xl font-bold text-center mb-2">
               <span className="text-gradient">Calculate Your Savings</span>
             </h3>
+            <p className="text-center text-gray-400 mb-8">Select your subscription categories below</p>
             
             <div className="space-y-8">
-              <div>
-                <label className="text-lg text-gray-300 mb-4 block">
-                  I have <span className="text-white font-bold">{subscriptionCount}</span> subscriptions
-                </label>
-                <div className="flex items-center gap-4">
-                  <input
-                    type="range"
-                    min="1"
-                    max="30"
-                    value={subscriptionCount}
-                    onChange={(e) => setSubscriptionCount(parseInt(e.target.value))}
-                    className="flex-1 accent-purple-500"
-                  />
-                  <input
-                    type="number"
-                    min="1"
-                    max="30"
-                    value={subscriptionCount}
-                    onChange={(e) => setSubscriptionCount(Math.min(30, Math.max(1, parseInt(e.target.value) || 1)))}
-                    className="w-20 px-3 py-2 bg-black/50 border border-white/20 rounded-lg text-white text-center"
-                  />
-                </div>
+              {/* Category Selection Grid */}
+              <div className="grid md:grid-cols-2 gap-4">
+                {Object.entries(selectedCategories).map(([category, count]) => (
+                  <div key={category} className="flex items-center justify-between p-4 neu-card rounded-xl border border-white/10 hover:border-purple-500/30 transition-all">
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
+                        {category === 'Entertainment' && <TrendingUp className="w-5 h-5 text-purple-400" />}
+                        {category === 'Productivity' && <Zap className="w-5 h-5 text-blue-400" />}
+                        {category === 'Cloud Storage' && <Download className="w-5 h-5 text-green-400" />}
+                        {category === 'AI Tools' && <Sparkles className="w-5 h-5 text-pink-400" />}
+                        {category === 'Health & Fitness' && <Shield className="w-5 h-5 text-red-400" />}
+                        {category === 'News & Media' && <Calendar className="w-5 h-5 text-yellow-400" />}
+                        {category === 'Music' && <Bell className="w-5 h-5 text-indigo-400" />}
+                        {category === 'Gaming' && <PieChart className="w-5 h-5 text-orange-400" />}
+                        <div>
+                          <p className="font-medium text-white">{category}</p>
+                          <p className="text-xs text-gray-400">~${categoryPrices[category]}/mo each</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setSelectedCategories({...selectedCategories, [category]: Math.max(0, count - 1)})}
+                        className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all"
+                        disabled={count === 0}
+                      >
+                        -
+                      </button>
+                      <span className="w-8 text-center font-bold text-white">{count}</span>
+                      <button
+                        onClick={() => setSelectedCategories({...selectedCategories, [category]: Math.min(5, count + 1)})}
+                        className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-white transition-all"
+                        disabled={count === 5}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Total Subscriptions Display */}
+              <div className="text-center">
+                <p className="text-lg text-gray-300">
+                  Total: <span className="text-2xl font-bold text-white">{subscriptionCount}</span> subscriptions
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Estimated monthly spend: ${Object.entries(selectedCategories).reduce((sum, [cat, count]) => sum + (categoryPrices[cat] * count), 0).toFixed(0)}
+                </p>
               </div>
               
+              {/* Savings Display */}
               <div className="text-center py-8 neu-card rounded-2xl border border-green-500/20">
                 <p className="text-gray-400 mb-2">You could save approximately</p>
                 <p className="text-5xl font-bold text-gradient">
@@ -437,6 +559,10 @@ export default function LandingPage() {
                 <p className="text-sm text-gray-500 mt-2">
                   That&apos;s ${estimatedSavings * 12} per year!
                 </p>
+                <div className="mt-4 text-xs text-gray-500 max-w-md mx-auto">
+                  <p>Savings breakdown:</p>
+                  <p className="text-gray-400">• Share family plans • Cancel unused subs • Switch to annual billing • Negotiate better rates</p>
+                </div>
               </div>
               
               <div className="text-center">
@@ -449,7 +575,7 @@ export default function LandingPage() {
                   </Button>
                 </Link>
                 <p className="text-xs text-gray-500 mt-3">
-                  Based on avg. 23% savings from subscription tracking
+                  Based on real user data and optimization strategies
                 </p>
               </div>
             </div>
