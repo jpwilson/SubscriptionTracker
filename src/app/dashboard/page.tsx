@@ -17,6 +17,7 @@ import { MobileNavigation } from '@/components/mobile-navigation'
 import { WelcomeBanner } from '@/components/welcome-banner'
 import { useUserPreferences } from '@/hooks/use-user-preferences'
 import { CenterToast } from '@/components/center-toast'
+import { TwitterConversion } from '@/components/twitter-conversion'
 
 export const dynamic = 'force-dynamic'
 
@@ -33,6 +34,19 @@ function DashboardContent() {
   // Use the new hook for stats
   const { data: stats, isLoading: statsLoading } = useSubscriptionStats()
   const { data: preferences } = useUserPreferences()
+  const [hasTrackedSignup, setHasTrackedSignup] = useState(false)
+
+  // Track signup conversion for new users
+  useEffect(() => {
+    if (user && !hasTrackedSignup) {
+      // Check if this is a new user (first visit to dashboard)
+      const isNewUser = !localStorage.getItem('returning_user')
+      if (isNewUser) {
+        localStorage.setItem('returning_user', 'true')
+        setHasTrackedSignup(true)
+      }
+    }
+  }, [user, hasTrackedSignup])
 
   // Check for deletion success message
   useEffect(() => {
@@ -80,6 +94,15 @@ function DashboardContent() {
 
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
+      {/* Twitter conversion tracking for new signups */}
+      {hasTrackedSignup && (
+        <TwitterConversion 
+          eventType="signup" 
+          status="completed"
+          email={user?.email || undefined}
+        />
+      )}
+      
       {/* Modern animated background */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">

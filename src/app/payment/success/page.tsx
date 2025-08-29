@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { CheckCircle, Sparkles, ArrowRight, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/providers/supabase-auth-provider'
+import { TwitterConversion } from '@/components/twitter-conversion'
 
 function PaymentSuccessContent() {
   const router = useRouter()
@@ -69,6 +70,17 @@ function PaymentSuccessContent() {
 
   return (
     <div className="min-h-screen bg-background relative flex items-center justify-center">
+      {/* Twitter conversion tracking for premium upgrade */}
+      {!isLoading && user && (
+        <TwitterConversion 
+          eventType="purchase" 
+          value={5} 
+          currency="USD"
+          status="completed"
+          email={user.email || undefined}
+        />
+      )}
+      
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
