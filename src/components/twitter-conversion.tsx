@@ -13,11 +13,11 @@ interface TwitterConversionProps {
 
 export function TwitterConversion({ 
   eventType, 
-  value = null, 
+  value = undefined, 
   currency = 'USD',
-  email = null,
-  status = null,
-  conversionId = null
+  email = undefined,
+  status = undefined,
+  conversionId = undefined
 }: TwitterConversionProps) {
   // Only run in production
   if (process.env.NODE_ENV !== 'production') {
@@ -49,13 +49,13 @@ export function TwitterConversion({
           // Twitter conversion tracking event
           if (typeof twq !== 'undefined') {
             twq('event', 'tw-qf13i-qf13k', {
-              value: ${value ? value : 'null'},
+              value: ${value !== undefined ? value : 'null'},
               currency: ${currency ? `'${currency}'` : 'null'},
               contents: [{
                 content_type: '${getContentType()}',
                 content_id: '${eventType}',
                 content_name: '${eventType}_event',
-                content_price: ${value ? value : 'null'},
+                content_price: ${value !== undefined ? value : 'null'},
                 num_items: 1,
                 content_group_id: 'subtracker'
               }],
