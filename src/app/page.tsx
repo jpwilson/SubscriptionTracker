@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, LayoutGroup } from 'framer-motion'
-import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, CreditCard, Calendar, Tag, PieChart, Download, Moon, Shield, Zap, Home, AlertTriangle, DollarSign, Star } from 'lucide-react'
+import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, CreditCard, Calendar, Tag, PieChart, Download, Moon, Shield, Zap, Home, AlertTriangle, DollarSign, Star, Lock, Mail, ImageIcon, Building2, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { Button } from '@/components/ui/button'
@@ -215,19 +215,46 @@ export default function LandingPage() {
       number: "01",
       title: "Sign Up Free",
       description: "Create your account in seconds. No credit card required.",
-      icon: <Shield className="w-5 h-5" />
+      icon: <Shield className="w-5 h-5" />,
+      features: [
+        "No credit card needed",
+        "5-minute setup",
+        "Free forever plan"
+      ]
     },
     {
       number: "02",
       title: "Add Subscriptions",
-      description: "Quickly add all your subscriptions with our smart entry system.",
-      icon: <PieChart className="w-5 h-5" />
+      description: "Multiple ways to add your subscriptions instantly.",
+      icon: <PieChart className="w-5 h-5" />,
+      features: [
+        "Manual quick entry",
+        "Email scanning (Pro)",
+        "Screenshot import (Pro)",
+        "Bank sync coming soon"
+      ],
+      proFeatures: [
+        { icon: <Mail className="w-3 h-3" />, text: "Email scanning" },
+        { icon: <ImageIcon className="w-3 h-3" />, text: "Image import" },
+        { icon: <CreditCard className="w-3 h-3" />, text: "Bank connections" }
+      ]
     },
     {
       number: "03",
       title: "Save Money",
-      description: "Get insights, reminders, and discover unused subscriptions.",
-      icon: <Zap className="w-5 h-5" />
+      description: "Get actionable insights that cut costs immediately.",
+      icon: <Zap className="w-5 h-5" />,
+      features: [
+        "Unused subscription alerts",
+        "Price hike notifications",
+        "Duplicate service detection",
+        "Family sharing opportunities"
+      ],
+      proFeatures: [
+        { icon: <Users className="w-3 h-3" />, text: "Manage family costs" },
+        { icon: <Building2 className="w-3 h-3" />, text: "Business expenses" },
+        { icon: <Tag className="w-3 h-3" />, text: "Custom aliases" }
+      ]
     }
   ]
 
@@ -739,6 +766,30 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </div>
+          
+          {/* Privacy & Security Message */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            viewport={{ once: true }}
+            className="mt-16 text-center"
+          >
+            <div className="neu-card rounded-2xl p-6 max-w-3xl mx-auto border border-green-500/20 bg-gradient-to-br from-green-900/10 to-transparent">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <Lock className="w-5 h-5 text-green-400" />
+                <h3 className="text-lg font-bold text-green-400">Your Privacy is Our Priority</h3>
+                <Lock className="w-5 h-5 text-green-400" />
+              </div>
+              <p className="text-gray-300 mb-2">
+                🔐 <strong>Bank-level encryption</strong> • We can&apos;t see your financial data
+              </p>
+              <p className="text-sm text-gray-400">
+                Your subscription details are encrypted end-to-end. We have zero knowledge of your spending habits, 
+                payment methods, or personal financial information. Only you can see your data.
+              </p>
+            </div>
+          </motion.div>
         </div>
       </section>
 
