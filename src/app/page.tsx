@@ -74,7 +74,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['features', 'how-it-works', 'pricing']
+      const sections = ['features', 'calculator', 'how-it-works', 'pricing']
       const scrollPosition = window.scrollY + 100
 
       for (const section of sections) {
@@ -337,6 +337,18 @@ export default function LandingPage() {
                   )}
                 </button>
                 <button 
+                  onClick={() => scrollToSection('calculator')} 
+                  className={`relative text-gray-300 hover:text-white transition-colors ${activeSection === 'calculator' ? 'text-white' : ''}`}
+                >
+                  Calculator
+                  {activeSection === 'calculator' && (
+                    <motion.div
+                      layoutId="activeSection"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
+                    />
+                  )}
+                </button>
+                <button 
                   onClick={() => scrollToSection('how-it-works')} 
                   className={`relative text-gray-300 hover:text-white transition-colors ${activeSection === 'how-it-works' ? 'text-white' : ''}`}
                 >
@@ -477,7 +489,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 px-4 bg-gradient-to-b from-transparent to-purple-900/10">
+      <section id="calculator" className="py-16 px-4 bg-gradient-to-b from-transparent to-purple-900/10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
