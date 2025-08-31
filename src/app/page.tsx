@@ -398,10 +398,17 @@ export default function LandingPage() {
               <span className="text-white">of Your Subscriptions</span>
             </h1>
             
-            <p className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto">
-              The average person wastes <span className="text-purple-400 font-semibold">$273/month</span> on forgotten subscriptions. 
-              SubTracker helps you track, manage, and optimize all your subscriptions in one place.
-            </p>
+            <div className="text-xl mb-12 max-w-3xl mx-auto space-y-2">
+              <p className="text-gray-300">
+                <span className="text-2xl font-bold text-orange-400">2–5 subscriptions</span> you&apos;ve forgotten.
+              </p>
+              <p className="text-gray-300">
+                <span className="text-2xl font-bold text-red-400">$40–$300/month</span> slipping away.
+              </p>
+              <p className="text-white font-semibold text-2xl mt-4">
+                SubTracker puts you back in control.
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
               <Link href="/login">
