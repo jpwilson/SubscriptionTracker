@@ -168,7 +168,7 @@ export default function InsightsPage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
-          <Lightbulb className="w-12 h-12 text-purple-500 animate-pulse mx-auto mb-4" />
+          <Lightbulb className="w-12 h-12 text-emerald-500 animate-pulse mx-auto mb-4" />
           <p className="text-muted-foreground">Analyzing your subscriptions...</p>
         </div>
       </div>
@@ -180,8 +180,8 @@ export default function InsightsPage() {
       {/* Animated background */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -200,7 +200,7 @@ export default function InsightsPage() {
           
           <div className="text-center flex-1">
             <div className="inline-flex items-center justify-center w-14 h-14 mb-4 neu-card rounded-2xl">
-              <Lightbulb className="w-7 h-7 text-purple-400" />
+              <Lightbulb className="w-7 h-7 text-emerald-400" />
             </div>
             <h1 className="text-4xl font-bold text-gradient">Smart Insights</h1>
             <p className="text-muted-foreground">AI-powered recommendations to save money</p>
@@ -215,11 +215,11 @@ export default function InsightsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="mb-8 p-6 neu-card rounded-2xl border border-purple-500/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10"
+            className="mb-8 p-6 neu-card rounded-2xl border border-emerald-500/20 bg-gradient-to-r from-emerald-500/10 to-teal-500/10"
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="p-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500">
+                <div className="p-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500">
                   <Zap className="w-8 h-8 text-white" />
                 </div>
                 <div>
@@ -250,14 +250,14 @@ export default function InsightsPage() {
                     className={`neu-card p-6 rounded-2xl border ${
                       insight.impact === 'high' ? 'border-red-500/20' :
                       insight.impact === 'medium' ? 'border-yellow-500/20' :
-                      'border-purple-500/20'
+                      'border-emerald-500/20'
                     }`}
                   >
                     <div className="flex items-start gap-4 mb-4">
                       <div className={`p-3 rounded-xl ${
                         insight.impact === 'high' ? 'bg-red-500/20 text-red-400' :
                         insight.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-purple-500/20 text-purple-400'
+                        'bg-emerald-500/20 text-emerald-400'
                       }`}>
                         {insight.icon}
                       </div>
@@ -285,9 +285,9 @@ export default function InsightsPage() {
               transition={{ delay: 0.2 }}
               className="absolute inset-0 flex items-center justify-center p-4"
             >
-              <div className="max-w-2xl w-full neu-card p-8 rounded-3xl border border-purple-500/30 bg-background/95 backdrop-blur-sm">
+              <div className="max-w-2xl w-full neu-card p-8 rounded-3xl border border-emerald-500/30 bg-background/95 backdrop-blur-sm">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-lg">
+                  <div className="inline-flex items-center justify-center w-16 h-16 mb-4 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-lg">
                     <Lock className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-3xl font-bold text-gradient mb-2">Unlock Smart Insights</h2>
@@ -348,7 +348,7 @@ export default function InsightsPage() {
                   </div>
                   <Button 
                     onClick={() => router.push('/payment')}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-8 py-6 text-lg font-semibold"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-xl transform hover:scale-105 transition-all duration-300 px-8 py-6 text-lg font-semibold"
                   >
                     <Sparkles className="w-5 h-5 mr-2" />
                     Unlock Insights for $5/month
@@ -368,7 +368,7 @@ export default function InsightsPage() {
                   animate={{ opacity: 1 }}
                   className="col-span-full text-center py-12"
                 >
-                  <TrendingUp className="w-16 h-16 text-purple-400 mx-auto mb-4" />
+                  <TrendingUp className="w-16 h-16 text-emerald-400 mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-2">Great job!</h3>
                   <p className="text-muted-foreground">
                     Your subscriptions are well-optimized. Keep tracking to maintain your savings.
@@ -384,14 +384,14 @@ export default function InsightsPage() {
                     className={`neu-card p-6 rounded-2xl border ${
                       insight.impact === 'high' ? 'border-red-500/20' :
                       insight.impact === 'medium' ? 'border-yellow-500/20' :
-                      'border-purple-500/20'
+                      'border-emerald-500/20'
                     }`}
                   >
                     <div className="flex items-start gap-4 mb-4">
                       <div className={`p-3 rounded-xl ${
                         insight.impact === 'high' ? 'bg-red-500/20 text-red-400' :
                         insight.impact === 'medium' ? 'bg-yellow-500/20 text-yellow-400' :
-                        'bg-purple-500/20 text-purple-400'
+                        'bg-emerald-500/20 text-emerald-400'
                       }`}>
                         {insight.icon}
                       </div>
@@ -414,7 +414,7 @@ export default function InsightsPage() {
                         className={`w-full ${
                           insight.actionType === 'cancel' 
                             ? 'bg-red-500 hover:bg-red-600' 
-                            : 'bg-purple-600 hover:bg-purple-700'
+                            : 'bg-emerald-600 hover:bg-emerald-700'
                         }`}
                       >
                         {insight.actionLabel}

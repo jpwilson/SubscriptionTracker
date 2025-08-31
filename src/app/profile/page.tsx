@@ -169,8 +169,8 @@ export default function ProfilePage() {
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -185,7 +185,7 @@ export default function ProfilePage() {
           <div className="neu-card rounded-2xl p-4 sm:p-8 border border-white/10 mb-8">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center flex-shrink-0">
                   <User className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
                 </div>
                 <div className="text-center sm:text-left">
@@ -196,7 +196,7 @@ export default function ProfilePage() {
                         Free Plan
                       </span>
                     ) : (
-                      <span className="px-3 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm flex items-center gap-1">
+                      <span className="px-3 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm flex items-center gap-1">
                         <Crown className="w-4 h-4" />
                         Premium
                       </span>
@@ -237,7 +237,7 @@ export default function ProfilePage() {
                       onClick={() => router.push('/pricing')}
                       className="w-full flex items-center gap-2 px-4 py-3 text-sm text-white hover:bg-slate-700 transition-colors border-b border-slate-700"
                     >
-                      <Crown className="w-4 h-4 text-purple-400" />
+                      <Crown className="w-4 h-4 text-emerald-400" />
                       Upgrade to Premium
                     </button>
                   )}
@@ -265,8 +265,8 @@ export default function ProfilePage() {
                   <p className="text-muted-foreground text-sm">Active Subscriptions</p>
                   <p className="text-3xl font-bold text-white mt-1">{subscriptions.length}</p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                  <CreditCard className="w-6 h-6 text-purple-400" />
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                  <CreditCard className="w-6 h-6 text-emerald-400" />
                 </div>
               </div>
             </motion.div>
@@ -282,8 +282,8 @@ export default function ProfilePage() {
                     {formatCurrency(stats?.monthlyTotal || 0, preferences?.currency || 'USD')}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-pink-400" />
+                <div className="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center">
+                  <TrendingUp className="w-6 h-6 text-teal-400" />
                 </div>
               </div>
             </motion.div>
@@ -312,7 +312,7 @@ export default function ProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="neu-card rounded-2xl p-4 sm:p-8 border border-purple-500/30 mb-8 bg-gradient-to-br from-purple-500/10 to-pink-500/10"
+              className="neu-card rounded-2xl p-4 sm:p-8 border border-emerald-500/30 mb-8 bg-gradient-to-br from-emerald-500/10 to-teal-500/10"
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div className="flex-1">
@@ -324,15 +324,15 @@ export default function ProfilePage() {
                   </p>
                   <ul className="space-y-2 text-xs sm:text-sm text-muted-foreground">
                     <li className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                      <Shield className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                       Price change alerts & notifications
                     </li>
                     <li className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                      <Sparkles className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                       AI-powered savings recommendations
                     </li>
                     <li className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-purple-400 flex-shrink-0" />
+                      <TrendingUp className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                       Advanced spending analytics
                     </li>
                   </ul>
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                   </div>
                   <Button
                     onClick={() => router.push('/payment?plan=premium')}
-                    className="mt-4 w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+                    className="mt-4 w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg"
                   >
                     Upgrade Now
                     <ChevronRight className="w-4 h-4 ml-2" />
@@ -367,7 +367,7 @@ export default function ProfilePage() {
             <div className="relative">
               <div className="neu-card rounded-xl p-6 border border-white/10">
                 <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-purple-400" />
+                  <Globe className="w-5 h-5 text-emerald-400" />
                   Display Currency
                 </h3>
                 <button
@@ -392,7 +392,7 @@ export default function ProfilePage() {
                         setShowCurrencyDropdown(false)
                       }}
                       className={`w-full px-4 py-2 text-left hover:bg-slate-700 transition-colors flex items-center justify-between ${
-                        preferences?.currency === currency.code ? 'bg-slate-700 text-purple-400' : 'text-white'
+                        preferences?.currency === currency.code ? 'bg-slate-700 text-emerald-400' : 'text-white'
                       }`}
                     >
                       <span>{currency.name}</span>
@@ -493,7 +493,7 @@ export default function ProfilePage() {
               {subscriptions.length > 0 && (
                 <Button
                   variant="outline"
-                  className="w-full border-purple-500/30 hover:bg-purple-500/10"
+                  className="w-full border-emerald-500/30 hover:bg-emerald-500/10"
                   onClick={() => {
                     handleExportData()
                     // Don't close modal - let user decide

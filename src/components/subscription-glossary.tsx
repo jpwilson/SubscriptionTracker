@@ -28,7 +28,7 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
     {
       name: 'FREE TRIAL',
       icon: <Sparkles className="w-4 h-4" />,
-      color: 'bg-gradient-to-r from-purple-500 to-pink-500 text-white',
+      color: 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white',
       description: 'Free trial period is active',
       details: `You're currently in a free trial. You won't be charged until the trial ends.`,
       example: 'A 30-day free trial for a streaming service'
@@ -118,9 +118,9 @@ export function SubscriptionGlossary({ isOpen, onClose }: SubscriptionGlossaryPr
             ))}
           </div>
           
-          <div className="mt-8 p-4 rounded-xl bg-purple-500/10 border border-purple-500/20">
+          <div className="mt-8 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
             <h3 className="text-lg font-semibold text-white mb-2 flex items-center gap-2">
-              <Clock className="w-5 h-5 text-purple-400" />
+              <Clock className="w-5 h-5 text-emerald-400" />
               How Status Changes Work
             </h3>
             <div className="space-y-2 text-sm text-white/70">

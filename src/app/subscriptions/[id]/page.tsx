@@ -40,7 +40,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
+        <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
       </div>
     )
   }
@@ -52,7 +52,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
           <p className="text-xl text-muted-foreground mb-4">Subscription not found</p>
           <Button
             onClick={() => router.push('/subscriptions')}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+            className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg"
           >
             Back to Subscriptions
           </Button>
@@ -150,8 +150,8 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
       <div className="relative z-10 max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -166,7 +166,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
             <div className="flex items-center gap-3">
             <Button
               onClick={() => setShowEditModal(true)}
-              className="neu-button px-4 py-2 rounded-xl text-purple-400 hover:text-purple-300"
+              className="neu-button px-4 py-2 rounded-xl text-emerald-400 hover:text-emerald-300"
             >
               <Edit3 className="w-4 h-4 mr-2" />
               Edit
@@ -185,7 +185,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
           <div className="flex items-center gap-4">
             <div
               className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg"
-              style={{ backgroundColor: subscription.color || '#8B5CF6' }}
+              style={{ backgroundColor: subscription.color || '#10B981' }}
             >
               {subscription.icon || '📱'}
             </div>
@@ -193,7 +193,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
               <div className="flex items-center gap-3 mb-2">
                 <h1 className="text-4xl font-bold text-gradient">{subscription.name}</h1>
                 {subscription.isTrial && !(subscription.isTrial && daysUntilPayment <= 7 && daysUntilPayment >= 0) && (
-                  <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg shadow-md">
+                  <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg shadow-md">
                     TRIAL
                   </span>
                 )}
@@ -240,13 +240,13 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Monthly Cost</p>
-                <p className="text-2xl font-bold text-purple-400">
+                <p className="text-2xl font-bold text-emerald-400">
                   {formatCurrency(monthlyAmount)}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground mb-1">Yearly Cost</p>
-                <p className="text-2xl font-bold text-pink-400">
+                <p className="text-2xl font-bold text-teal-400">
                   {formatCurrency(monthlyAmount * 12)}
                 </p>
               </div>
@@ -273,8 +273,8 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                 <AreaChart data={generatePriceHistory()}>
                   <defs>
                     <linearGradient id="priceGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#333" />
@@ -300,7 +300,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                   <Area
                     type="monotone"
                     dataKey="price"
-                    stroke="#8B5CF6"
+                    stroke="#10B981"
                     strokeWidth={2}
                     fill="url(#priceGradient)"
                   />
@@ -309,8 +309,8 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
             </div>
             
             {subscription.previousAmount && (
-              <div className="mt-4 p-3 rounded-xl bg-purple-500/10 border border-purple-500/30">
-                <p className="text-sm text-purple-300">
+              <div className="mt-4 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                <p className="text-sm text-emerald-300">
                   Price changed from {formatCurrency(subscription.previousAmount)} to {formatCurrency(subscription.amount)}
                 </p>
               </div>
@@ -336,7 +336,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
                 <div className="flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-purple-400" />
+                  <Calendar className="w-5 h-5 text-emerald-400" />
                   <div>
                     <p className="text-sm text-muted-foreground">Next Payment</p>
                     <p className="text-white font-medium">
@@ -346,7 +346,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-muted-foreground">In</p>
-                  <p className="text-lg font-bold text-purple-400">
+                  <p className="text-lg font-bold text-emerald-400">
                     {daysUntilPayment} days
                   </p>
                 </div>
@@ -354,7 +354,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
 
               <div className="flex items-center justify-between p-3 rounded-xl bg-white/5">
                 <div className="flex items-center gap-3">
-                  <Clock className="w-5 h-5 text-pink-400" />
+                  <Clock className="w-5 h-5 text-teal-400" />
                   <div>
                     <p className="text-sm text-muted-foreground">Started</p>
                     <p className="text-white font-medium">
@@ -407,14 +407,14 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
               {subscription.url && (
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <LinkIcon className="w-5 h-5 text-purple-400" />
+                    <LinkIcon className="w-5 h-5 text-emerald-400" />
                     <p className="text-muted-foreground">Website</p>
                   </div>
                   <a
                     href={subscription.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
+                    className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 transition-colors"
                   >
                     Visit Website
                     <ExternalLink className="w-4 h-4" />
@@ -425,7 +425,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
               {subscription.notes && (
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <FileText className="w-5 h-5 text-purple-400" />
+                    <FileText className="w-5 h-5 text-emerald-400" />
                     <p className="text-muted-foreground">Notes</p>
                   </div>
                   <div className="p-4 rounded-xl bg-white/5 border border-white/10">
@@ -436,7 +436,7 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-purple-400" />
+                  <CreditCard className="w-5 h-5 text-emerald-400" />
                   <p className="text-muted-foreground">Billing Cycle</p>
                 </div>
                 <p className="text-white font-medium capitalize">{subscription.billingCycle}</p>
@@ -454,14 +454,14 @@ export default function SubscriptionDetailPage({ params }: { params: { id: strin
             <Button
               onClick={() => subscription.url && window.open(subscription.url, '_blank')}
               disabled={!subscription.url}
-              className="neu-button px-6 py-4 rounded-xl flex items-center justify-center gap-3 hover:border-purple-500/30 disabled:opacity-50"
+              className="neu-button px-6 py-4 rounded-xl flex items-center justify-center gap-3 hover:border-emerald-500/30 disabled:opacity-50"
             >
               <ExternalLink className="w-5 h-5" />
               Visit Website
             </Button>
             <Button
               onClick={() => router.push('/dashboard')}
-              className="neu-button px-6 py-4 rounded-xl flex items-center justify-center gap-3 hover:border-purple-500/30"
+              className="neu-button px-6 py-4 rounded-xl flex items-center justify-center gap-3 hover:border-emerald-500/30"
             >
               <CreditCard className="w-5 h-5" />
               Manage Payment

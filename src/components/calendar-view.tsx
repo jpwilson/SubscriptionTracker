@@ -128,23 +128,23 @@ export function CalendarView({ subscriptions, userCurrency = 'USD' }: CalendarVi
         <div className="flex items-center gap-4">
           <button
             onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            className="p-2 rounded-xl neu-button hover:border-purple-500/30 transition-all"
+            className="p-2 rounded-xl neu-button hover:border-emerald-500/30 transition-all"
           >
-            <ChevronLeft className="w-5 h-5 text-purple-400" />
+            <ChevronLeft className="w-5 h-5 text-emerald-400" />
           </button>
           <h2 className="text-2xl font-bold text-gradient">
             {format(currentMonth, 'MMMM yyyy')}
           </h2>
           <button
             onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            className="p-2 rounded-xl neu-button hover:border-purple-500/30 transition-all"
+            className="p-2 rounded-xl neu-button hover:border-emerald-500/30 transition-all"
           >
-            <ChevronRight className="w-5 h-5 text-purple-400" />
+            <ChevronRight className="w-5 h-5 text-emerald-400" />
           </button>
         </div>
         <button
           onClick={() => setCurrentMonth(new Date())}
-          className="px-4 py-2 rounded-xl neu-button text-purple-400 hover:text-purple-300 transition-colors"
+          className="px-4 py-2 rounded-xl neu-button text-emerald-400 hover:text-emerald-300 transition-colors"
         >
           Today
         </button>
@@ -177,14 +177,14 @@ export function CalendarView({ subscriptions, userCurrency = 'USD' }: CalendarVi
                 className={`
                   relative min-h-[60px] sm:min-h-[100px] p-1 sm:p-2 rounded-xl
                   ${isCurrentMonth ? 'bg-white/5' : 'bg-white/2 opacity-50'}
-                  ${isToday ? 'ring-2 ring-purple-500' : ''}
+                  ${isToday ? 'ring-2 ring-emerald-500' : ''}
                   ${subs.length > 0 ? 'cursor-pointer hover:bg-white/10' : ''}
                   transition-all
                 `}
                 onClick={() => handleDayClick(day)}
               >
                 {/* Day number */}
-                <div className={`text-xs sm:text-sm font-medium ${isToday ? 'text-purple-400' : 'text-gray-400'}`}>
+                <div className={`text-xs sm:text-sm font-medium ${isToday ? 'text-emerald-400' : 'text-gray-400'}`}>
                   {format(day, 'd')}
                 </div>
                 
@@ -206,7 +206,7 @@ export function CalendarView({ subscriptions, userCurrency = 'USD' }: CalendarVi
                     </div>
                   )}
                   {subs.length > 0 && (
-                    <div className="text-xs font-semibold text-purple-400">
+                    <div className="text-xs font-semibold text-emerald-400">
                       {formatCurrency(dayTotal, userCurrency)}
                     </div>
                   )}
@@ -265,7 +265,7 @@ export function CalendarView({ subscriptions, userCurrency = 'USD' }: CalendarVi
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-white">{formatCurrency(sub.amount, userCurrency)}/yr</p>
-                  <p className="text-sm text-purple-400">{formatCurrency(sub.monthlyEquivalent, userCurrency)}/mo</p>
+                  <p className="text-sm text-emerald-400">{formatCurrency(sub.monthlyEquivalent, userCurrency)}/mo</p>
                 </div>
               </div>
             ))}

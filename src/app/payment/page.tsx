@@ -34,7 +34,7 @@ function PaymentContent() {
         'Priority support'
       ],
       badge: null,
-      color: 'from-purple-500 to-pink-500'
+      color: 'from-emerald-500 to-teal-500'
     },
     annual: {
       name: 'Annual',
@@ -116,8 +116,8 @@ function PaymentContent() {
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
       <div className="relative z-10 max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -156,7 +156,7 @@ function PaymentContent() {
                 whileTap={{ scale: 0.98 }}
                 className={`relative neu-card rounded-2xl p-6 border transition-all duration-300 ${
                   selectedPlan === key 
-                    ? 'border-purple-500 shadow-lg shadow-purple-500/20' 
+                    ? 'border-emerald-500 shadow-lg shadow-emerald-500/20' 
                     : 'border-white/10 hover:border-white/20'
                 }`}
               >
@@ -250,7 +250,7 @@ function PaymentContent() {
             
             {/* Stripe Checkout Info */}
             <div className="bg-slate-800/50 rounded-xl p-8 text-center mb-6">
-              <Shield className="w-12 h-12 text-purple-400 mx-auto mb-4" />
+              <Shield className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-white mb-2">Secure Checkout with Stripe</h3>
               <p className="text-muted-foreground text-sm">
                 You&apos;ll be redirected to Stripe&apos;s secure checkout page
@@ -260,7 +260,7 @@ function PaymentContent() {
             <div className="space-y-4">
               <Button
                 onClick={handleCheckout}
-                className="w-full relative px-6 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+                className="w-full relative px-6 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 disabled={isLoading}
               >
                 <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -305,7 +305,7 @@ function PaymentContent() {
         >
           <p className="text-muted-foreground">
             Questions? Contact us at{' '}
-            <a href="mailto:support@subtracker.app" className="text-purple-400 hover:text-purple-300">
+            <a href="mailto:support@subtracker.app" className="text-emerald-400 hover:text-emerald-300">
               support@subtracker.app
             </a>
           </p>

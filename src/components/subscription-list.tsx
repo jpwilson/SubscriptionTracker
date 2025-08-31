@@ -207,8 +207,8 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
     return (
       <div className="flex items-center justify-center py-12">
         <div className="relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50 animate-glow" />
-          <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-50 animate-glow" />
+          <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-2xl">
             <Loader2 className="w-8 h-8 animate-spin text-white" />
           </div>
         </div>
@@ -226,16 +226,16 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
           className="neu-card rounded-2xl p-12 text-center border border-white/10"
         >
           <div className="relative inline-flex items-center justify-center w-20 h-20 mb-6">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl" />
-            <div className="relative inline-flex items-center justify-center w-full h-full bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl border border-purple-500/20">
-              <Plus className="w-10 h-10 text-purple-400" />
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl" />
+            <div className="relative inline-flex items-center justify-center w-full h-full bg-gradient-to-br from-emerald-500/10 to-teal-500/10 rounded-2xl border border-emerald-500/20">
+              <Plus className="w-10 h-10 text-emerald-400" />
             </div>
           </div>
           <h3 className="text-2xl font-bold text-gradient mb-2">No subscriptions yet</h3>
           <p className="text-muted-foreground mb-6">Start tracking your subscriptions to see insights and save money</p>
           <Button
             onClick={() => setShowAddModal(true)}
-            className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            className="relative px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
             <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl" />
             <span className="relative flex items-center">
@@ -263,12 +263,12 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
             Your Subscriptions
           </h2>
           {/* View Toggle - More prominent */}
-          <div className="flex items-center gap-1 p-1.5 bg-white/5 rounded-xl border border-purple-500/20 shadow-lg shadow-purple-500/10">
+          <div className="flex items-center gap-1 p-1.5 bg-white/5 rounded-xl border border-emerald-500/20 shadow-lg shadow-emerald-500/10">
             <button
               onClick={() => setViewType('list')}
               className={`px-3.5 py-2 rounded-lg flex items-center gap-2 transition-all font-medium ${
                 viewType === 'list' 
-                  ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border border-purple-400/40 shadow-md' 
+                  ? 'bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-white border border-emerald-400/40 shadow-md' 
                   : 'text-gray-400 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -279,7 +279,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               onClick={() => setViewType('calendar')}
               className={`px-3.5 py-2 rounded-lg flex items-center gap-2 transition-all font-medium ${
                 viewType === 'calendar' 
-                  ? 'bg-gradient-to-r from-purple-500/30 to-pink-500/30 text-white border border-purple-400/40 shadow-md' 
+                  ? 'bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-white border border-emerald-400/40 shadow-md' 
                   : 'text-gray-400 hover:text-white hover:bg-white/10'
               }`}
             >
@@ -297,7 +297,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search subscriptions..."
-              className="pl-10 pr-4 py-2 w-full sm:w-64 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="pl-10 pr-4 py-2 w-full sm:w-64 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
             />
           </div>
           
@@ -316,52 +316,52 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
             <div className="absolute right-0 top-full mt-2 w-56 bg-slate-800 border border-slate-700 rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10 overflow-hidden">
               <button
                 onClick={() => handleSort('nextPayment')}
-                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'nextPayment' ? 'text-purple-400' : 'text-white'}`}
+                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'nextPayment' ? 'text-emerald-400' : 'text-white'}`}
               >
                 <span>Next Payment</span>
                 <div className="flex items-center gap-1">
-                  <ArrowUp className={`w-4 h-4 ${sortBy === 'nextPayment' && sortDirection === 'asc' ? 'text-purple-400' : 'text-gray-400'}`} />
-                  <ArrowDown className={`w-4 h-4 ${sortBy === 'nextPayment' && sortDirection === 'desc' ? 'text-purple-400' : 'text-gray-400'}`} />
+                  <ArrowUp className={`w-4 h-4 ${sortBy === 'nextPayment' && sortDirection === 'asc' ? 'text-emerald-400' : 'text-gray-400'}`} />
+                  <ArrowDown className={`w-4 h-4 ${sortBy === 'nextPayment' && sortDirection === 'desc' ? 'text-emerald-400' : 'text-gray-400'}`} />
                 </div>
               </button>
               <button
                 onClick={() => handleSort('name')}
-                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'name' ? 'text-purple-400' : 'text-white'}`}
+                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'name' ? 'text-emerald-400' : 'text-white'}`}
               >
                 <span>Name</span>
                 <div className="flex items-center gap-1">
-                  <ArrowUp className={`w-4 h-4 ${sortBy === 'name' && sortDirection === 'asc' ? 'text-purple-400' : 'text-gray-400'}`} />
-                  <ArrowDown className={`w-4 h-4 ${sortBy === 'name' && sortDirection === 'desc' ? 'text-purple-400' : 'text-gray-400'}`} />
+                  <ArrowUp className={`w-4 h-4 ${sortBy === 'name' && sortDirection === 'asc' ? 'text-emerald-400' : 'text-gray-400'}`} />
+                  <ArrowDown className={`w-4 h-4 ${sortBy === 'name' && sortDirection === 'desc' ? 'text-emerald-400' : 'text-gray-400'}`} />
                 </div>
               </button>
               <button
                 onClick={() => handleSort('price')}
-                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'price' ? 'text-purple-400' : 'text-white'}`}
+                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'price' ? 'text-emerald-400' : 'text-white'}`}
               >
                 <span>Price</span>
                 <div className="flex items-center gap-1">
-                  <ArrowUp className={`w-4 h-4 ${sortBy === 'price' && sortDirection === 'asc' ? 'text-purple-400' : 'text-gray-400'}`} />
-                  <ArrowDown className={`w-4 h-4 ${sortBy === 'price' && sortDirection === 'desc' ? 'text-purple-400' : 'text-gray-400'}`} />
+                  <ArrowUp className={`w-4 h-4 ${sortBy === 'price' && sortDirection === 'asc' ? 'text-emerald-400' : 'text-gray-400'}`} />
+                  <ArrowDown className={`w-4 h-4 ${sortBy === 'price' && sortDirection === 'desc' ? 'text-emerald-400' : 'text-gray-400'}`} />
                 </div>
               </button>
               <button
                 onClick={() => handleSort('category')}
-                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'category' ? 'text-purple-400' : 'text-white'}`}
+                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'category' ? 'text-emerald-400' : 'text-white'}`}
               >
                 <span>Category</span>
                 <div className="flex items-center gap-1">
-                  <ArrowUp className={`w-4 h-4 ${sortBy === 'category' && sortDirection === 'asc' ? 'text-purple-400' : 'text-gray-400'}`} />
-                  <ArrowDown className={`w-4 h-4 ${sortBy === 'category' && sortDirection === 'desc' ? 'text-purple-400' : 'text-gray-400'}`} />
+                  <ArrowUp className={`w-4 h-4 ${sortBy === 'category' && sortDirection === 'asc' ? 'text-emerald-400' : 'text-gray-400'}`} />
+                  <ArrowDown className={`w-4 h-4 ${sortBy === 'category' && sortDirection === 'desc' ? 'text-emerald-400' : 'text-gray-400'}`} />
                 </div>
               </button>
               <button
                 onClick={() => handleSort('billingCycle')}
-                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'billingCycle' ? 'text-purple-400' : 'text-white'}`}
+                className={`w-full flex items-center justify-between px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${sortBy === 'billingCycle' ? 'text-emerald-400' : 'text-white'}`}
               >
                 <span>Billing Cycle</span>
                 <div className="flex items-center gap-1">
-                  <ArrowUp className={`w-4 h-4 ${sortBy === 'billingCycle' && sortDirection === 'asc' ? 'text-purple-400' : 'text-gray-400'}`} />
-                  <ArrowDown className={`w-4 h-4 ${sortBy === 'billingCycle' && sortDirection === 'desc' ? 'text-purple-400' : 'text-gray-400'}`} />
+                  <ArrowUp className={`w-4 h-4 ${sortBy === 'billingCycle' && sortDirection === 'asc' ? 'text-emerald-400' : 'text-gray-400'}`} />
+                  <ArrowDown className={`w-4 h-4 ${sortBy === 'billingCycle' && sortDirection === 'desc' ? 'text-emerald-400' : 'text-gray-400'}`} />
                 </div>
               </button>
             </div>
@@ -378,19 +378,19 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               <div className="text-xs font-semibold text-gray-400 px-4 pt-3 pb-1 uppercase tracking-wider">Status</div>
               <button
                 onClick={() => setFilterBy('active')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'active' ? 'text-purple-400 bg-slate-700/50' : 'text-white'}`}
+                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'active' ? 'text-emerald-400 bg-slate-700/50' : 'text-white'}`}
               >
                 Active Only
               </button>
               <button
                 onClick={() => setFilterBy('cancelled')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'cancelled' ? 'text-purple-400 bg-slate-700/50' : 'text-white'}`}
+                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'cancelled' ? 'text-emerald-400 bg-slate-700/50' : 'text-white'}`}
               >
                 Cancelled Only
               </button>
               <button
                 onClick={() => setFilterBy('all')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'all' ? 'text-purple-400 bg-slate-700/50' : 'text-white'} mb-2`}
+                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'all' ? 'text-emerald-400 bg-slate-700/50' : 'text-white'} mb-2`}
               >
                 Show All
               </button>
@@ -399,13 +399,13 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               <div className="text-xs font-semibold text-gray-400 px-4 pt-3 pb-1 uppercase tracking-wider">Billing Cycle</div>
               <button
                 onClick={() => setFilterBy('monthly')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'monthly' ? 'text-purple-400 bg-slate-700/50' : 'text-white'}`}
+                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'monthly' ? 'text-emerald-400 bg-slate-700/50' : 'text-white'}`}
               >
                 Monthly Only
               </button>
               <button
                 onClick={() => setFilterBy('yearly')}
-                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'yearly' ? 'text-purple-400 bg-slate-700/50' : 'text-white'} mb-2`}
+                className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${filterBy === 'yearly' ? 'text-emerald-400 bg-slate-700/50' : 'text-white'} mb-2`}
               >
                 Yearly Only
               </button>
@@ -428,7 +428,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
                           setSelectedCategories(selectedCategories.filter(c => c !== category.name))
                         }
                       }}
-                      className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500 focus:ring-2"
+                      className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500 focus:ring-2"
                     />
                     <div className="flex items-center gap-2 flex-1">
                       <span
@@ -444,7 +444,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
                 {selectedCategories.length > 0 && (
                   <button
                     onClick={() => setSelectedCategories([])}
-                    className="w-full text-left px-2 py-1 text-xs text-purple-400 hover:text-purple-300 transition-colors"
+                    className="w-full text-left px-2 py-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors"
                   >
                     Clear all
                   </button>
@@ -464,28 +464,28 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
         >
           <span className="text-sm text-muted-foreground">Filtering by:</span>
           {selectedCategory && (
-            <div className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/50 rounded-lg">
-              <span className="text-sm font-medium text-purple-400">{selectedCategory}</span>
+            <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/20 border border-emerald-500/50 rounded-lg">
+              <span className="text-sm font-medium text-emerald-400">{selectedCategory}</span>
               <button
                 onClick={() => {
                   setSelectedCategory(undefined)
                   // Clear the query parameter
                   router.push('/dashboard')
                 }}
-                className="text-purple-400 hover:text-purple-300 transition-colors"
+                className="text-emerald-400 hover:text-emerald-300 transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
             </div>
           )}
           {selectedCategories.map((cat) => (
-            <div key={cat} className="flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-500/50 rounded-lg">
-              <span className="text-sm font-medium text-purple-400">{cat}</span>
+            <div key={cat} className="flex items-center gap-2 px-3 py-1 bg-emerald-500/20 border border-emerald-500/50 rounded-lg">
+              <span className="text-sm font-medium text-emerald-400">{cat}</span>
               <button
                 onClick={() => {
                   setSelectedCategories(selectedCategories.filter(c => c !== cat))
                 }}
-                className="text-purple-400 hover:text-purple-300 transition-colors"
+                className="text-emerald-400 hover:text-emerald-300 transition-colors"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -512,7 +512,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.1 }}
               className={`neu-card rounded-2xl p-4 sm:p-6 hover:scale-[1.02] transition-all duration-300 border group cursor-pointer ${
-                isDemo ? 'border-purple-500/30 opacity-90' : 'border-white/10'
+                isDemo ? 'border-emerald-500/30 opacity-90' : 'border-white/10'
               }`}
               onClick={() => router.push(`/subscriptions/${sub.id}`)}
             >
@@ -522,7 +522,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
                     <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-gradient transition-all duration-300">{sub.name}</h3>
                     {isDemo && (
                       <div className="relative group/badge">
-                        <span className="px-3 py-1 text-xs font-bold bg-purple-500/20 text-purple-300 rounded-lg border border-purple-500/30 cursor-help">
+                        <span className="px-3 py-1 text-xs font-bold bg-emerald-500/20 text-emerald-300 rounded-lg border border-emerald-500/30 cursor-help">
                           EXAMPLE
                         </span>
                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-200 whitespace-nowrap z-50">
@@ -533,7 +533,7 @@ export function SubscriptionList({ categoryFilter, userCurrency = 'USD', totalSu
                     )}
                     {sub.isTrial && !isTrialEndingSoon && (
                       <div className="relative group/badge">
-                        <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg shadow-md cursor-help">
+                        <span className="px-3 py-1 text-xs font-bold bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-lg shadow-md cursor-help">
                           FREE TRIAL
                         </span>
                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 invisible group-hover/badge:opacity-100 group-hover/badge:visible transition-all duration-200 whitespace-nowrap z-50">

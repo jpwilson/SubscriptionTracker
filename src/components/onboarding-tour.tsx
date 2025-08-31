@@ -53,7 +53,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
         <div className="text-center">
           <h2 className="text-xl font-bold mb-2" style={{ color: '#a78bfa' }}>Welcome to SubTracker! 💰</h2>
           <p>Start saving money by taking control of your subscriptions.</p>
-          <p className="text-sm text-purple-400 mt-2">Studies show tracking cuts costs by 10-30%</p>
+          <p className="text-sm text-emerald-400 mt-2">Studies show tracking cuts costs by 10-30%</p>
         </div>
       ),
       placement: 'center',
@@ -92,7 +92,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             <li>Sort by price, date, or category</li>
             <li>See upcoming payments at a glance</li>
           </ul>
-          <p className="text-xs text-purple-400 mt-2">💡 Try switching between List and Calendar views!</p>
+          <p className="text-xs text-emerald-400 mt-2">💡 Try switching between List and Calendar views!</p>
         </div>
       ),
       placement: 'auto',
@@ -110,7 +110,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             <li>Free trials you might forget to cancel</li>
             <li>Any recurring payment you have</li>
           </ul>
-          <p className="text-xs text-purple-400 mt-2">💡 Tip: Start with your biggest expenses</p>
+          <p className="text-xs text-emerald-400 mt-2">💡 Tip: Start with your biggest expenses</p>
         </div>
       ),
       placement: 'auto',
@@ -126,7 +126,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
           <h3 className="font-bold mb-2" style={{ color: '#8b5cf6' }}>Customize Your Experience</h3>
           <p>Visit your Profile to:</p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-sm">
-            <li>Select your preferred <span className="text-purple-400 font-bold">currency</span> (30+ supported)</li>
+            <li>Select your preferred <span className="text-emerald-400 font-bold">currency</span> (30+ supported)</li>
             <li>Export all your data anytime</li>
             <li>Manage your account settings</li>
           </ul>
@@ -208,9 +208,9 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
         callback={handleJoyrideCallback}
         styles={{
           options: {
-            arrowColor: '#8b5cf6',
+            arrowColor: '#10b981',
             backgroundColor: '#2d3748',
-            primaryColor: '#8b5cf6',
+            primaryColor: '#10b981',
             textColor: '#ffffff',
             overlayColor: 'rgba(0, 0, 0, 0.7)',
             width: typeof window !== 'undefined' && window.innerWidth < 500 ? 300 : 380,
@@ -222,8 +222,8 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             maxHeight: typeof window !== 'undefined' ? window.innerHeight * 0.8 : 600,
             overflow: 'auto',
             borderRadius: 12,
-            boxShadow: '0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15), 0 0 80px rgba(255, 255, 255, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.3)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
+            boxShadow: '0 0 0 1px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.15), 0 0 80px rgba(255, 255, 255, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.3)',
+            border: '1px solid rgba(16, 185, 129, 0.2)',
           },
           tooltipContainer: {
             textAlign: 'left',
@@ -235,7 +235,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
             marginTop: '15px',
           },
           buttonNext: {
-            backgroundColor: '#8b5cf6',
+            backgroundColor: '#10b981',
             fontSize: 14,
             borderRadius: 8,
             padding: '8px 16px',
@@ -264,14 +264,14 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
         spotlightClicks={false}
         scrollDuration={400}
         tooltipComponent={({ continuous, index, step, backProps, closeProps, primaryProps, skipProps, tooltipProps, isLastStep }) => (
-          <div {...tooltipProps} style={{ backgroundColor: '#2d3748', color: '#ffffff', borderRadius: '12px', padding: '20px', boxShadow: '0 0 0 1px rgba(139, 92, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.15), 0 0 80px rgba(255, 255, 255, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.3)', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
+          <div {...tooltipProps} style={{ backgroundColor: '#2d3748', color: '#ffffff', borderRadius: '12px', padding: '20px', boxShadow: '0 0 0 1px rgba(16, 185, 129, 0.3), 0 0 40px rgba(16, 185, 129, 0.15), 0 0 80px rgba(255, 255, 255, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.3)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
             <div>{step.content}</div>
             <div style={{ marginTop: '20px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <button {...skipProps} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '14px', cursor: 'pointer' }}>Skip Tour</button>
                 <div style={{ display: 'flex', gap: '10px' }}>
                   {index > 0 && <button {...backProps} style={{ background: 'none', border: 'none', color: '#94a3b8', fontSize: '14px', cursor: 'pointer' }}>Back</button>}
-                  <button {...primaryProps} style={{ backgroundColor: '#8b5cf6', color: 'white', border: 'none', borderRadius: '8px', padding: '8px 16px', fontSize: '14px', cursor: 'pointer' }}>{isLastStep ? 'Get Started' : 'Next'}</button>
+                  <button {...primaryProps} style={{ backgroundColor: '#10b981', color: 'white', border: 'none', borderRadius: '8px', padding: '8px 16px', fontSize: '14px', cursor: 'pointer' }}>{isLastStep ? 'Get Started' : 'Next'}</button>
                 </div>
               </div>
               <div style={{ textAlign: 'center', marginTop: '10px', fontSize: '12px', color: '#94a3b8' }}>
@@ -316,7 +316,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
               }}
               className="w-full px-4 py-3 text-left text-sm text-white hover:bg-slate-700 transition-colors duration-200 flex items-center gap-3"
             >
-              <Route className="w-4 h-4 text-purple-400" />
+              <Route className="w-4 h-4 text-emerald-400" />
               <span>Take a Tour</span>
             </button>
             <button
@@ -326,7 +326,7 @@ export function OnboardingTour({ run = false, onComplete }: OnboardingTourProps)
               }}
               className="w-full px-4 py-3 text-left text-sm text-white hover:bg-slate-700 transition-colors duration-200 flex items-center gap-3 border-t border-white/10"
             >
-              <BookOpen className="w-4 h-4 text-purple-400" />
+              <BookOpen className="w-4 h-4 text-emerald-400" />
               <span>Status Guide</span>
             </button>
           </div>

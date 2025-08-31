@@ -116,7 +116,7 @@ export default function LandingPage() {
       icon: <BarChart3 className="w-6 h-6" />,
       title: "Track Costs",
       description: "Complete visibility into your subscription spending.",
-      gradient: "from-blue-500 to-purple-500",
+      gradient: "from-blue-500 to-emerald-500",
       examples: [
         {
           type: "feature",
@@ -131,8 +131,8 @@ export default function LandingPage() {
           title: "Family account management",
           message: "Track who uses what and split costs fairly",
           icon: <Home className="w-4 h-4" />,
-          color: "text-purple-400",
-          bgColor: "bg-purple-400/10"
+          color: "text-emerald-400",
+          bgColor: "bg-emerald-400/10"
         },
         {
           type: "feature",
@@ -148,15 +148,15 @@ export default function LandingPage() {
       icon: <Bell className="w-6 h-6" />,
       title: "Get Reminders",
       description: "Never get caught off-guard by subscription changes.",
-      gradient: "from-purple-500 to-pink-500",
+      gradient: "from-emerald-500 to-teal-500",
       examples: [
         {
           type: "alert",
           title: "7-day trial ending alerts",
           message: "Cancel before Netflix charges you tomorrow",
           icon: <Calendar className="w-4 h-4" />,
-          color: "text-pink-400",
-          bgColor: "bg-pink-400/10"
+          color: "text-teal-400",
+          bgColor: "bg-teal-400/10"
         },
         {
           type: "alert",
@@ -171,8 +171,8 @@ export default function LandingPage() {
           title: "Cancellation confirmations",
           message: "HBO Max access ends in 3 days - download content",
           icon: <Shield className="w-4 h-4" />,
-          color: "text-purple-400",
-          bgColor: "bg-purple-400/10"
+          color: "text-emerald-400",
+          bgColor: "bg-emerald-400/10"
         }
       ]
     },
@@ -180,7 +180,7 @@ export default function LandingPage() {
       icon: <Sparkles className="w-6 h-6" />,
       title: "Smart Insights",
       description: "Get actionable alerts that save you money instantly.",
-      gradient: "from-pink-500 to-orange-500",
+      gradient: "from-teal-500 to-emerald-400",
       examples: [
         {
           type: "warning",
@@ -302,8 +302,8 @@ export default function LandingPage() {
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
 
       {/* Navigation */}
@@ -315,8 +315,8 @@ export default function LandingPage() {
               className="flex items-center gap-3 cursor-pointer group"
             >
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
-                <div className="relative inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl blur-lg opacity-50 group-hover:opacity-70 transition-opacity" />
+                <div className="relative inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-xl">
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -332,7 +332,7 @@ export default function LandingPage() {
                   {activeSection === 'calculator' && (
                     <motion.div
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500"
                     />
                   )}
                 </button>
@@ -344,7 +344,7 @@ export default function LandingPage() {
                   {activeSection === 'features' && (
                     <motion.div
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500"
                     />
                   )}
                 </button>
@@ -356,7 +356,7 @@ export default function LandingPage() {
                   {activeSection === 'how-it-works' && (
                     <motion.div
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500"
                     />
                   )}
                 </button>
@@ -368,7 +368,7 @@ export default function LandingPage() {
                   {activeSection === 'pricing' && (
                     <motion.div
                       layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-emerald-500 to-teal-500"
                     />
                   )}
                 </button>
@@ -381,7 +381,7 @@ export default function LandingPage() {
                 </Button>
               </Link>
               <Link href="/login">
-                <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
+                <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300">
                   Start Free
                 </Button>
               </Link>
@@ -399,9 +399,9 @@ export default function LandingPage() {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full neu-card border border-purple-500/20 mb-6">
-              <Sparkles className="w-4 h-4 text-purple-400" />
-              <span className="text-sm text-purple-300">Save 30% on average • Bank-level security</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full neu-card border border-emerald-500/20 mb-6">
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <span className="text-sm text-emerald-300">Save 30% on average • Bank-level security</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
@@ -426,7 +426,7 @@ export default function LandingPage() {
               <Link href="/login">
                 <Button 
                   size="lg" 
-                  className="w-full sm:w-auto bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 group"
+                  className="w-full sm:w-auto bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 group"
                 >
                   <span className="flex items-center gap-2">
                     Start Free - No Card Required
@@ -470,11 +470,11 @@ export default function LandingPage() {
           >
             <div className="neu-card rounded-3xl p-8 border border-white/10 max-w-4xl mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="neu-card rounded-xl p-6 border border-purple-500/20">
+                <div className="neu-card rounded-xl p-6 border border-emerald-500/20">
                   <div className="text-3xl font-bold text-gradient mb-2">$47.93</div>
                   <div className="text-sm text-gray-400">Monthly Total</div>
                 </div>
-                <div className="neu-card rounded-xl p-6 border border-pink-500/20">
+                <div className="neu-card rounded-xl p-6 border border-teal-500/20">
                   <div className="text-3xl font-bold text-gradient mb-2">12</div>
                   <div className="text-sm text-gray-400">Active Subscriptions</div>
                 </div>
@@ -489,7 +489,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <section id="calculator" className="py-16 px-4 bg-gradient-to-b from-transparent to-purple-900/10">
+      <section id="calculator" className="py-16 px-4 bg-gradient-to-b from-transparent to-emerald-900/10">
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -551,7 +551,7 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="neu-card rounded-3xl p-8 md:p-12 border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-pink-900/20"
+            className="neu-card rounded-3xl p-8 md:p-12 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20"
           >
             <h3 className="text-3xl font-bold text-center mb-2">
               <span className="text-gradient">Calculate Your Savings</span>
@@ -562,13 +562,13 @@ export default function LandingPage() {
               {/* Category Selection Grid */}
               <div className="grid md:grid-cols-2 gap-4">
                 {Object.entries(selectedCategories).map(([category, count]) => (
-                  <div key={category} className="flex items-center justify-between p-4 neu-card rounded-xl border border-white/10 hover:border-purple-500/30 transition-all">
+                  <div key={category} className="flex items-center justify-between p-4 neu-card rounded-xl border border-white/10 hover:border-emerald-500/30 transition-all">
                     <div className="flex items-center gap-3">
                       <div className="flex items-center gap-2">
-                        {category === 'Entertainment' && <TrendingUp className="w-5 h-5 text-purple-400" />}
+                        {category === 'Entertainment' && <TrendingUp className="w-5 h-5 text-emerald-400" />}
                         {category === 'Productivity' && <Zap className="w-5 h-5 text-blue-400" />}
                         {category === 'Cloud Storage' && <Download className="w-5 h-5 text-green-400" />}
-                        {category === 'AI Tools' && <Sparkles className="w-5 h-5 text-pink-400" />}
+                        {category === 'AI Tools' && <Sparkles className="w-5 h-5 text-teal-400" />}
                         {category === 'Health & Fitness' && <Shield className="w-5 h-5 text-red-400" />}
                         {category === 'News & Media' && <Calendar className="w-5 h-5 text-yellow-400" />}
                         {category === 'Music' && <Bell className="w-5 h-5 text-indigo-400" />}
@@ -630,7 +630,7 @@ export default function LandingPage() {
                 <Link href="/login">
                   <Button 
                     size="lg" 
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300"
                   >
                     Start Saving Now →
                   </Button>
@@ -677,7 +677,7 @@ export default function LandingPage() {
                 onMouseLeave={() => setHoveredFeature(null)}
                 className="relative group"
               >
-                <div className="neu-card rounded-2xl p-8 h-full border border-white/10 transition-all duration-300 hover:border-purple-500/30">
+                <div className="neu-card rounded-2xl p-8 h-full border border-white/10 transition-all duration-300 hover:border-emerald-500/30">
                   <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} mb-6 transition-transform duration-300 ${hoveredFeature === index ? 'scale-110' : ''}`}>
                     {feature.icon}
                   </div>
@@ -715,14 +715,14 @@ export default function LandingPage() {
             viewport={{ once: true }}
             className="mt-20"
           >
-            <div className="neu-card rounded-3xl p-8 border border-purple-500/20">
+            <div className="neu-card rounded-3xl p-8 border border-emerald-500/20">
               <h3 className="text-2xl font-bold text-center mb-8">
                 <span className="text-gradient">All This for Free</span>
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {freeFeatures.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <div className="p-2 rounded-lg bg-purple-500/20 text-purple-400">
+                    <div className="p-2 rounded-lg bg-emerald-500/20 text-emerald-400">
                       {feature.icon}
                     </div>
                     <span className="text-gray-300">{feature.text}</span>
@@ -731,7 +731,7 @@ export default function LandingPage() {
               </div>
               <div className="text-center mt-8">
                 <Link href="/login">
-                  <Button className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
+                  <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300">
                     Get Started Free
                   </Button>
                 </Link>
@@ -770,12 +770,12 @@ export default function LandingPage() {
                 className="relative"
               >
                 {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-purple-500/50 to-transparent" />
+                  <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gradient-to-r from-emerald-500/50 to-transparent" />
                 )}
                 <div className="neu-card rounded-2xl p-8 h-full">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="text-5xl font-bold text-gradient opacity-50">{step.number}</div>
-                    <div className="p-3 rounded-xl bg-purple-500/20 text-purple-400">
+                    <div className="p-3 rounded-xl bg-emerald-500/20 text-emerald-400">
                       {step.icon}
                     </div>
                   </div>
@@ -797,12 +797,12 @@ export default function LandingPage() {
                   {/* Pro features badge */}
                   {step.proFeatures && (
                     <div className="mt-4 pt-4 border-t border-white/10">
-                      <p className="text-xs text-purple-400 mb-2 font-semibold">PRO FEATURES</p>
+                      <p className="text-xs text-emerald-400 mb-2 font-semibold">PRO FEATURES</p>
                       <div className="flex flex-wrap gap-2">
                         {step.proFeatures.map((feature, idx) => (
-                          <div key={idx} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                          <div key={idx} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                             {feature.icon}
-                            <span className="text-xs text-purple-300">{feature.text}</span>
+                            <span className="text-xs text-emerald-300">{feature.text}</span>
                           </div>
                         ))}
                       </div>
@@ -899,10 +899,10 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="neu-card rounded-3xl p-8 border-2 border-purple-500/30 relative"
+              className="neu-card rounded-3xl p-8 border-2 border-emerald-500/30 relative"
             >
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <div className="px-4 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium flex items-center gap-1">
+                <div className="px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-medium flex items-center gap-1">
                   <Sparkles className="w-3 h-3" />
                   Most Popular
                 </div>
@@ -917,28 +917,28 @@ export default function LandingPage() {
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-purple-500" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <span className="font-medium">Everything in Free</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-purple-500" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <span className="font-medium">Custom categories</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-purple-500" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <span className="font-medium">Advanced analytics</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-purple-500" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <span className="font-medium">Auto import subscriptions</span>
                 </li>
                 <li className="flex items-center gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-purple-500" />
+                  <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <span className="font-medium">Priority support</span>
                 </li>
               </ul>
               <Link href="/payment?plan=premium">
-                <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300">
+                <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300">
                   Start Free Trial
                 </Button>
               </Link>
@@ -991,36 +991,36 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               viewport={{ once: true }}
-              className="neu-card rounded-2xl p-6 border border-pink-500/30"
+              className="neu-card rounded-2xl p-6 border border-teal-500/30"
             >
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-2">Enterprise</h3>
                 <p className="text-gray-400 text-sm mb-3">Stop unchecked expenses</p>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-3xl font-bold text-pink-400">$200</span>
+                  <span className="text-3xl font-bold text-teal-400">$200</span>
                   <span className="text-gray-400 text-sm">/month</span>
                 </div>
               </div>
               <ul className="space-y-3 mb-6 text-sm">
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-pink-400 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 mt-0.5" />
                   <span>Multi-user teams</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-pink-400 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 mt-0.5" />
                   <span>Expense audits</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-pink-400 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 mt-0.5" />
                   <span>API access</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-pink-400 mt-0.5" />
+                  <CheckCircle2 className="w-4 h-4 text-teal-400 mt-0.5" />
                   <span>Dedicated support</span>
                 </li>
               </ul>
               <Link href="/payment?plan=enterprise">
-                <Button className="w-full neu-button border border-pink-500/30 hover:bg-pink-500/10 text-sm">
+                <Button className="w-full neu-button border border-teal-500/30 hover:bg-teal-500/10 text-sm">
                   Contact Sales
                 </Button>
               </Link>
@@ -1037,7 +1037,7 @@ export default function LandingPage() {
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="neu-card rounded-3xl p-12 text-center border border-purple-500/20"
+            className="neu-card rounded-3xl p-12 text-center border border-emerald-500/20"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-relaxed py-2">
               Ready to Save Money?
@@ -1048,7 +1048,7 @@ export default function LandingPage() {
             <Link href="/login">
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 group"
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 group"
               >
                 <span className="flex items-center gap-2">
                   Start Your Free Account

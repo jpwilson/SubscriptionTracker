@@ -20,7 +20,7 @@ export function MobileNavigation({ onAddClick, onCategoriesClick }: MobileNaviga
             {/* Insights */}
             <button
               onClick={() => router.push('/insights')}
-              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-purple-400 transition-colors"
+              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-emerald-400 transition-colors"
             >
               <Lightbulb className="w-5 h-5" />
               <span className="text-xs">Insights</span>
@@ -29,7 +29,7 @@ export function MobileNavigation({ onAddClick, onCategoriesClick }: MobileNaviga
             {/* Analytics */}
             <button
               onClick={() => router.push('/analytics')}
-              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-purple-400 transition-colors"
+              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-emerald-400 transition-colors"
             >
               <BarChart3 className="w-5 h-5" />
               <span className="text-xs">Analytics</span>
@@ -41,8 +41,8 @@ export function MobileNavigation({ onAddClick, onCategoriesClick }: MobileNaviga
                 onClick={onAddClick}
                 className="relative -mt-4 mx-auto block group"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-md opacity-75 group-hover:opacity-100 transition-opacity" />
-                <div className="relative bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-transform">
+                <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-md opacity-75 group-hover:opacity-100 transition-opacity" />
+                <div className="relative bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl p-3 shadow-xl transform group-hover:scale-105 transition-transform">
                   <div className="flex items-center justify-center">
                     <Plus className="w-6 h-6 text-white" />
                     <Sparkles className="absolute -top-1 -right-1 w-4 h-4 text-yellow-300 animate-pulse" />
@@ -54,7 +54,7 @@ export function MobileNavigation({ onAddClick, onCategoriesClick }: MobileNaviga
             {/* Categories */}
             <button
               onClick={onCategoriesClick}
-              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-purple-400 transition-colors"
+              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-emerald-400 transition-colors"
             >
               <Tags className="w-5 h-5" />
               <span className="text-xs">Categories</span>
@@ -63,7 +63,7 @@ export function MobileNavigation({ onAddClick, onCategoriesClick }: MobileNaviga
             {/* Profile */}
             <button
               onClick={() => router.push('/profile')}
-              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-purple-400 transition-colors"
+              className="flex flex-col items-center gap-1 py-3 px-2 text-white/70 hover:text-emerald-400 transition-colors"
             >
               <User className="w-5 h-5" />
               <span className="text-xs">Profile</span>

@@ -33,8 +33,8 @@ export default function SubscriptionsListPage() {
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
@@ -56,7 +56,7 @@ export default function SubscriptionsListPage() {
         {/* Subscriptions List */}
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
+            <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
           </div>
         ) : subscriptions.length === 0 ? (
           <motion.div
@@ -67,7 +67,7 @@ export default function SubscriptionsListPage() {
             <p className="text-xl text-muted-foreground mb-4">No subscriptions yet</p>
             <Button
               onClick={() => router.push('/dashboard')}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg"
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg"
             >
               Add Your First Subscription
             </Button>
@@ -81,13 +81,13 @@ export default function SubscriptionsListPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 onClick={() => router.push(`/subscriptions/${subscription.id}`)}
-                className="neu-card rounded-2xl p-6 border border-white/10 hover:border-purple-500/30 cursor-pointer group transition-all duration-300"
+                className="neu-card rounded-2xl p-6 border border-white/10 hover:border-emerald-500/30 cursor-pointer group transition-all duration-300"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div
                       className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 transition-transform"
-                      style={{ backgroundColor: subscription.color || '#8B5CF6' }}
+                      style={{ backgroundColor: subscription.color || '#10B981' }}
                     >
                       {subscription.icon || '📱'}
                     </div>
@@ -100,7 +100,7 @@ export default function SubscriptionsListPage() {
                           <Calendar className="w-3 h-3" />
                           Next: {format(new Date(subscription.nextPaymentDate), 'MMM d, yyyy')}
                         </span>
-                        <span className="text-purple-400">
+                        <span className="text-emerald-400">
                           {subscription.billingCycle}
                         </span>
                         {subscription.isTrial && (
@@ -123,18 +123,18 @@ export default function SubscriptionsListPage() {
                 
                 {/* Quick Actions Preview */}
                 <div className="flex items-center gap-4 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="flex items-center gap-2 text-xs text-purple-400">
+                  <div className="flex items-center gap-2 text-xs text-emerald-400">
                     <CreditCard className="w-3 h-3" />
                     <span>Manage Payment</span>
                   </div>
                   {subscription.url && (
-                    <div className="flex items-center gap-2 text-xs text-purple-400">
+                    <div className="flex items-center gap-2 text-xs text-emerald-400">
                       <LinkIcon className="w-3 h-3" />
                       <span>Visit Website</span>
                     </div>
                   )}
                   {subscription.notes && (
-                    <div className="flex items-center gap-2 text-xs text-purple-400">
+                    <div className="flex items-center gap-2 text-xs text-emerald-400">
                       <FileText className="w-3 h-3" />
                       <span>Has Notes</span>
                     </div>

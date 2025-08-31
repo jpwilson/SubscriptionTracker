@@ -31,7 +31,7 @@ export function CenterToast({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-        colors: ['#8b5cf6', '#ec4899', '#f59e0b', '#10b981']
+        colors: ['#10b981', '#14b8a6', '#f59e0b', '#8b5cf6']
       })
     }
 
@@ -69,7 +69,7 @@ export function CenterToast({
         >
           <div className="relative max-w-md mx-4">
             {/* Background card with gradient border */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-30 animate-pulse" />
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-30 animate-pulse" />
             
             <div className="relative neu-card rounded-2xl p-6 border-2 border-transparent bg-clip-padding overflow-hidden">
               {/* Animated border progress */}
@@ -77,8 +77,8 @@ export function CenterToast({
                 className="absolute inset-0 rounded-2xl"
                 style={{
                   background: `conic-gradient(from 0deg at 50% 50%, 
-                    #8b5cf6 0deg, 
-                    #ec4899 ${360 * (1 - progress / 100)}deg, 
+                    #10b981 0deg, 
+                    #14b8a6 ${360 * (1 - progress / 100)}deg, 
                     transparent ${360 * (1 - progress / 100)}deg, 
                     transparent 360deg)`,
                   padding: '2px',
@@ -114,7 +114,7 @@ export function CenterToast({
                   <div className="flex-1 mr-4">
                     <div className="h-1 bg-gray-700 rounded-full overflow-hidden">
                       <motion.div 
-                        className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+                        className="h-full bg-gradient-to-r from-emerald-500 to-teal-500"
                         initial={{ width: '100%' }}
                         animate={{ width: `${progress}%` }}
                         transition={{ duration: 0.1 }}
@@ -128,7 +128,7 @@ export function CenterToast({
                   {/* OK Button */}
                   <Button
                     onClick={onClose}
-                    className="bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                    className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300"
                   >
                     OK
                   </Button>

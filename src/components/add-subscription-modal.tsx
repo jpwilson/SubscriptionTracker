@@ -213,7 +213,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 <button
                   type="button"
                   onClick={() => setShowDetailedInput(!showDetailedInput)}
-                  className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                  className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
                 >
                   {showDetailedInput ? '− Hide' : '+ Add'} details
                 </button>
@@ -228,7 +228,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                     checkForMatchingSubscription(e.target.value, e.target.value)
                   }}
                   onBlur={(e) => checkForMatchingSubscription(e.target.value, formData.company)}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="e.g., Netflix, Spotify"
                   required
                 />
@@ -238,7 +238,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                     type="text"
                     value={formData.company || formData.name}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value, name: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Company (e.g., Netflix, Spotify)"
                     required
                   />
@@ -246,14 +246,14 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                     type="text"
                     value={formData.product}
                     onChange={(e) => setFormData({ ...formData, product: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Product (e.g., Streaming)"
                   />
                   <input
                     type="text"
                     value={formData.tier}
                     onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Tier/Plan (e.g., Premium)"
                   />
                 </div>
@@ -265,19 +265,19 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30"
+                className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30"
               >
                 <div className="flex items-start gap-3">
-                  <RefreshCw className="w-5 h-5 text-purple-400 mt-0.5" />
+                  <RefreshCw className="w-5 h-5 text-emerald-400 mt-0.5" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-purple-300 mb-1">
+                    <p className="text-sm font-medium text-emerald-300 mb-1">
                       Previous Subscription Found
                     </p>
                     <p className="text-xs text-gray-400 mb-2">
                       You had {matchingSubscription.name} before ({formatCurrency(matchingSubscription.amount)}/{matchingSubscription.billingCycle})
                       {matchingSubscription.endDate && ` - Ended ${format(new Date(matchingSubscription.endDate), 'MMM yyyy')}`}
                     </p>
-                    <p className="text-xs text-purple-300">
+                    <p className="text-xs text-emerald-300">
                       <Info className="w-3 h-3 inline mr-1" />
                       We&apos;ll link this to your previous subscription for complete history tracking
                     </p>
@@ -298,7 +298,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                     step="0.01"
                     value={formData.amount}
                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                    className="w-full pl-8 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full pl-8 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="9.99"
                     required
                   />
@@ -312,7 +312,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 <select
                   value={formData.billingCycle}
                   onChange={(e) => setFormData({ ...formData, billingCycle: e.target.value as any })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 >
                   {billingCycles.map((cycle) => (
                     <option key={cycle.value} value={cycle.value}>
@@ -331,7 +331,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 <button
                   type="button"
                   onClick={() => setShowCategoriesModal(true)}
-                  className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
+                  className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors"
                 >
                   <Plus className="w-3 h-3" />
                   Add new category
@@ -346,7 +346,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent appearance-none"
                   >
                     {categories.map((cat) => (
                       <option key={cat.id} value={cat.name}>
@@ -371,7 +371,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 required
               />
             </div>
@@ -383,7 +383,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                   id="isActive"
                   checked={formData.isActive}
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
+                  className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
                 />
                 <label htmlFor="isActive" className="text-sm text-muted-foreground font-medium">
                   This is an active subscription
@@ -399,7 +399,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                     type="date"
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     required={!formData.isActive}
                   />
                 </div>
@@ -411,7 +411,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                   id="isTrial"
                   checked={formData.isTrial}
                   onChange={(e) => setFormData({ ...formData, isTrial: e.target.checked })}
-                  className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
+                  className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
                 />
                 <label htmlFor="isTrial" className="text-sm text-muted-foreground font-medium">
                   This is a free trial
@@ -439,7 +439,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                       id="creditCardAdded"
                       checked={formData.creditCardAdded}
                       onChange={(e) => setFormData({ ...formData, creditCardAdded: e.target.checked })}
-                      className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
+                      className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
                     />
                     <label htmlFor="creditCardAdded" className="text-sm text-muted-foreground">
                       Credit card details required
@@ -466,7 +466,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                       id="reminderEnabled"
                       checked={formData.reminderEnabled}
                       onChange={(e) => setFormData({ ...formData, reminderEnabled: e.target.checked })}
-                      className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
+                      className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
                     />
                     <label htmlFor="reminderEnabled" className="text-sm text-muted-foreground">
                       Remind me before trial ends
@@ -484,7 +484,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
                 type="url"
                 value={formData.url}
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 placeholder="https://netflix.com/account"
               />
               <p className="mt-1 text-xs text-muted-foreground">
@@ -499,7 +499,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
               <textarea
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none"
                 placeholder="Add any notes about this subscription..."
                 rows={3}
               />
@@ -516,7 +516,7 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
               </Button>
               <Button
                 type="submit"
-                className="flex-1 relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+                className="flex-1 relative px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 disabled={createSubscription.isPending}
               >
                 <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

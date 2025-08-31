@@ -169,7 +169,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                 <button
                   type="button"
                   onClick={() => setShowDetailedInput(!showDetailedInput)}
-                  className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1"
+                  className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
                 >
                   {showDetailedInput ? '− Hide' : '+ Add'} details
                 </button>
@@ -180,7 +180,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value, company: e.target.value })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                   placeholder="e.g., Netflix, Spotify"
                   required
                 />
@@ -190,7 +190,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                     type="text"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Company (e.g., Google, Netflix)"
                     required
                   />
@@ -198,14 +198,14 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                     type="text"
                     value={formData.product}
                     onChange={(e) => setFormData({ ...formData, product: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Product (e.g., YouTube Premium, Google One) - Optional"
                   />
                   <input
                     type="text"
                     value={formData.tier}
                     onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="Tier/Plan (e.g., Individual, Family) - Optional"
                   />
                 </div>
@@ -224,7 +224,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                     step="0.01"
                     value={formData.amount}
                     onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                    className="w-full pl-8 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full pl-8 pr-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     placeholder="9.99"
                     required
                   />
@@ -238,7 +238,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                 <select
                   value={formData.billingCycle}
                   onChange={(e) => setFormData({ ...formData, billingCycle: e.target.value as any })}
-                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 >
                   {billingCycles.map((cycle) => (
                     <option key={cycle.value} value={cycle.value}>
@@ -257,7 +257,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                 <button
                   type="button"
                   onClick={() => setShowCategoriesModal(true)}
-                  className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
+                  className="text-xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors"
                 >
                   <Plus className="w-3 h-3" />
                   Add new category
@@ -272,7 +272,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full pl-10 pr-10 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent appearance-none"
+                    className="w-full pl-10 pr-10 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent appearance-none"
                   >
                     {categories.map((cat) => (
                       <option key={cat.id} value={cat.name}>
@@ -302,7 +302,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                 type="date"
                 value={formData.startDate}
                 onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 required
               />
             </div>
@@ -314,7 +314,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                   id="isActive"
                   checked={formData.isActive}
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                  className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
+                  className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
                 />
                 <label htmlFor="isActive" className="text-sm text-muted-foreground font-medium">
                   This is an active subscription
@@ -330,7 +330,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                     type="date"
                     value={formData.endDate}
                     onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     required={!formData.isActive}
                   />
                 </div>
@@ -342,7 +342,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                   id="isTrial"
                   checked={formData.isTrial}
                   onChange={(e) => setFormData({ ...formData, isTrial: e.target.checked })}
-                  className="w-4 h-4 text-purple-600 bg-slate-700 border-slate-600 rounded focus:ring-purple-500"
+                  className="w-4 h-4 text-emerald-600 bg-slate-700 border-slate-600 rounded focus:ring-emerald-500"
                 />
                 <label htmlFor="isTrial" className="text-sm text-muted-foreground font-medium">
                   This is a free trial
@@ -358,7 +358,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
                 type="url"
                 value={formData.url}
                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 placeholder="https://netflix.com/account"
               />
               <p className="mt-1 text-xs text-muted-foreground">
@@ -373,7 +373,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
               <textarea
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent resize-none"
                 placeholder="Add any notes about this subscription..."
                 rows={3}
               />
@@ -390,7 +390,7 @@ export function EditSubscriptionModal({ subscription, onClose, onSave }: EditSub
               </Button>
               <Button
                 type="submit"
-                className="flex-1 relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+                className="flex-1 relative px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
                 disabled={updateSubscription.isPending}
               >
                 <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

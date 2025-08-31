@@ -31,7 +31,7 @@ import {
 type TimePeriod = 'daily' | 'monthly' | 'quarterly' | 'yearly'
 type TimeScale = '3months' | '6months' | 'ytd' | '1year' | '3years' | '5years'
 
-const COLORS = ['#8b5cf6', '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#06b6d4', '#f43f5e', '#84cc16']
+const COLORS = ['#10b981', '#3b82f6', '#14b8a6', '#f59e0b', '#ef4444', '#06b6d4', '#f43f5e', '#84cc16']
 
 // Define which intervals are valid for each time range
 const getValidIntervals = (timeScale: TimeScale): TimePeriod[] => {
@@ -120,8 +120,8 @@ export default function AnalyticsPage() {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="relative mb-6"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50" />
-            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-50" />
+            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-2xl">
               <BarChart3 className="w-8 h-8 text-white" />
             </div>
           </motion.div>
@@ -136,8 +136,8 @@ export default function AnalyticsPage() {
       {/* Modern animated background */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-24 sm:pb-8">
@@ -175,11 +175,11 @@ export default function AnalyticsPage() {
               onClick={() => router.push('/subscriptions')}
               className="neu-card rounded-2xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer group border border-white/10"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               <div className="relative">
                 <p className="text-muted-foreground text-sm mb-2 font-medium">Active Subscriptions</p>
                 <p className="text-3xl font-bold text-white group-hover:text-gradient transition-all duration-300">{analytics.summary.activeSubscriptions}</p>
-                <p className="text-xs text-purple-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Click to view all</p>
+                <p className="text-xs text-emerald-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">Click to view all</p>
               </div>
             </div>
             <div className="neu-card rounded-2xl p-6 hover:scale-105 transition-all duration-300 cursor-pointer group border border-white/10">
@@ -219,7 +219,7 @@ export default function AnalyticsPage() {
                   }
                 }}
                 variant={timeScale === '3months' ? 'default' : 'ghost'}
-                className={`${timeScale === '3months' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
+                className={`${timeScale === '3months' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
                 size="sm"
               >
                 <span className="hidden sm:inline">3 Months</span>
@@ -234,7 +234,7 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '6months' ? 'default' : 'ghost'}
-              className={`${timeScale === '6months' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
+              className={`${timeScale === '6months' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
               <span className="hidden sm:inline">6 Months</span>
@@ -249,7 +249,7 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === 'ytd' ? 'default' : 'ghost'}
-              className={`${timeScale === 'ytd' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
+              className={`${timeScale === 'ytd' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
               YTD
@@ -263,7 +263,7 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '1year' ? 'default' : 'ghost'}
-              className={`${timeScale === '1year' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
+              className={`${timeScale === '1year' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
               <span className="hidden sm:inline">1 Year</span>
@@ -282,7 +282,7 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '3years' ? 'default' : 'ghost'}
-              className={`${timeScale === '3years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
+              className={`${timeScale === '3years' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
               <span className="hidden sm:inline">{isPremium ? '3 Years' : '3 Years 🔒'}</span>
@@ -301,7 +301,7 @@ export default function AnalyticsPage() {
                 }
               }}
               variant={timeScale === '5years' ? 'default' : 'ghost'}
-              className={`${timeScale === '5years' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
+              className={`${timeScale === '5years' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm flex-1 sm:flex-initial`}
               size="sm"
             >
               <span className="hidden sm:inline">{isPremium ? '5 Years' : '5 Years 🔒'}</span>
@@ -319,7 +319,7 @@ export default function AnalyticsPage() {
                 key={period}
                 onClick={() => setTimePeriod(period)}
                 variant={timePeriod === period ? 'default' : 'ghost'}
-                className={`${timePeriod === period ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm`}
+                className={`${timePeriod === period ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' : 'text-white/70 hover:text-white neu-button'} text-xs sm:text-sm`}
                 size="sm"
               >
                 {period.charAt(0).toUpperCase() + period.slice(1)}
@@ -349,7 +349,7 @@ export default function AnalyticsPage() {
                     onClick={() => setShowOverall(!showOverall)}
                     className={`px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
                       showOverall
-                        ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                        ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
                         : 'neu-button text-white/70 hover:text-white'
                     }`}
                   >
@@ -369,7 +369,7 @@ export default function AnalyticsPage() {
                       }}
                       className={`px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium transition-all duration-200 ${
                         selectedCategories.includes(cat.category)
-                          ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg'
+                          ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg'
                           : 'neu-button text-white/70 hover:text-white'
                       }`}
                     >
@@ -382,7 +382,7 @@ export default function AnalyticsPage() {
                         setSelectedCategories([])
                         setShowOverall(true)
                       }}
-                      className="px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium text-purple-400 hover:text-purple-300 transition-all duration-200"
+                      className="px-2 sm:px-3 py-1 rounded-lg text-xs sm:text-sm font-medium text-emerald-400 hover:text-emerald-300 transition-all duration-200"
                     >
                       Clear all
                     </button>
@@ -394,7 +394,7 @@ export default function AnalyticsPage() {
           
           {isLoading ? (
             <div className="h-[400px] flex items-center justify-center">
-              <Loader2 className="w-8 h-8 text-purple-400 animate-spin" />
+              <Loader2 className="w-8 h-8 text-emerald-400 animate-spin" />
             </div>
           ) : (
           <div className="h-[400px]">
@@ -430,8 +430,8 @@ export default function AnalyticsPage() {
                     stroke="url(#lineGradient)" 
                     strokeWidth={selectedCategories.length > 0 ? 2 : 3}
                     strokeDasharray={selectedCategories.length > 0 ? "5 5" : "0"}
-                    dot={selectedCategories.length === 0 ? { fill: '#8b5cf6', r: 4 } : false}
-                    activeDot={selectedCategories.length === 0 ? { r: 6, fill: '#ec4899' } : false}
+                    dot={selectedCategories.length === 0 ? { fill: '#10b981', r: 4 } : false}
+                    activeDot={selectedCategories.length === 0 ? { r: 6, fill: '#14b8a6' } : false}
                     connectNulls
                   />
                 )}
@@ -465,8 +465,8 @@ export default function AnalyticsPage() {
                 )}
                 <defs>
                   <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1}/>
-                    <stop offset="100%" stopColor="#ec4899" stopOpacity={1}/>
+                    <stop offset="0%" stopColor="#10b981" stopOpacity={1}/>
+                    <stop offset="100%" stopColor="#14b8a6" stopOpacity={1}/>
                   </linearGradient>
                 </defs>
               </RechartsLineChart>
@@ -487,7 +487,7 @@ export default function AnalyticsPage() {
             onClick={() => setShowCategorySection(!showCategorySection)}
           >
             <h2 className="text-xl sm:text-2xl font-bold text-gradient">Category Analysis</h2>
-            <Button variant="ghost" size="icon" className="text-purple-400">
+            <Button variant="ghost" size="icon" className="text-emerald-400">
               {showCategorySection ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </Button>
           </div>

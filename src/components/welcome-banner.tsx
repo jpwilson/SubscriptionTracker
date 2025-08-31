@@ -90,11 +90,11 @@ export function WelcomeBanner() {
         exit={{ opacity: 0, y: -20 }}
         className="mb-6"
       >
-        <div className="neu-card rounded-2xl p-4 sm:p-6 border border-purple-500/30 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
+        <div className="neu-card rounded-2xl p-4 sm:p-6 border border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-teal-500/10">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-5 h-5 text-purple-400" />
+                <Sparkles className="w-5 h-5 text-emerald-400" />
                 <h3 className="text-lg font-bold text-white">Welcome to SubTracker!</h3>
               </div>
               <p className="text-sm text-gray-300 mb-3">
@@ -113,7 +113,7 @@ export function WelcomeBanner() {
                 size="sm"
                 onClick={handleClearDemoData}
                 disabled={isDeleting}
-                className="border-purple-500/30 hover:bg-purple-500/10"
+                className="border-emerald-500/30 hover:bg-emerald-500/10"
               >
                 {isDeleting ? (
                   <>

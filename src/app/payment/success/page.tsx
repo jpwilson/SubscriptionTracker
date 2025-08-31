@@ -42,13 +42,13 @@ function PaymentSuccessContent() {
           ...defaults,
           particleCount,
           origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-          colors: ['#8b5cf6', '#ec4899', '#10b981', '#f59e0b'],
+          colors: ['#10b981', '#14b8a6', '#10b981', '#f59e0b'],
         })
         confetti({
           ...defaults,
           particleCount,
           origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-          colors: ['#8b5cf6', '#ec4899', '#10b981', '#f59e0b'],
+          colors: ['#10b981', '#14b8a6', '#10b981', '#f59e0b'],
         })
       }, 250)
     })
@@ -84,8 +84,8 @@ function PaymentSuccessContent() {
       {/* Background effects */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 text-center">
@@ -95,7 +95,7 @@ function PaymentSuccessContent() {
             animate={{ opacity: 1, scale: 1 }}
             className="flex flex-col items-center"
           >
-            <Loader2 className="w-16 h-16 text-purple-500 animate-spin mb-4" />
+            <Loader2 className="w-16 h-16 text-emerald-500 animate-spin mb-4" />
             <h1 className="text-2xl font-bold text-white">Processing your upgrade...</h1>
           </motion.div>
         ) : (
@@ -110,8 +110,8 @@ function PaymentSuccessContent() {
               transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
               className="relative inline-flex items-center justify-center w-24 h-24 mb-8"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-xl opacity-50 animate-glow" />
-              <div className="relative inline-flex items-center justify-center w-full h-full bg-gradient-to-br from-purple-500 to-pink-500 rounded-full shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full blur-xl opacity-50 animate-glow" />
+              <div className="relative inline-flex items-center justify-center w-full h-full bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full shadow-2xl">
                 <CheckCircle className="w-12 h-12 text-white" />
               </div>
             </motion.div>
@@ -141,7 +141,7 @@ function PaymentSuccessContent() {
               className="neu-card rounded-2xl p-6 border border-white/10 mb-8"
             >
               <h2 className="text-xl font-bold text-white mb-4 flex items-center justify-center gap-2">
-                <Sparkles className="w-5 h-5 text-purple-400" />
+                <Sparkles className="w-5 h-5 text-emerald-400" />
                 Your Premium Benefits
               </h2>
               <ul className="space-y-3 text-left">
@@ -176,7 +176,7 @@ function PaymentSuccessContent() {
             >
               <Button
                 onClick={() => router.push('/dashboard')}
-                className="relative px-8 py-4 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
+                className="relative px-8 py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 group"
               >
                 <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative flex items-center">
@@ -187,7 +187,7 @@ function PaymentSuccessContent() {
 
               <p className="text-sm text-muted-foreground">
                 Need help? Contact us at{' '}
-                <a href="mailto:support@subtracker.app" className="text-purple-400 hover:text-purple-300">
+                <a href="mailto:support@subtracker.app" className="text-emerald-400 hover:text-emerald-300">
                   support@subtracker.app
                 </a>
               </p>
@@ -203,7 +203,7 @@ export default function PaymentSuccessPage() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
       </div>
     }>
       <PaymentSuccessContent />

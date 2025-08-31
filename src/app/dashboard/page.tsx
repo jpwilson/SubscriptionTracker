@@ -69,8 +69,8 @@ function DashboardContent() {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="relative mb-6"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50" />
-            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-50" />
+            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-2xl">
               <TrendingUp className="w-8 h-8 text-white" />
             </div>
           </motion.div>
@@ -106,8 +106,8 @@ function DashboardContent() {
       {/* Modern animated background */}
       <div className="fixed inset-0 gradient-mesh" />
       <div className="fixed inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 pb-24 sm:pb-20">
@@ -119,8 +119,8 @@ function DashboardContent() {
         >
           <div className="flex items-center gap-4">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50 animate-glow" />
-              <div className="relative inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-50 animate-glow" />
+              <div className="relative inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-2xl">
                 <TrendingUp className="w-7 h-7 text-white" />
               </div>
             </div>
@@ -139,7 +139,7 @@ function DashboardContent() {
           <div className="hidden lg:flex items-center gap-3">
             <Button
               onClick={() => router.push('/insights')}
-              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-purple-400 transition-all duration-300 gradient-border"
+              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-emerald-400 transition-all duration-300 gradient-border"
               title="Smart Insights"
             >
               <Lightbulb className="w-5 h-5" />
@@ -147,7 +147,7 @@ function DashboardContent() {
             </Button>
             <Button
               onClick={() => router.push('/analytics')}
-              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-purple-400 transition-all duration-300 gradient-border"
+              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-emerald-400 transition-all duration-300 gradient-border"
               title="View Analytics"
             >
               <BarChart3 className="w-5 h-5" />
@@ -155,7 +155,7 @@ function DashboardContent() {
             </Button>
             <Button
               onClick={() => setShowCategoriesModal(true)}
-              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-purple-400 transition-all duration-300 gradient-border"
+              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-emerald-400 transition-all duration-300 gradient-border"
               title="Manage Categories"
             >
               <Tags className="w-5 h-5" />
@@ -163,7 +163,7 @@ function DashboardContent() {
             </Button>
             <Button
               onClick={() => router.push('/profile')}
-              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-purple-400 transition-all duration-300 gradient-border"
+              className="neu-button px-4 py-2 rounded-xl border-0 text-white hover:text-emerald-400 transition-all duration-300 gradient-border"
               title="Profile"
             >
               <User className="w-5 h-5" />
@@ -174,7 +174,7 @@ function DashboardContent() {
           {/* Add button visible on tablet and desktop */}
           <Button
             onClick={() => setShowAddModal(true)}
-            className="add-subscription-btn hidden sm:flex relative px-6 py-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+            className="add-subscription-btn hidden sm:flex relative px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
           >
             <span className="absolute inset-0 bg-white/20 rounded-xl blur-xl" />
             <span className="relative flex items-center">
@@ -270,7 +270,7 @@ function DashboardContent() {
               className="neu-card rounded-xl p-4 border border-white/10"
             >
               <div className="flex items-center justify-between mb-1">
-                <Gift className="w-4 h-4 text-purple-400" />
+                <Gift className="w-4 h-4 text-emerald-400" />
                 <span className="text-xs text-muted-foreground">Trials</span>
               </div>
               <div className="text-xs">
@@ -328,7 +328,7 @@ function DashboardContent() {
                 </div>
               ),
               icon: <Gift className="w-5 h-5" />,
-              color: 'from-purple-500 to-purple-600',
+              color: 'from-emerald-500 to-emerald-600',
             },
           ].map((stat, i) => (
             <motion.div
@@ -431,8 +431,8 @@ export default function DashboardPage() {
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
             className="relative mb-6"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50" />
-            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+            <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-50" />
+            <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-2xl">
               <TrendingUp className="w-8 h-8 text-white" />
             </div>
           </motion.div>

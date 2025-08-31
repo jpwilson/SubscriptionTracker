@@ -91,11 +91,11 @@ export function DeleteSubscriptionModal({ subscription, isOpen, onClose, isDemo 
                 // Navigate to edit page to update status
                 window.location.href = `/subscriptions/${subscription.id}?edit=true`
               }}
-              className="w-full p-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-purple-500/50 transition-all duration-200 group"
+              className="w-full p-4 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 hover:border-emerald-500/50 transition-all duration-200 group"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Archive className="w-5 h-5 text-purple-400" />
+                  <Archive className="w-5 h-5 text-emerald-400" />
                   <div className="text-left">
                     <p className="font-semibold text-white">Mark as Cancelled</p>
                     <p className="text-sm text-gray-400">Update status to track until it expires</p>

@@ -10,7 +10,7 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 262 80% 50.6%;
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 262 80% 50.6%;
+    --ring: 160 84% 39%;
     --radius: 0.75rem;
   }
 
@@ -34,7 +34,7 @@
     --card-foreground: 213 31% 91%;
     --popover: 224 71% 4%;
     --popover-foreground: 213 31% 91%;
-    --primary: 263 90% 51%;
+    --primary: 160 84% 39%;
     --primary-foreground: 0 0% 100%;
     --secondary: 222 47% 11%;
     --secondary-foreground: 213 31% 91%;
@@ -46,11 +46,11 @@
     --destructive-foreground: 210 40% 98%;
     --border: 216 34% 17%;
     --input: 216 34% 17%;
-    --ring: 263 90% 51%;
+    --ring: 160 84% 39%;
     
     /* New design system variables */
-    --gradient-start: 263 90% 51%;
-    --gradient-end: 280 100% 70%;
+    --gradient-start: 160 84% 39%;
+    --gradient-end: 173 80% 40%;
     --surface-primary: 224 71% 4%;
     --surface-secondary: 220 69% 8%;
     --surface-tertiary: 218 65% 12%;
@@ -157,7 +157,7 @@
   
   /* Text effects */
   .text-gradient {
-    @apply bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-emerald-400 to-teal-400 bg-clip-text text-transparent;
   }
   
   .text-glow {

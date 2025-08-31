@@ -144,7 +144,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
         <div className="p-6 border-b border-slate-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 bg-purple-600 rounded-lg">
+              <div className="inline-flex items-center justify-center w-10 h-10 bg-emerald-600 rounded-lg">
                 <Tags className="w-5 h-5 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-white">Manage Categories</h2>
@@ -162,7 +162,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
         <div className="flex-1 overflow-y-auto p-6">
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
+              <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
             </div>
           ) : (
             <>
@@ -179,23 +179,23 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                     {isPremium ? (
                       <Button
                         onClick={() => setShowAddForm(true)}
-                        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-lg"
+                        className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:shadow-lg"
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         Add Custom Category
                       </Button>
                     ) : (
-                      <div className="p-6 neu-card rounded-xl border border-purple-500/20 bg-gradient-to-br from-purple-900/20 to-pink-900/20">
+                      <div className="p-6 neu-card rounded-xl border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
                         <div className="flex items-center gap-3 mb-4">
-                          <div className="p-3 rounded-lg bg-gradient-to-br from-purple-500/30 to-pink-500/30">
-                            <Sparkles className="w-6 h-6 text-purple-300" />
+                          <div className="p-3 rounded-lg bg-gradient-to-br from-emerald-500/30 to-teal-500/30">
+                            <Sparkles className="w-6 h-6 text-emerald-300" />
                           </div>
                           <div>
                             <h4 className="text-lg font-bold text-white flex items-center gap-2">
                               Unlock Custom Categories
-                              <span className="text-xs px-2 py-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full text-white font-semibold">PRO</span>
+                              <span className="text-xs px-2 py-0.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full text-white font-semibold">PRO</span>
                             </h4>
-                            <p className="text-sm text-purple-300">
+                            <p className="text-sm text-emerald-300">
                               Take control of your subscription organization
                             </p>
                           </div>
@@ -203,25 +203,25 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                         
                         <div className="space-y-3 mb-5">
                           <div className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div>
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 flex-shrink-0"></div>
                             <p className="text-sm text-gray-300">
                               <span className="font-semibold text-white">Create unlimited categories</span> - Design your perfect organization system with custom categories that match your lifestyle
                             </p>
                           </div>
                           <div className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 flex-shrink-0"></div>
+                            <div className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5 flex-shrink-0"></div>
                             <p className="text-sm text-gray-300">
                               <span className="font-semibold text-white">Add subcategories</span> - Drill down with subcategories like &quot;Work → Software&quot; or &quot;Entertainment → Streaming&quot;
                             </p>
                           </div>
                           <div className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-purple-400 mt-1.5 flex-shrink-0"></div>
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 flex-shrink-0"></div>
                             <p className="text-sm text-gray-300">
                               <span className="font-semibold text-white">Custom icons & colors</span> - Personalize each category with unique emojis and colors for instant visual recognition
                             </p>
                           </div>
                           <div className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-pink-400 mt-1.5 flex-shrink-0"></div>
+                            <div className="w-1.5 h-1.5 rounded-full bg-teal-400 mt-1.5 flex-shrink-0"></div>
                             <p className="text-sm text-gray-300">
                               <span className="font-semibold text-white">Better insights</span> - See spending breakdowns by your custom categories to identify savings opportunities
                             </p>
@@ -230,7 +230,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                         
                         <Button
                           onClick={() => router.push('/pricing')}
-                          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-xl hover:scale-[1.02] transition-all duration-300 py-3 font-semibold"
+                          className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-xl hover:scale-[1.02] transition-all duration-300 py-3 font-semibold"
                         >
                           <Sparkles className="w-5 h-5 mr-2" />
                           Upgrade to Premium - $5/month
@@ -256,7 +256,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                           type="text"
                           value={newCategory.name}
                           onChange={(e) => setNewCategory({ ...newCategory, name: e.target.value })}
-                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="w-full px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                           placeholder="e.g., Gaming, Fitness"
                           autoFocus
                           required
@@ -275,7 +275,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                               onClick={() => setNewCategory({ ...newCategory, icon: emoji })}
                               className={`p-2 rounded-lg text-2xl transition-all ${
                                 newCategory.icon === emoji
-                                  ? 'bg-purple-600 ring-2 ring-purple-400'
+                                  ? 'bg-emerald-600 ring-2 ring-emerald-400'
                                   : 'bg-slate-700 hover:bg-slate-600'
                               }`}
                             >
@@ -318,7 +318,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                         </Button>
                         <Button
                           type="submit"
-                          className="flex-1 bg-purple-600 hover:bg-purple-700"
+                          className="flex-1 bg-emerald-600 hover:bg-emerald-700"
                           disabled={createCategory.isPending}
                         >
                           {createCategory.isPending ? (
@@ -354,7 +354,7 @@ export function ManageCategoriesModal({ onClose }: ManageCategoriesModalProps) {
                         {category.icon}
                       </div>
                       <div>
-                        <p className="text-white font-medium group-hover:text-purple-400 transition-colors">{category.name}</p>
+                        <p className="text-white font-medium group-hover:text-emerald-400 transition-colors">{category.name}</p>
                         {category.isDefault && (
                           <p className="text-xs text-gray-400">Default category</p>
                         )}

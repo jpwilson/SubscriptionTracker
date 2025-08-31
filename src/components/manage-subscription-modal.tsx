@@ -189,11 +189,11 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
 
               <button
                 onClick={() => setSelectedAction('cancel')}
-                className="w-full p-4 rounded-xl neu-button text-left hover:border-purple-500/30 transition-all"
+                className="w-full p-4 rounded-xl neu-button text-left hover:border-emerald-500/30 transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-lg bg-purple-500/20">
-                    <Calendar className="w-5 h-5 text-purple-400" />
+                  <div className="p-2 rounded-lg bg-emerald-500/20">
+                    <Calendar className="w-5 h-5 text-emerald-400" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-white">Mark as Cancelled</p>
@@ -257,8 +257,8 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
             </div>
           ) : selectedAction === 'cancel' ? (
             <div className="space-y-4">
-              <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/30">
-                <p className="text-sm text-purple-300">
+              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30">
+                <p className="text-sm text-emerald-300">
                   You&apos;re about to cancel {subscription.name}. When will your access end?
                 </p>
               </div>
@@ -272,12 +272,12 @@ export function ManageSubscriptionModal({ subscription, onClose }: ManageSubscri
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
                   min={format(new Date(), 'yyyy-MM-dd')}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-purple-500/50 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:border-emerald-500/50 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => setEndDate(getSuggestedEndDate())}
-                  className="text-xs text-purple-400 hover:text-purple-300 mt-2 transition-colors"
+                  className="text-xs text-emerald-400 hover:text-emerald-300 mt-2 transition-colors"
                 >
                   Suggested: {format(parseISO(getSuggestedEndDate()), 'MMMM d, yyyy')} (day before next billing)
                 </button>

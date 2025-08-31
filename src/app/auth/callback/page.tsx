@@ -59,8 +59,8 @@ export default function AuthCallbackPage() {
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
           className="relative mb-6"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur-xl opacity-50" />
-          <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl shadow-2xl">
+          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-2xl blur-xl opacity-50" />
+          <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-2xl">
             <TrendingUp className="w-8 h-8 text-white" />
           </div>
         </motion.div>
