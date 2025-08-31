@@ -412,7 +412,7 @@ export default function LandingPage() {
             
             <div className="text-xl mb-12 max-w-3xl mx-auto space-y-2">
               <p className="text-gray-300">
-                <span className="text-2xl font-bold text-orange-400">2–5 subscriptions</span> you&apos;ve forgotten.
+                The average person has forgotten <span className="text-2xl font-bold text-orange-400">2–5 subscriptions</span>.
               </p>
               <p className="text-gray-300">
                 <span className="text-2xl font-bold text-red-400">$40–$300/month</span> slipping away.
