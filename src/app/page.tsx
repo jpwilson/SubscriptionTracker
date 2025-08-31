@@ -761,7 +761,34 @@ export default function LandingPage() {
                     </div>
                   </div>
                   <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                  <p className="text-gray-400">{step.description}</p>
+                  <p className="text-gray-400 mb-4">{step.description}</p>
+                  
+                  {/* Feature list */}
+                  {step.features && (
+                    <ul className="space-y-2 mb-4">
+                      {step.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm text-gray-300">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  
+                  {/* Pro features badge */}
+                  {step.proFeatures && (
+                    <div className="mt-4 pt-4 border-t border-white/10">
+                      <p className="text-xs text-purple-400 mb-2 font-semibold">PRO FEATURES</p>
+                      <div className="flex flex-wrap gap-2">
+                        {step.proFeatures.map((feature, idx) => (
+                          <div key={idx} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                            {feature.icon}
+                            <span className="text-xs text-purple-300">{feature.text}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))}
