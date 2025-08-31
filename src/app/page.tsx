@@ -74,7 +74,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['features', 'calculator', 'how-it-works', 'pricing']
+      const sections = ['calculator', 'features', 'how-it-works', 'pricing']
       const scrollPosition = window.scrollY + 100
 
       for (const section of sections) {
@@ -325,11 +325,11 @@ export default function LandingPage() {
             <div className="hidden md:flex items-center gap-8">
               <LayoutGroup>
                 <button 
-                  onClick={() => scrollToSection('features')} 
-                  className={`relative text-gray-300 hover:text-white transition-colors ${activeSection === 'features' ? 'text-white' : ''}`}
+                  onClick={() => scrollToSection('calculator')} 
+                  className={`relative text-gray-300 hover:text-white transition-colors ${activeSection === 'calculator' ? 'text-white' : ''}`}
                 >
-                  Features
-                  {activeSection === 'features' && (
+                  Calculator
+                  {activeSection === 'calculator' && (
                     <motion.div
                       layoutId="activeSection"
                       className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
@@ -337,11 +337,11 @@ export default function LandingPage() {
                   )}
                 </button>
                 <button 
-                  onClick={() => scrollToSection('calculator')} 
-                  className={`relative text-gray-300 hover:text-white transition-colors ${activeSection === 'calculator' ? 'text-white' : ''}`}
+                  onClick={() => scrollToSection('features')} 
+                  className={`relative text-gray-300 hover:text-white transition-colors ${activeSection === 'features' ? 'text-white' : ''}`}
                 >
-                  Calculator
-                  {activeSection === 'calculator' && (
+                  Features
+                  {activeSection === 'features' && (
                     <motion.div
                       layoutId="activeSection"
                       className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500"
