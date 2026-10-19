@@ -7,6 +7,7 @@ import { CheckCircle, Sparkles, ArrowRight, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { TwitterConversion } from '@/components/twitter-conversion'
+import { trackEvent, EVENTS } from '@/lib/analytics'
 
 function PaymentSuccessContent() {
   const router = useRouter()
@@ -15,6 +16,9 @@ function PaymentSuccessContent() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    // Track successful payment
+    trackEvent(EVENTS.PAYMENT_SUCCESS)
+    
     // Trigger confetti animation
     const duration = 3 * 1000
     const animationEnd = Date.now() + duration
