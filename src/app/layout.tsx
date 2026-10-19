@@ -182,7 +182,7 @@ export default function RootLayout({
                 "name": "How much money can I save with SubTracker?",
                 "acceptedAnswer": {
                   "@type": "Answer",
-                  "text": "Users typically save $40-$300 per month by canceling 2-5 forgotten subscriptions, downgrading unused premium plans, and optimizing their subscription spending."
+                  "text": "SubTracker helps you save money by identifying forgotten subscriptions, finding opportunities to downgrade unused premium plans, and optimizing your subscription spending. Actual savings vary based on individual subscription habits."
                 }
               },
               {

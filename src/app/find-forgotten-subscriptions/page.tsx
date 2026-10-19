@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
   title: 'How to Find Forgotten Subscriptions: Complete Guide | SubTracker',
-  description: 'Discover forgotten subscriptions draining your bank account. Learn 7 proven methods to find hidden recurring charges and save $40-$300/month.',
+  description: 'Discover forgotten subscriptions draining your bank account. Learn 7 proven methods to find hidden recurring charges.',
   openGraph: {
     title: 'Find Forgotten Subscriptions: Save Money Today',
-    description: '7 ways to find forgotten subscriptions. Most people have 2-5 active subscriptions they forgot about. Find yours now.',
+    description: '7 ways to find forgotten subscriptions. Many people have active subscriptions they forgot about. Find yours now.',
   },
 }
 
