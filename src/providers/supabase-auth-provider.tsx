@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { User } from '@supabase/supabase-js'
 import { supabase } from '@/lib/supabase'
+import { identifyUser, trackEvent, resetUser, EVENTS } from '@/lib/analytics'
 
 interface AuthContextType {
   user: User | null
@@ -27,6 +28,11 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
       setLoading(false)
+      
+      // Identify user in PostHog (only using anonymous user ID)
+      if (session?.user) {
+        identifyUser(session.user.id)
+      }
     })
 
     // Listen for changes on auth state (sign in, sign out, etc.)
@@ -36,7 +42,18 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       
       // Handle sign in event
       if (event === 'SIGNED_IN' && session) {
+        // Identify user in PostHog (only using anonymous user ID)
+        identifyUser(session.user.id)
+        trackEvent(EVENTS.SIGN_IN_COMPLETED, {
+          auth_method: session.user.app_metadata?.provider || 'email'
+        })
         router.push('/dashboard')
+      }
+      
+      // Handle sign out event
+      if (event === 'SIGNED_OUT') {
+        trackEvent(EVENTS.SIGN_OUT)
+        resetUser()
       }
     })
 
@@ -68,6 +85,8 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
   }
 
   const signUpWithEmail = async (email: string, password: string) => {
+    trackEvent(EVENTS.SIGN_UP_STARTED, { auth_method: 'email' })
+    
     const { error } = await supabase.auth.signUp({
       email,
       password,
@@ -77,6 +96,7 @@ export function SupabaseAuthProvider({ children }: { children: React.ReactNode }
       return { error: error.message }
     }
     
+    trackEvent(EVENTS.SIGN_UP_COMPLETED, { auth_method: 'email' })
     return {}
   }
 

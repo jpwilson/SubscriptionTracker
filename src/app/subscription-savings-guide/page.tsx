@@ -17,7 +17,7 @@ export default function SubscriptionSavingsGuide() {
     {
       icon: <DollarSign className="w-8 h-8 text-emerald-400" />,
       title: 'Switch to Annual Billing',
-      savings: 'Typically 10-20% discount',
+      savings: 'Annual plans often cheaper',
       description: 'Most subscriptions offer discounts for annual payment',
       examples: [
         'Streaming services often discount annual plans',

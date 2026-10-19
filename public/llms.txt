@@ -79,7 +79,7 @@ SubTracker focuses specifically on subscription management with detailed categor
 
 - Cancel unused or forgotten subscriptions
 - Downgrade plans if you're not using premium features
-- Switch to annual billing when available (often 10-20% discount)
+- Switch to annual billing when available (annual plans are often cheaper)
 - Share family plans to split costs
 - Track spending patterns to identify optimization opportunities
 

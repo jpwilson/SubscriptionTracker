@@ -9,6 +9,7 @@ import { useCategories } from '@/hooks/use-categories'
 import { ManageCategoriesModal } from './manage-categories-modal'
 import { formatDateForInput, parseLocalDate, formatCurrency } from '@/lib/utils'
 import { format } from 'date-fns'
+import { trackEvent, EVENTS } from '@/lib/analytics'
 
 interface AddSubscriptionModalProps {
   onClose: () => void
@@ -166,6 +167,16 @@ export function AddSubscriptionModal({ onClose, onSave }: AddSubscriptionModalPr
       subscriptionGroupId: matchingSubscription?.subscriptionGroupId || matchingSubscription?.id || null,
       isReactivation: !!matchingSubscription,
       previousAmount: matchingSubscription?.amount || null,
+    })
+    
+    // Track subscription added event (no PII or financial details)
+    trackEvent(EVENTS.SUBSCRIPTION_ADDED, {
+      billing_cycle: formData.billingCycle,
+      category: formData.category,
+      is_trial: formData.isTrial,
+      is_reactivation: !!matchingSubscription,
+      has_url: !!formData.url,
+      has_notes: !!formData.notes,
     })
     
     // Pass the subscription details to parent for toast

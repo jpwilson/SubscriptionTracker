@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Inter, Plus_Jakarta_Sans } from "next/font/google"
 import "./globals.css"
 import { Providers } from "@/components/providers"
+import { PostHogPageViewWrapper } from "@/components/posthog-pageview"
 import Script from 'next/script'
 import { Analytics } from "@vercel/analytics/react"
 
@@ -216,6 +217,7 @@ export default function RootLayout({
       </head>
       <body className={`${plusJakarta.className} ${inter.variable} ${plusJakarta.variable} custom-scrollbar`}>
         <Providers>
+          <PostHogPageViewWrapper />
           {children}
         </Providers>
         <Analytics />
