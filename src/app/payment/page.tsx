@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { InternalHeader } from '@/components/internal-header'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { supabase } from '@/lib/supabase'
+import { trackEvent, EVENTS } from '@/lib/analytics'
 import Image from 'next/image'
 
 function PaymentContent() {
@@ -78,6 +79,13 @@ function PaymentContent() {
     }
 
     setIsLoading(true)
+    
+    // Track checkout started event
+    trackEvent(EVENTS.CHECKOUT_STARTED, {
+      plan: selectedPlan,
+      plan_name: currentPlan.name,
+    })
+    
     try {
       // Get the session token
       const { data: { session } } = await supabase.auth.getSession()

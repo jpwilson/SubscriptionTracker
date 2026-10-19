@@ -42,6 +42,7 @@ Take control of your subscriptions and stop wasting money on forgotten services.
 - **State Management**: React Query, Zustand
 - **UI Components**: Radix UI, Framer Motion
 - **Charts**: Recharts
+- **Analytics**: PostHog (optional, privacy-focused)
 - **Deployment**: Vercel
 
 ## 🚀 Quick Start
@@ -103,11 +104,20 @@ Try SubTracker with our demo accounts:
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
    DATABASE_URL=your-database-url
    ```
+   
+   **Optional: Analytics**
+   To enable PostHog analytics (completely optional):
+   ```
+   NEXT_PUBLIC_POSTHOG_KEY=your-posthog-api-key
+   NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+   ```
+   See [POSTHOG_SETUP.md](./POSTHOG_SETUP.md) for detailed setup instructions.
 
 ### Important Notes
 - SQLite is used for local development only
 - For production, migrate to PostgreSQL (Supabase recommended)
 - All API routes work as serverless functions on Vercel
+- PostHog analytics is optional - app works without it (see [POSTHOG_SETUP.md](./POSTHOG_SETUP.md))
 
 ## 🗂️ Project Structure
 

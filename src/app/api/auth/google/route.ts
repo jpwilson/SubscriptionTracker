@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/lib/supabase'
-import jwt_decode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 interface GoogleUser {
   email: string
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Decode the Google JWT token
-    const googleUser = jwt_decode<GoogleUser>(credential)
+    const googleUser = jwtDecode<GoogleUser>(credential)
     
     // Check if user exists in Supabase
     const { data: existingUser, error: fetchError } = await supabase
