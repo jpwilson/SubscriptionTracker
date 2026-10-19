@@ -311,28 +311,28 @@ export default function SubscriptionSavingsGuide() {
             </h2>
             <div className="space-y-4">
               <div className="neu-card rounded-xl p-4 border border-white/10">
-                <h3 className="font-semibold text-white mb-2">The \"Break Even\" Rule</h3>
+                <h3 className="font-semibold text-white mb-2">The &ldquo;Break Even&rdquo; Rule</h3>
                 <p className="text-gray-300 text-sm">
                   If a streaming service costs $15/mo, you need to watch at least 3-4 hours per month to justify it. 
                   Otherwise, rent individual movies ($4-6 each) or rotate subscriptions.
                 </p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-white/10">
-                <h3 className="font-semibold text-white mb-2">The \"Pause\" Strategy</h3>
+                <h3 className="font-semibold text-white mb-2">The &ldquo;Pause&rdquo; Strategy</h3>
                 <p className="text-gray-300 text-sm">
                   Many services (Audible, meal kits, fitness apps) let you pause for 1-3 months instead of canceling. 
                   Pause during busy months, vacations, or when you&apos;re not using them.
                 </p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-white/10">
-                <h3 className="font-semibold text-white mb-2">The \"Churn\" Method</h3>
+                <h3 className="font-semibold text-white mb-2">The &ldquo;Churn&rdquo; Method</h3>
                 <p className="text-gray-300 text-sm">
                   Cancel right after subscribing (access continues until period ends). Prevents forgetting. 
                   If you want it next month, you&apos;ll remember to resubscribe.
                 </p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-white/10">
-                <h3 className="font-semibold text-white mb-2">The \"Bundle Audit\"</h3>
+                <h3 className="font-semibold text-white mb-2">The &ldquo;Bundle Audit&rdquo;</h3>
                 <p className="text-gray-300 text-sm">
                   Check if your cell phone, credit card, or employer offers free subscriptions. 
                   Many people pay for Hulu when it&apos;s included with their Spotify or phone plan.
