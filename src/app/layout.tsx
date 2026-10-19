@@ -18,12 +18,12 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: "SubTracker - Smart Subscription Management Platform",
-  description: "Track, manage, and optimize your subscriptions. Find forgotten subscriptions, get price alerts, and save $40-$300/month. Free forever plan. No credit card required.",
+  description: "Track, manage, and optimize your subscriptions. Find forgotten subscriptions, get price alerts, and take control of recurring payments. Free forever plan. No credit card required.",
   keywords: "subscription tracker, subscription management, cancel subscriptions, subscription savings, recurring payments, subscription app, manage subscriptions",
   authors: [{ name: "SubTracker Team" }],
   openGraph: {
     title: "SubTracker - Stop Wasting Money on Forgotten Subscriptions",
-    description: "Free subscription tracking platform. Save $40-$300/month by finding forgotten subscriptions and optimizing your spending.",
+    description: "Free subscription tracking platform. Find forgotten subscriptions and optimize your spending with smart alerts and analytics.",
     url: "https://subtracker.app",
     siteName: "SubTracker",
     type: "website",

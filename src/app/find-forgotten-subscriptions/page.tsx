@@ -140,32 +140,17 @@ export default function FindForgottenSubscriptions() {
           </h1>
           
           <p className="text-xl text-gray-300 text-center mb-8 max-w-3xl mx-auto">
-            The average person has <strong className="text-orange-400">2-5 forgotten subscriptions</strong> costing <strong className="text-red-400">$40-$300 per month</strong>. Here&apos;s exactly how to find yours.
+            Many people have forgotten subscriptions they&apos;re still paying for. Here&apos;s exactly how to find yours.
           </p>
 
           <div className="neu-card rounded-3xl p-8 mb-12 border border-yellow-500/20 bg-gradient-to-br from-yellow-900/10 to-orange-900/10">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <AlertTriangle className="w-6 h-6 text-yellow-400" />
-              Quick Stats
+              Why This Matters
             </h2>
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="neu-card rounded-xl p-4 border border-white/10">
-                <p className="text-3xl font-bold text-gradient mb-2">84%</p>
-                <p className="text-sm text-gray-300">Underestimate subscription costs</p>
-              </div>
-              <div className="neu-card rounded-xl p-4 border border-white/10">
-                <p className="text-3xl font-bold text-gradient mb-2">$273</p>
-                <p className="text-sm text-gray-300">Average monthly subscription spending</p>
-              </div>
-              <div className="neu-card rounded-xl p-4 border border-white/10">
-                <p className="text-3xl font-bold text-gradient mb-2">42%</p>
-                <p className="text-sm text-gray-300">Forget to cancel free trials</p>
-              </div>
-              <div className="neu-card rounded-xl p-4 border border-white/10">
-                <p className="text-3xl font-bold text-gradient mb-2">3.4</p>
-                <p className="text-sm text-gray-300">Average forgotten subscriptions per person</p>
-              </div>
-            </div>
+            <p className="text-gray-300">
+              Forgotten subscriptions are common. Free trials that auto-renew, services you used once, or accounts from previous life stages can add up. Finding and canceling unused subscriptions puts money back in your budget.
+            </p>
           </div>
 
           <div className="space-y-8 mb-12">

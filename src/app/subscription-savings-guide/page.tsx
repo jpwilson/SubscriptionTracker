@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 
 export const metadata: Metadata = {
   title: 'Subscription Savings Guide: 12 Ways to Save Money | SubTracker',
-  description: 'Save $40-$300/month on subscriptions with proven strategies. Learn annual billing savings, family plan sharing, and more money-saving tips.',
+  description: 'Practical strategies to reduce subscription costs. Learn about annual billing savings, family plan sharing, and more money-saving tips.',
   openGraph: {
     title: 'Save Money on Subscriptions: Complete 2025 Guide',
     description: '12 proven strategies to cut subscription costs without losing services you love. Start saving today.',
@@ -17,166 +17,155 @@ export default function SubscriptionSavingsGuide() {
     {
       icon: <DollarSign className="w-8 h-8 text-emerald-400" />,
       title: 'Switch to Annual Billing',
-      savings: 'Save 10-20% per year',
+      savings: 'Typically 10-20% discount',
       description: 'Most subscriptions offer discounts for annual payment',
       examples: [
-        'YouTube Premium: $2.40/mo savings ($28.80/year)',
-        'Adobe Creative Cloud: $60-$120/year savings',
-        'Spotify: Save ~$20/year',
-        'NYTimes Digital: Save $50+/year'
+        'Streaming services often discount annual plans',
+        'Software subscriptions (Adobe, Microsoft 365)',
+        'News and media subscriptions',
+        'Cloud storage services'
       ],
-      tips: 'Only works if you\'re committed to using the service for 12 months'
+      tips: 'Only switch if you\'re committed to using the service for 12 months'
     },
     {
       icon: <Users className="w-8 h-8 text-blue-400" />,
       title: 'Share Family Plans',
-      savings: 'Save 50-75% per person',
-      description: 'Split costs with family or trusted friends',
+      savings: 'Split costs among multiple users',
+      description: 'Many services offer family plans that cost less per person',
       examples: [
-        'Spotify Family (6 people): $2.83/person vs $10.99 solo',
-        'YouTube Premium Family: $3.60/person vs $13.99 solo',
-        'Apple Music Family: $2.50/person vs $10.99 solo',
-        'Netflix Standard: Split $15.49 between 2-3 users',
-        'Costco membership: Split $60 with household'
+        'Music streaming family plans (up to 6 people)',
+        'Video streaming services',
+        'Cloud storage family plans',
+        'Warehouse club memberships'
       ],
       tips: 'Make sure everyone actually uses it, or you\'re still overpaying'
     },
     {
       icon: <TrendingUp className="w-8 h-8 text-teal-400" />,
       title: 'Downgrade Premium Plans',
-      savings: 'Save $5-$50/month per service',
-      description: 'Most people don\'t use premium features',
+      savings: 'Pay only for features you use',
+      description: 'Many people don\'t use premium features',
       examples: [
-        'Spotify: Premium Duo ($14.99) if just 2 people',
-        'Netflix: Basic ($6.99) vs Premium ($22.99) if you don\'t need 4K',
-        'Canva: Free version covers 90% of casual use',
-        'Adobe: Photography plan ($9.99) vs All Apps ($54.99)',
-        'LinkedIn: Premium not needed for most job seekers'
+        'Lower video quality tiers if you don\'t need 4K',
+        'Basic music plans if you don\'t need offline downloads',
+        'Essential software plans instead of full suites',
+        'Free tiers for tools you rarely use'
       ],
       tips: 'Downgrade first, cancel only if you don\'t miss it'
     },
     {
       icon: <Calendar className="w-8 h-8 text-indigo-400" />,
       title: 'Rotate Subscriptions',
-      savings: 'Save $20-$60/month',
+      savings: 'Only pay when actively using',
       description: 'Subscribe when you need it, cancel when done',
       examples: [
-        'Watch Disney+ for 2 months, then switch to HBO Max',
-        'Subscribe to Adobe for a project, cancel after',
-        'Fitness apps: Subscribe winter months only',
-        'Meal kits: Use 1-2 months, then take breaks',
-        'Audible: Subscribe when credits run out, pause between'
+        'Watch one streaming service for a month, then switch',
+        'Subscribe to software for specific projects',
+        'Seasonal subscriptions (fitness apps in winter)',
+        'Meal kits during busy periods only'
       ],
       tips: 'Works best for entertainment and seasonal services'
     },
     {
       icon: <Shield className="w-8 h-8 text-purple-400" />,
       title: 'Bundle Services Together',
-      savings: 'Save $10-$30/month',
+      savings: 'Bundled services cost less than individual',
       description: 'Providers offer discounts when you combine services',
       examples: [
-        'Hulu + Disney+ + ESPN+ bundle: Save $8/month',
-        'Apple One (Music + TV+ + iCloud): Save $6-$10/month',
-        'Amazon Prime (shipping + video + music): Better value',
-        'Microsoft 365 Family: 6 users + 1TB each = better than individual',
-        'Cell phone plans with streaming included'
+        'Streaming bundles (multiple services for one price)',
+        'All-in-one Apple, Microsoft, or Amazon ecosystems',
+        'Internet + streaming from your ISP',
+        'Cell phone plans with included streaming'
       ],
       tips: 'Only worth it if you use all bundled services'
     },
     {
       icon: <Zap className="w-8 h-8 text-yellow-400" />,
       title: 'Use Free Alternatives',
-      savings: 'Save $5-$50/month per service',
+      savings: 'Free can replace paid for basic needs',
       description: 'Many paid services have capable free options',
       examples: [
-        'Canva Free instead of Canva Pro ($12.99/mo)',
-        'Google Docs instead of Microsoft 365 ($6.99/mo)',
-        'YouTube (free with ads) instead of YouTube Premium',
-        'Spotify Free (with ads) if you can tolerate them',
-        'Libre Office instead of Microsoft Office'
+        'Free design tools instead of pro versions',
+        'Free office suites instead of paid subscriptions',
+        'Ad-supported streaming instead of premium',
+        'Open-source software alternatives'
       ],
       tips: 'Try the free version first before upgrading'
     },
     {
       icon: <CheckCircle2 className="w-8 h-8 text-green-400" />,
       title: 'Cancel Unused Subscriptions',
-      savings: 'Save $40-$200/month',
-      description: 'The #1 way to save: Stop paying for what you don\'t use',
+      savings: 'Stop paying for what you don\'t use',
+      description: 'The most effective way to save',
       examples: [
-        'Gym memberships you don\'t visit (avg $50/mo)',
-        'Streaming services you watched once ($15/mo each)',
-        'Software trials you forgot to cancel ($10-50/mo)',
-        'Gaming subscriptions for games you finished',
-        'Duplicate services (two cloud storage plans)'
+        'Gym memberships you don\'t visit',
+        'Streaming services you watched once',
+        'Software trials you forgot to cancel',
+        'Duplicate services (multiple cloud storage plans)'
       ],
       tips: 'Be honest: If you haven\'t used it in 30 days, cancel it'
     },
     {
       icon: <TrendingUp className="w-8 h-8 text-orange-400" />,
       title: 'Negotiate Retention Offers',
-      savings: 'Save 20-50% for 6-12 months',
+      savings: 'Ask for discounts to stay subscribed',
       description: 'Companies offer discounts to keep customers',
       examples: [
-        'Cable/Internet: Call to cancel, usually get 20-40% off',
-        'SiriusXM: Threaten to cancel for 50% discount',
-        'NYTimes: $1-$4/month offers for existing customers',
-        'Audible: Pause membership or get 3 months at 50% off',
-        'Dating apps: Get premium at half price before canceling'
+        'Cable/Internet: Call to cancel, often get discounts',
+        'Satellite radio services',
+        'News subscriptions',
+        'Audiobook services'
       ],
-      tips: 'Actually be willing to cancel if they don\'t offer discount'
+      tips: 'Actually be willing to cancel if they don\'t offer a discount'
     },
     {
       icon: <Calendar className="w-8 h-8 text-pink-400" />,
       title: 'Time Your Subscriptions',
-      savings: 'Save $10-$30/month',
+      savings: 'Subscribe for specific content only',
       description: 'Subscribe for specific content, then pause',
       examples: [
-        'HBO Max: Subscribe for Game of Thrones, cancel after',
-        'Apple TV+: Subscribe for Ted Lasso season, then cancel',
-        'Peloton: Pause during vacations or injury',
-        'Meal kits: Skip weeks you\'re traveling',
-        'Audible: Only subscribe when you need credits'
+        'Subscribe when new seasons of shows release',
+        'Subscribe for one month to binge content',
+        'Pause during vacations or busy periods',
+        'Skip meal kit weeks when traveling'
       ],
       tips: 'Most services let you pause or restart anytime'
     },
     {
       icon: <DollarSign className="w-8 h-8 text-red-400" />,
       title: 'Look for Student/Teacher Discounts',
-      savings: 'Save 30-50% with valid ID',
+      savings: 'Education discounts available',
       description: 'Many services offer education pricing',
       examples: [
-        'Spotify + Hulu + Showtime Student: $5.99/mo (usually $23)',
-        'Apple Music Student: $5.99 vs $10.99',
-        'Adobe Creative Cloud Student: $19.99 vs $54.99',
-        'Amazon Prime Student: $7.49 vs $14.99',
-        'YouTube Premium Student: $7.99 vs $13.99'
+        'Music streaming student plans',
+        'Software student versions',
+        'News subscriptions for students',
+        'Delivery services with student pricing'
       ],
-      tips: 'Verify annually. Some work for .edu emails only.'
+      tips: 'Verify annually. Most require .edu email or student ID.'
     },
     {
       icon: <Shield className="w-8 h-8 text-teal-400" />,
       title: 'Use Credit Card Perks',
-      savings: 'Save $10-$100/year',
+      savings: 'Credit card statement credits',
       description: 'Some cards reimburse subscription costs',
       examples: [
-        'Amex Platinum: Up to $20/mo in credits (Uber, streaming)',
-        'Chase Sapphire Reserve: $10/mo DoorDash credit',
-        'Capital One Venture X: $10/mo streaming credit',
-        'Wells Fargo Active Cash: Cell phone protection',
-        'Citi Prestige: Free streaming services (discontinued but grandfathered)'
+        'Premium cards with streaming credits',
+        'Cards with food delivery credits',
+        'Travel cards with subscription benefits',
+        'Cards with cell phone protection'
       ],
-      tips: 'Check your card benefits. Many people leave money on table.'
+      tips: 'Check your card benefits. Many people miss these credits.'
     },
     {
       icon: <Sparkles className="w-8 h-8 text-blue-400" />,
       title: 'Take Advantage of Promotions',
-      savings: 'Save 50-100% for first 1-6 months',
+      savings: 'Discounted trial periods',
       description: 'New customer deals and limited-time offers',
       examples: [
-        'Streaming services: $0.99-$1.99 for 3-6 months',
-        'Music services: Free for 3 months',
-        'Black Friday deals: Annual plans at 30-50% off',
-        'Sign up with new email for trial periods',
+        'Discounted first months for new subscribers',
+        'Free trial periods (remember to cancel)',
+        'Black Friday and holiday deals',
         'Referral bonuses from friends'
       ],
       tips: 'Set reminder to cancel before promo ends if not keeping'
@@ -211,26 +200,8 @@ export default function SubscriptionSavingsGuide() {
           </h1>
           
           <p className="text-xl text-gray-300 text-center mb-12 max-w-3xl mx-auto">
-            Cut your subscription costs by <strong className="text-emerald-400">$40-$300/month</strong> without giving up the services you love. Here&apos;s how.
+            Reduce your subscription costs without giving up the services you love. Here&apos;s how.
           </p>
-
-          <div className="neu-card rounded-3xl p-8 mb-12 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
-            <h2 className="text-2xl font-bold mb-4 text-center">Quick Wins</h2>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
-                <p className="text-3xl font-bold text-gradient mb-2">$147</p>
-                <p className="text-sm text-gray-300">Average monthly savings</p>
-              </div>
-              <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
-                <p className="text-3xl font-bold text-gradient mb-2">2-5</p>
-                <p className="text-sm text-gray-300">Unused subs to cancel</p>
-              </div>
-              <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
-                <p className="text-3xl font-bold text-gradient mb-2">30%</p>
-                <p className="text-sm text-gray-300">Typical cost reduction</p>
-              </div>
-            </div>
-          </div>
 
           <div className="space-y-8 mb-12">
             {strategies.map((strategy, index) => (
@@ -267,41 +238,6 @@ export default function SubscriptionSavingsGuide() {
                 </div>
               </div>
             ))}
-          </div>
-
-          <div className="neu-card rounded-3xl p-8 mb-12 border border-white/10">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-              <Calculator className="w-6 h-6 text-teal-400" />
-              Savings Calculator
-            </h2>
-            <p className="text-gray-300 mb-4">
-              Combine multiple strategies for maximum savings:
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center justify-between p-3 neu-card rounded-lg border border-emerald-500/20">
-                <span className="text-gray-300">Cancel 3 unused subscriptions ($15 each)</span>
-                <span className="font-bold text-emerald-400">+$45/mo</span>
-              </div>
-              <div className="flex items-center justify-between p-3 neu-card rounded-lg border border-teal-500/20">
-                <span className="text-gray-300">Switch Netflix to Basic plan</span>
-                <span className="font-bold text-teal-400">+$16/mo</span>
-              </div>
-              <div className="flex items-center justify-between p-3 neu-card rounded-lg border border-blue-500/20">
-                <span className="text-gray-300">Join family plan for Spotify</span>
-                <span className="font-bold text-blue-400">+$8/mo</span>
-              </div>
-              <div className="flex items-center justify-between p-3 neu-card rounded-lg border border-indigo-500/20">
-                <span className="text-gray-300">Switch 2 services to annual billing (10% savings)</span>
-                <span className="font-bold text-indigo-400">+$4/mo</span>
-              </div>
-              <div className="flex items-center justify-between p-4 neu-card rounded-xl border-2 border-emerald-500/30 bg-emerald-500/5">
-                <span className="text-white font-bold text-lg">Total Monthly Savings</span>
-                <span className="font-bold text-emerald-400 text-2xl">$73/mo</span>
-              </div>
-              <p className="text-center text-gray-400 text-sm pt-2">
-                That&apos;s <strong className="text-emerald-400">$876 per year</strong> back in your pocket!
-              </p>
-            </div>
           </div>
 
           <div className="neu-card rounded-3xl p-8 mb-12 border border-yellow-500/20 bg-gradient-to-br from-yellow-900/10 to-orange-900/10">
