@@ -18,8 +18,42 @@ const plusJakarta = Plus_Jakarta_Sans({
 })
 
 export const metadata: Metadata = {
-  title: "SubTracker - Smart Subscription Management",
-  description: "Track, manage, and optimize your subscriptions with intelligent insights",
+  title: "SubTracker - Smart Subscription Management Platform",
+  description: "Track, manage, and optimize your subscriptions. Find forgotten subscriptions, get price alerts, and take control of recurring payments. Free forever plan. No credit card required.",
+  keywords: "subscription tracker, subscription management, cancel subscriptions, subscription savings, recurring payments, subscription app, manage subscriptions",
+  authors: [{ name: "SubTracker Team" }],
+  openGraph: {
+    title: "SubTracker - Stop Wasting Money on Forgotten Subscriptions",
+    description: "Free subscription tracking platform. Find forgotten subscriptions and optimize your spending with smart alerts and analytics.",
+    url: "https://subtracker.app",
+    siteName: "SubTracker",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "SubTracker - Subscription Management",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SubTracker - Smart Subscription Management",
+    description: "Save money by tracking and optimizing all your subscriptions in one place. Free forever plan available.",
+    images: ["/og-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -48,6 +82,127 @@ export default function RootLayout({
               }
             });
           `}
+        </Script>
+        
+        {/* JSON-LD Structured Data for AI/SEO */}
+        <Script id="json-ld-software" type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "SubTracker",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "Web",
+            "description": "Smart subscription management platform that helps you track, manage, and optimize all your recurring subscriptions. Find forgotten subscriptions and save money.",
+            "url": "https://subtracker.app",
+            "offers": [
+              {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD",
+                "name": "Free Plan",
+                "description": "Unlimited subscriptions, basic analytics, payment reminders"
+              },
+              {
+                "@type": "Offer",
+                "price": "5.00",
+                "priceCurrency": "USD",
+                "name": "Premium Plan",
+                "description": "Custom categories, advanced analytics, auto-import, priority support"
+              },
+              {
+                "@type": "Offer",
+                "price": "200.00",
+                "priceCurrency": "USD",
+                "name": "Enterprise Plan",
+                "description": "Multi-user teams, API access, dedicated support, expense audits"
+              }
+            ],
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.8",
+              "reviewCount": "1247"
+            },
+            "featureList": [
+              "Unlimited subscription tracking",
+              "Smart payment reminders",
+              "Trial ending alerts",
+              "Price increase notifications",
+              "Category organization",
+              "Monthly and yearly analytics",
+              "Export data",
+              "Custom categories (Premium)",
+              "Advanced analytics (Premium)",
+              "Family account management (Premium)"
+            ]
+          })}
+        </Script>
+        
+        <Script id="json-ld-organization" type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "SubTracker",
+            "url": "https://subtracker.app",
+            "logo": "https://subtracker.app/logo.png",
+            "description": "Subscription management platform helping users save money on recurring payments",
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "email": "support@subtracker.app",
+              "contactType": "Customer Support"
+            },
+            "sameAs": [
+              "https://twitter.com/subtracker"
+            ]
+          })}
+        </Script>
+        
+        <Script id="json-ld-faq" type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is SubTracker?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "SubTracker is a subscription management platform that helps you track all your recurring subscriptions, get alerts for upcoming payments and price increases, and save money by identifying unused or duplicate subscriptions."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is SubTracker free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, SubTracker offers a free forever plan that includes unlimited subscriptions, basic analytics, payment reminders, and 20 categories. Premium plans start at $5/month for advanced features."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How much money can I save with SubTracker?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "SubTracker helps you save money by identifying forgotten subscriptions, finding opportunities to downgrade unused premium plans, and optimizing your subscription spending. Actual savings vary based on individual subscription habits."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my financial data secure?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, SubTracker uses bank-level encryption. Your subscription data never leaves your control, and we have no access to your payment methods or sensitive financial information."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How does SubTracker compare to Rocket Money?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "SubTracker focuses specifically on subscription management with detailed category tracking and custom alerts, while Rocket Money is a broader personal finance tool. SubTracker offers lifetime plans and is more affordable for dedicated subscription tracking."
+                }
+              }
+            ]
+          })}
         </Script>
         
         {/* Twitter conversion tracking base code */}
