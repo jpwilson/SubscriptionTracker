@@ -1,0 +1,89 @@
+# SubTracker
+> AI-powered subscription management platform
+
+SubTracker is a free subscription tracking and management platform that helps users identify forgotten subscriptions, optimize spending, and save money on recurring payments.
+
+## What It Does
+
+SubTracker helps you:
+- Track all your subscriptions in one dashboard
+- Get alerts for upcoming payments, price increases, and trial endings
+- Identify unused or duplicate subscriptions
+- Analyze spending patterns across categories
+- Save money by optimizing subscription costs
+
+## Key Features
+
+### Free Forever Plan
+- Unlimited subscriptions
+- 20 built-in categories
+- Smart payment reminders
+- Monthly & yearly analytics
+- Trial ending alerts
+- Export your data
+
+### Premium ($5/month)
+- Custom categories and subcategories
+- Advanced analytics and projections
+- Auto-import from email/screenshots
+- Price increase notifications
+- Family account management
+- Priority support
+
+### Enterprise ($200/month)
+- Multi-user team management
+- Department budgeting
+- Approval workflows
+- Expense audit reports
+- API access
+- Dedicated support
+
+## Technology
+
+Built with Next.js 14, TypeScript, Prisma ORM, and deployed on Vercel. Uses SQLite for development and PostgreSQL for production.
+
+## Privacy & Security
+
+- Bank-level encryption
+- Your data never leaves your control
+- No third-party access to financial information
+- Optional data export anytime
+
+## Pricing
+
+- Free: $0/month forever
+- Premium: $5/month
+- Forever: $250 one-time
+- Enterprise: $200/month
+
+## Use Cases
+
+Perfect for:
+- Individuals managing personal subscriptions
+- Families sharing streaming services
+- Small businesses tracking software costs
+- Teams managing department subscriptions
+- Anyone wanting to save money on recurring payments
+
+## Contact
+
+- Website: https://subtracker.app
+- Support: support@subtracker.app
+- Demo accounts available for testing
+
+## Comparisons
+
+SubTracker vs Rocket Money: SubTracker focuses specifically on subscription management with detailed category tracking, while Rocket Money is a broader personal finance tool.
+
+SubTracker vs Truebill: SubTracker offers lifetime plans and enterprise features, making it suitable for both personal and business use.
+
+SubTracker vs Manual Spreadsheets: Automated alerts, smart insights, and beautiful visualizations that spreadsheets can't provide.
+
+## Average User Savings
+
+Users report saving $40-$300 per month by:
+- Canceling 2-5 forgotten subscriptions
+- Downgrading unused premium plans
+- Switching to annual billing (10-20% savings)
+- Sharing family plans effectively
+- Negotiating or finding better alternatives
