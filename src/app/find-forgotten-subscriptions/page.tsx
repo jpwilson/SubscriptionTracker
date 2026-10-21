@@ -1,16 +1,23 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Search, Mail, CreditCard, Receipt, AlertTriangle, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { JsonLd } from '@/components/json-ld'
+import { MarketingFooter } from '@/components/marketing-footer'
+import { MarketingHeader } from '@/components/marketing-header'
+import { articleSchema, breadcrumbSchema, buildMetadata } from '@/lib/seo'
+import { LAST_UPDATED_ISO } from '@/lib/site'
 
-export const metadata: Metadata = {
-  title: 'How to Find Forgotten Subscriptions: Complete Guide | SubTracker',
-  description: 'Discover forgotten subscriptions draining your bank account. Learn 7 proven methods to find hidden recurring charges.',
-  openGraph: {
-    title: 'Find Forgotten Subscriptions: Save Money Today',
-    description: '7 ways to find forgotten subscriptions. Many people have active subscriptions they forgot about. Find yours now.',
-  },
-}
+const BREADCRUMB = [
+  { name: 'Home', path: '/' },
+  { name: 'Find forgotten subscriptions', path: '/find-forgotten-subscriptions' },
+]
+
+export const metadata = buildMetadata({
+  title: 'How to Find Forgotten Subscriptions You Still Pay For',
+  description: 'A practical audit for finding recurring charges you forgot about: bank statements, App Store and Google Play subscriptions, email receipts and PayPal agreements.',
+  path: '/find-forgotten-subscriptions',
+  type: 'article',
+})
 
 export default function FindForgottenSubscriptions() {
   const methods = [
@@ -116,20 +123,19 @@ export default function FindForgottenSubscriptions() {
     <div className="min-h-screen bg-background">
       <div className="fixed inset-0 gradient-mesh" />
       
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-xl neu-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="text-xl font-bold text-gradient">SubTracker</span>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
-                Find My Subscriptions
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <JsonLd
+        data={[
+          breadcrumbSchema(BREADCRUMB),
+          articleSchema({
+            headline: 'How to Find Forgotten Subscriptions You Still Pay For',
+            description: 'A practical audit for finding recurring charges you forgot about: bank statements, App Store and Google Play subscriptions, email receipts and PayPal agreements.',
+            path: '/find-forgotten-subscriptions',
+            datePublished: LAST_UPDATED_ISO,
+            dateModified: LAST_UPDATED_ISO,
+          }),
+        ]}
+      />
+      <MarketingHeader />
 
       <main className="relative pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -300,11 +306,7 @@ export default function FindForgottenSubscriptions() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 relative">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. Find and manage all your subscriptions.</p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

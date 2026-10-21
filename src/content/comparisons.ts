@@ -42,7 +42,7 @@ export const COMPARISONS: Comparison[] = [
     name: 'Rocket Money',
     url: 'https://www.rocketmoney.com/',
     urlLabel: 'rocketmoney.com',
-    title: 'SubTracker vs Rocket Money: Manual Tracking vs Bank Sync',
+    title: 'SubTracker vs Rocket Money: Honest Comparison',
     description:
       'An honest comparison of SubTracker and Rocket Money for tracking subscriptions: bank connection, cancellations, pricing and privacy, checked October 2026.',
     h1: 'SubTracker vs Rocket Money',
@@ -116,7 +116,7 @@ export const COMPARISONS: Comparison[] = [
     name: 'Bobby',
     url: 'https://apps.apple.com/us/app/bobby-track-subscriptions/id1059152023',
     urlLabel: 'Bobby on the App Store',
-    title: 'SubTracker vs Bobby: Subscription Trackers Compared',
+    title: 'SubTracker vs Bobby: Web App vs iOS Tracker',
     description:
       'SubTracker and Bobby both track subscriptions you enter by hand. Compare platforms, categories, analytics and export, checked October 2026.',
     h1: 'SubTracker vs Bobby',
@@ -194,7 +194,7 @@ export const COMPARISONS: Comparison[] = [
     name: 'YNAB',
     url: 'https://www.ynab.com/',
     urlLabel: 'ynab.com',
-    title: 'SubTracker vs YNAB: Subscription Tracker vs Budgeting App',
+    title: 'SubTracker vs YNAB: Tracker vs Budgeting App',
     description:
       'SubTracker tracks recurring payments; YNAB is a full zero-based budgeting system. Compare scope, price and effort, checked October 2026.',
     h1: 'SubTracker vs YNAB',

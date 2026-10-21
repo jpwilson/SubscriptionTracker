@@ -2,11 +2,22 @@
 
 import { useEffect, useState } from 'react'
 import { motion, LayoutGroup } from 'framer-motion'
-import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, CreditCard, Calendar, Tag, PieChart, Download, Moon, Shield, Zap, Home, AlertTriangle, DollarSign, Star, Lock, Mail, ImageIcon, Building2, Users } from 'lucide-react'
+import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, Calendar, Tag, PieChart, Download, Shield, Zap, Home, AlertTriangle, DollarSign, Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { MarketingFooter } from '@/components/marketing-footer'
+import { FAQ_ITEMS } from '@/content/faq'
+import { COMPARISONS } from '@/content/comparisons'
+import {
+  FEATURES,
+  LIMITATIONS,
+  PRICING_CAVEAT,
+  PRIVACY_FACTS,
+  WHAT_IT_IS,
+  WHO_IT_IS_FOR,
+} from '@/content/product'
 
 export default function LandingPage() {
   const router = useRouter()
@@ -120,24 +131,24 @@ export default function LandingPage() {
       examples: [
         {
           type: "feature",
-          title: "12 spending categories with subcategories",
-          message: "Entertainment → Streaming, Gaming, Sports",
+          title: "12 categories out of the box",
+          message: "Entertainment, AI Tools, SaaS, Fitness, Housing and more",
           icon: <Tag className="w-4 h-4" />,
           color: "text-blue-400",
           bgColor: "bg-blue-400/10"
         },
         {
           type: "feature",
-          title: "Family account management",
-          message: "Track who uses what and split costs fairly",
+          title: "Payment calendar",
+          message: "See which payments land on which day of the month",
           icon: <Home className="w-4 h-4" />,
           color: "text-emerald-400",
           bgColor: "bg-emerald-400/10"
         },
         {
           type: "feature",
-          title: "Annual vs monthly comparison",
-          message: "See exactly how much you'd save by switching",
+          title: "Annual and monthly side by side",
+          message: "A $120/year plan and a $10/month plan, compared properly",
           icon: <PieChart className="w-4 h-4" />,
           color: "text-indigo-400",
           bgColor: "bg-indigo-400/10"
@@ -152,24 +163,24 @@ export default function LandingPage() {
       examples: [
         {
           type: "alert",
-          title: "7-day trial ending alerts",
-          message: "Cancel before Netflix charges you tomorrow",
+          title: "Trial ending badges",
+          message: "A trial inside its last 7 days is flagged before it charges you",
           icon: <Calendar className="w-4 h-4" />,
           color: "text-teal-400",
           bgColor: "bg-teal-400/10"
         },
         {
           type: "alert",
-          title: "Price increase notifications",
-          message: "Disney+ increasing by $3 next month - act now",
+          title: "Renewal reminders",
+          message: "Each subscription warns you ahead of its next payment date",
           icon: <TrendingUp className="w-4 h-4" />,
           color: "text-orange-400",
           bgColor: "bg-orange-400/10"
         },
         {
           type: "alert",
-          title: "Cancellation confirmations",
-          message: "HBO Max access ends in 3 days - download content",
+          title: "Service-ending badges",
+          message: "Cancelled but still active? You can see when access stops",
           icon: <Shield className="w-4 h-4" />,
           color: "text-emerald-400",
           bgColor: "bg-emerald-400/10"
@@ -179,29 +190,29 @@ export default function LandingPage() {
     {
       icon: <Sparkles className="w-6 h-6" />,
       title: "Smart Insights",
-      description: "Get actionable alerts that save you money instantly.",
+      description: "Insights worked out from the list you entered — no bank feed involved.",
       gradient: "from-teal-500 to-emerald-400",
       examples: [
         {
           type: "warning",
-          title: "Price hike detected on Spotify",
-          message: "+$1/mo increase — switch to family plan to save $12/year",
+          title: "Priced above your average",
+          message: "Flags a subscription costing well above your others",
           icon: <TrendingUp className="w-4 h-4" />,
           color: "text-yellow-400",
           bgColor: "bg-yellow-400/10"
         },
         {
           type: "alert",
-          title: "Adobe Creative Cloud unused for 60 days",
-          message: "Cancel to save $54.99/mo or downgrade to Photography plan",
+          title: "Not used in 60 days",
+          message: "Marked as unused, so you can cancel or downgrade it",
           icon: <AlertTriangle className="w-4 h-4" />,
           color: "text-red-400",
           bgColor: "bg-red-400/10"
         },
         {
           type: "savings",
-          title: "You're overpaying for Netflix",
-          message: "Premium at $22.99 vs average $15.99 — share or downgrade?",
+          title: "Spending above your usual level",
+          message: "A nudge when the monthly total climbs past where it was",
           icon: <DollarSign className="w-4 h-4" />,
           color: "text-green-400",
           bgColor: "bg-green-400/10"
@@ -225,76 +236,37 @@ export default function LandingPage() {
     {
       number: "02",
       title: "Add Subscriptions",
-      description: "Multiple ways to add your subscriptions instantly.",
+      description: "Type each recurring payment in once. Your card statement is the fastest source.",
       icon: <PieChart className="w-5 h-5" />,
       features: [
-        "Manual quick entry",
-        "Email scanning (Pro)",
-        "Screenshot import (Pro)",
-        "Bank sync coming soon"
-      ],
-      proFeatures: [
-        { icon: <Mail className="w-3 h-3" />, text: "Email scanning" },
-        { icon: <ImageIcon className="w-3 h-3" />, text: "Image import" },
-        { icon: <CreditCard className="w-3 h-3" />, text: "Bank connections" }
+        "Name, amount and billing cycle",
+        "Next payment date and reminder window",
+        "Category, link and notes",
+        "Mark trials and their end dates"
       ]
     },
     {
       number: "03",
-      title: "Save Money",
-      description: "Get actionable insights that cut costs immediately.",
+      title: "Decide What To Cut",
+      description: "Read the totals, then cancel, downgrade or switch to annual billing.",
       icon: <Zap className="w-5 h-5" />,
       features: [
-        "Unused subscription alerts",
-        "Price hike notifications",
-        "Duplicate service detection",
-        "Family sharing opportunities"
-      ],
-      proFeatures: [
-        { icon: <Users className="w-3 h-3" />, text: "Manage family costs" },
-        { icon: <Building2 className="w-3 h-3" />, text: "Business expenses" },
-        { icon: <Tag className="w-3 h-3" />, text: "Custom aliases" }
+        "Monthly and yearly totals",
+        "Unused subscription insights",
+        "Trial and renewal warnings",
+        "Category breakdown and calendar"
       ]
-    }
-  ]
-
-  const testimonials = [
-    {
-      quote: "I had no idea I was paying for 3 streaming services I never used! SubTracker found $147 in monthly savings in under 5 minutes. It's like getting a raise without asking my boss!",
-      author: "Sarah Mitchell",
-      role: "Marketing Manager",
-      location: "San Francisco",
-      savings: "$147/mo",
-      rating: 5,
-      image: "https://i.pravatar.cc/150?img=1"
-    },
-    {
-      quote: "Got an alert that Disney+ was raising prices BEFORE it happened. Switched my whole family to a bundle and saved $89/month. This app pays for itself 20x over.",
-      author: "James Kim",
-      role: "Software Engineer",
-      location: "New York",
-      savings: "$89/mo",
-      rating: 5,
-      image: "https://i.pravatar.cc/150?img=3"
-    },
-    {
-      quote: "My 'subscription creep' was out of control - $426/month! Now I'm down to $198 and haven't missed a single service. Wish I'd found this years ago.",
-      author: "Alexandra Rivera",
-      role: "Small Business Owner",
-      location: "Austin",
-      savings: "$228/mo",
-      rating: 5,
-      image: "https://i.pravatar.cc/150?img=5"
     }
   ]
 
   const freeFeatures = [
     { text: "Unlimited subscriptions", icon: <CheckCircle2 className="w-4 h-4" /> },
     { text: "Monthly & yearly overview", icon: <Calendar className="w-4 h-4" /> },
-    { text: "Smart insights (3 free)", icon: <Sparkles className="w-4 h-4" /> },
+    { text: "Smart insights", icon: <Sparkles className="w-4 h-4" /> },
     { text: "Payment reminders", icon: <Bell className="w-4 h-4" /> },
-    { text: "9 default categories", icon: <Tag className="w-4 h-4" /> },
-    { text: "Export your data", icon: <Download className="w-4 h-4" /> },
+    { text: "12 default categories", icon: <Tag className="w-4 h-4" /> },
+    { text: "CSV export of your data", icon: <Download className="w-4 h-4" /> },
+    { text: "Payment calendar", icon: <Calendar className="w-4 h-4" /> },
   ]
 
   return (
@@ -372,6 +344,15 @@ export default function LandingPage() {
                     />
                   )}
                 </button>
+                <Link href="/pricing" className="text-gray-300 hover:text-white transition-colors">
+                  Plans
+                </Link>
+                <Link href="/faq" className="text-gray-300 hover:text-white transition-colors">
+                  FAQ
+                </Link>
+                <Link href="/alternatives" className="text-gray-300 hover:text-white transition-colors">
+                  Compare
+                </Link>
               </LayoutGroup>
             </div>
             <div className="flex items-center gap-4">
@@ -401,25 +382,18 @@ export default function LandingPage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full neu-card border border-emerald-500/20 mb-6">
               <Sparkles className="w-4 h-4 text-emerald-400" />
-              <span className="text-sm text-emerald-300">Save 30% on average • Bank-level security</span>
+              <span className="text-sm text-emerald-300">Free plan, unlimited subscriptions • No bank connection</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              <span className="text-gradient">Take Control</span>
+              <span className="text-gradient">SubTracker</span>
               <br />
-              <span className="text-white">of Your Subscriptions</span>
+              <span className="text-white">A free subscription tracker</span>
             </h1>
             
-            <div className="text-xl mb-12 max-w-3xl mx-auto space-y-2">
-              <p className="text-gray-300">
-                The average person has forgotten <span className="text-2xl font-bold text-orange-400">2–5 subscriptions</span>.
-              </p>
-              <p className="text-gray-300">
-                <span className="text-2xl font-bold text-red-400">$40–$300/month</span> slipping away.
-              </p>
-              <p className="text-white font-semibold text-2xl mt-4">
-                SubTracker puts you back in control.
-              </p>
+            <div className="text-xl mb-12 max-w-3xl mx-auto space-y-4 text-left sm:text-center">
+              <p className="text-gray-300">{WHAT_IT_IS}</p>
+              <p className="text-gray-400 text-lg">{WHO_IT_IS_FOR}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -479,66 +453,67 @@ export default function LandingPage() {
                   <div className="text-sm text-gray-400">Active Subscriptions</div>
                 </div>
                 <div className="neu-card rounded-xl p-6 border border-blue-500/20">
-                  <div className="text-3xl font-bold text-gradient mb-2">$126</div>
-                  <div className="text-sm text-gray-400">Saved This Year</div>
+                  <div className="text-3xl font-bold text-gradient mb-2">$575.16</div>
+                  <div className="text-sm text-gray-400">Yearly Total</div>
                 </div>
               </div>
+              <p className="text-xs text-gray-500 mt-6 text-center">
+                Example figures from a sample account, not an average or a promise.
+              </p>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* What it does and what it does not do */}
       <section id="calculator" className="py-16 px-4 bg-gradient-to-b from-transparent to-emerald-900/10">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gradient mb-2">Real People, Real Savings</h2>
-            <p className="text-gray-400">Join thousands who&apos;ve taken control of their subscriptions</p>
-          </motion.div>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="neu-card rounded-xl p-6 border border-white/10"
-              >
-                <div className="flex items-start gap-4">
-                  <img 
-                    src={testimonial.image} 
-                    alt={testimonial.author}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
-                  />
-                  <div className="flex-1">
-                    <div className="flex mb-2">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 text-yellow-400 fill-yellow-400" />
-                      ))}
-                    </div>
-                    <p className="text-gray-300 text-sm mb-3 italic">&ldquo;{testimonial.quote}&rdquo;</p>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-semibold text-white text-sm">{testimonial.author}</p>
-                        <p className="text-xs text-gray-400">{testimonial.role} • {testimonial.location}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-xs text-gray-400">Saves</p>
-                        <p className="font-bold text-green-400 text-sm">{testimonial.savings}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gradient mb-2">Straight answers before you sign up</h2>
+            <p className="text-gray-400">
+              SubTracker is a new product with no reviews to quote at you, so here is what it does
+              and what it does not do.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="neu-card rounded-2xl p-6 border border-emerald-500/20">
+              <h3 className="text-lg font-bold text-white mb-4">What it does</h3>
+              <ul className="space-y-3">
+                {FEATURES.slice(0, 6).map((feature) => (
+                  <li key={feature.title} className="flex items-start gap-2 text-sm text-gray-300">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                    <span>
+                      <strong className="text-white font-medium">{feature.title}.</strong>{' '}
+                      {feature.description}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="neu-card rounded-2xl p-6 border border-white/10">
+              <h3 className="text-lg font-bold text-white mb-4">What it does not do</h3>
+              <ul className="space-y-3">
+                {LIMITATIONS.map((limitation) => (
+                  <li key={limitation} className="flex items-start gap-2 text-sm text-gray-300">
+                    <AlertTriangle className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                    <span>{limitation}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-sm text-gray-400 mt-5">
+                If you want automatic detection or cancellation handled for you, our{' '}
+                <Link href="/vs-rocket-money" className="text-emerald-400 hover:text-emerald-300">
+                  Rocket Money comparison
+                </Link>{' '}
+                and{' '}
+                <Link href="/alternatives" className="text-emerald-400 hover:text-emerald-300">
+                  alternatives page
+                </Link>{' '}
+                say so plainly.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -556,7 +531,11 @@ export default function LandingPage() {
             <h3 className="text-3xl font-bold text-center mb-2">
               <span className="text-gradient">Calculate Your Savings</span>
             </h3>
-            <p className="text-center text-gray-400 mb-8">Select your subscription categories below</p>
+            <p className="text-center text-gray-400 mb-8">
+              Pick roughly what you subscribe to. The result is a rough illustration based on typical
+              list prices and common savings tactics — not a prediction, and not based on anyone&apos;s
+              account data.
+            </p>
             
             <div className="space-y-8">
               {/* Category Selection Grid */}
@@ -755,7 +734,8 @@ export default function LandingPage() {
               Get Started in Minutes
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Join thousands who are already saving money by taking control over their subscriptions
+              Three steps, and the only one that takes any real time is the first pass through your
+              card statement.
             </p>
           </motion.div>
 
@@ -794,20 +774,6 @@ export default function LandingPage() {
                     </ul>
                   )}
                   
-                  {/* Pro features badge */}
-                  {step.proFeatures && (
-                    <div className="mt-4 pt-4 border-t border-white/10">
-                      <p className="text-xs text-emerald-400 mb-2 font-semibold">PRO FEATURES</p>
-                      <div className="flex flex-wrap gap-2">
-                        {step.proFeatures.map((feature, idx) => (
-                          <div key={idx} className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                            {feature.icon}
-                            <span className="text-xs text-emerald-300">{feature.text}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
                 </div>
               </motion.div>
             ))}
@@ -824,16 +790,14 @@ export default function LandingPage() {
             <div className="neu-card rounded-2xl p-6 max-w-3xl mx-auto border border-green-500/20 bg-gradient-to-br from-green-900/10 to-transparent">
               <div className="flex items-center justify-center gap-3 mb-3">
                 <Lock className="w-5 h-5 text-green-400" />
-                <h3 className="text-lg font-bold text-green-400">Your Privacy is Our Priority</h3>
+                <h3 className="text-lg font-bold text-green-400">No bank connection, by design</h3>
                 <Lock className="w-5 h-5 text-green-400" />
               </div>
-              <p className="text-gray-300 mb-2">
-                🔐 <strong>Bank-level encryption</strong> • We can&apos;t see your financial data
-              </p>
-              <p className="text-sm text-gray-400">
-                Your subscription details are encrypted end-to-end. We have zero knowledge of your spending habits, 
-                payment methods, or personal financial information. Only you can see your data.
-              </p>
+              <ul className="space-y-2 text-sm text-gray-400 text-left max-w-xl mx-auto">
+                {PRIVACY_FACTS.map((fact) => (
+                  <li key={fact}>— {fact}</li>
+                ))}
+              </ul>
             </div>
           </motion.div>
         </div>
@@ -853,7 +817,11 @@ export default function LandingPage() {
               Simple, Transparent Pricing
             </h2>
             <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-              Start with our generous free plan. Upgrade when you need more power.
+              {PRICING_CAVEAT} Full detail on the{' '}
+              <Link href="/pricing" className="text-emerald-400 hover:text-emerald-300">
+                pricing page
+              </Link>
+              .
             </p>
           </motion.div>
 
@@ -881,7 +849,7 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
-                  <span>20 categories</span>
+                  <span>12 categories</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
@@ -912,8 +880,11 @@ export default function LandingPage() {
                 <p className="text-gray-400 mb-4">For power users</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-bold text-gradient">$5</span>
-                  <span className="text-gray-400">/month</span>
+                  <span className="text-gray-400">/month billed annually</span>
                 </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  $60 once a year, or $8 if you pay month to month
+                </p>
               </div>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center gap-3">
@@ -930,16 +901,16 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span className="font-medium">Auto import subscriptions</span>
+                  <span className="font-medium">Cost projections and usage tracking</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
                   <span className="font-medium">Priority support</span>
                 </li>
               </ul>
-              <Link href="/payment?plan=premium">
+              <Link href="/pricing">
                 <Button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300">
-                  Start Free Trial
+                  See Premium pricing
                 </Button>
               </Link>
             </motion.div>
@@ -995,7 +966,7 @@ export default function LandingPage() {
             >
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-2">Enterprise</h3>
-                <p className="text-gray-400 text-sm mb-3">Stop unchecked expenses</p>
+                <p className="text-gray-400 text-sm mb-3">Not available yet — get in touch</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-teal-400">$200</span>
                   <span className="text-gray-400 text-sm">/month</span>
@@ -1029,6 +1000,72 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* FAQ teaser */}
+      <section className="py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">Common questions</h2>
+          <p className="text-gray-400 mb-10">
+            The questions people ask most often, answered in full on the{' '}
+            <Link href="/faq" className="text-emerald-400 hover:text-emerald-300">
+              SubTracker FAQ
+            </Link>
+            .
+          </p>
+          <div className="space-y-4">
+            {FAQ_ITEMS.slice(0, 5).map((item) => (
+              <div key={item.question} className="neu-card rounded-2xl p-6 border border-white/10">
+                <h3 className="text-lg font-bold text-white mb-2">{item.question}</h3>
+                <p className="text-sm text-gray-300">{item.answer}</p>
+              </div>
+            ))}
+          </div>
+          <div className="grid sm:grid-cols-2 gap-6 mt-10">
+            <div className="neu-card rounded-2xl p-6 border border-white/10">
+              <h3 className="text-lg font-bold text-white mb-3">Compare SubTracker</h3>
+              <ul className="space-y-2 text-sm">
+                {COMPARISONS.map((comparison) => (
+                  <li key={comparison.path}>
+                    <Link href={comparison.path} className="text-emerald-400 hover:text-emerald-300">
+                      {comparison.h1}
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link href="/alternatives" className="text-emerald-400 hover:text-emerald-300">
+                    Best subscription tracker apps
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="neu-card rounded-2xl p-6 border border-white/10">
+              <h3 className="text-lg font-bold text-white mb-3">Guides</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/find-forgotten-subscriptions" className="text-emerald-400 hover:text-emerald-300">
+                    How to find forgotten subscriptions
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/how-to-cancel-subscriptions" className="text-emerald-400 hover:text-emerald-300">
+                    How to cancel subscriptions
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/subscription-savings-guide" className="text-emerald-400 hover:text-emerald-300">
+                    Subscription savings guide
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/pricing" className="text-emerald-400 hover:text-emerald-300">
+                    SubTracker pricing
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -1040,10 +1077,11 @@ export default function LandingPage() {
             className="neu-card rounded-3xl p-12 text-center border border-emerald-500/20"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4 leading-relaxed py-2">
-              Ready to Save Money?
+              See what your subscriptions actually cost
             </h2>
             <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
-              Join thousands who are already tracking their subscriptions and saving hundreds every month.
+              The free plan tracks unlimited subscriptions and never asks for a card, so finding out
+              takes about ten minutes.
             </p>
             <Link href="/login">
               <Button 
@@ -1063,13 +1101,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 py-8 px-4">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. Privacy-first subscription tracking.</p>
-          <p className="text-xs mt-2 text-gray-500">Your spending data never leaves your control</p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

@@ -1,16 +1,23 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, DollarSign, TrendingUp, Users, Calendar, Shield, Sparkles, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { JsonLd } from '@/components/json-ld'
+import { MarketingFooter } from '@/components/marketing-footer'
+import { MarketingHeader } from '@/components/marketing-header'
+import { articleSchema, breadcrumbSchema, buildMetadata } from '@/lib/seo'
+import { LAST_UPDATED_ISO } from '@/lib/site'
 
-export const metadata: Metadata = {
-  title: 'Subscription Savings Guide: 12 Ways to Save Money | SubTracker',
-  description: 'Practical strategies to reduce subscription costs. Learn about annual billing savings, family plan sharing, and more money-saving tips.',
-  openGraph: {
-    title: 'Save Money on Subscriptions: Complete 2025 Guide',
-    description: '12 proven strategies to cut subscription costs without losing services you love. Start saving today.',
-  },
-}
+const BREADCRUMB = [
+  { name: 'Home', path: '/' },
+  { name: 'Subscription savings guide', path: '/subscription-savings-guide' },
+]
+
+export const metadata = buildMetadata({
+  title: 'Subscription Savings Guide: Cut Recurring Costs',
+  description: 'Ways to spend less on subscriptions: annual billing, family plans, downgrades, rotating streaming services and cancelling what you do not use.',
+  path: '/subscription-savings-guide',
+  type: 'article',
+})
 
 export default function SubscriptionSavingsGuide() {
   const strategies = [
@@ -176,20 +183,19 @@ export default function SubscriptionSavingsGuide() {
     <div className="min-h-screen bg-background">
       <div className="fixed inset-0 gradient-mesh" />
       
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-xl neu-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="text-xl font-bold text-gradient">SubTracker</span>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
-                Start Saving Money
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <JsonLd
+        data={[
+          breadcrumbSchema(BREADCRUMB),
+          articleSchema({
+            headline: 'Subscription Savings Guide: Cut Recurring Costs',
+            description: 'Ways to spend less on subscriptions: annual billing, family plans, downgrades, rotating streaming services and cancelling what you do not use.',
+            path: '/subscription-savings-guide',
+            datePublished: LAST_UPDATED_ISO,
+            dateModified: LAST_UPDATED_ISO,
+          }),
+        ]}
+      />
+      <MarketingHeader />
 
       <main className="relative pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -321,11 +327,7 @@ export default function SubscriptionSavingsGuide() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 relative">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. Save money on subscriptions.</p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

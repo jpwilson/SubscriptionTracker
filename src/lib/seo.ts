@@ -15,7 +15,9 @@ export function buildMetadata(opts: {
 }): Metadata {
   const url = absoluteUrl(opts.path)
   return {
-    title: opts.title,
+    // Absolute so the page title is exactly what we wrote, with no template suffix
+    // duplicating the brand name that most of these titles already contain.
+    title: { absolute: opts.title },
     description: opts.description,
     alternates: { canonical: url },
     openGraph: {
