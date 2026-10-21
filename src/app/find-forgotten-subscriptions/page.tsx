@@ -266,10 +266,10 @@ export default function FindForgottenSubscriptions() {
           <div className="neu-card rounded-3xl p-8 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-emerald-400" />
-              The Easier Way: Let SubTracker Do It
+              Keep Them Visible: Put Them in SubTracker
             </h2>
             <p className="text-lg text-gray-300 mb-6">
-              Manually hunting through emails and statements takes hours. SubTracker organizes everything automatically and alerts you to forgotten subscriptions, upcoming renewals, and price increases.
+              Hunting through emails and statements takes an hour or two, and you only want to do it once. SubTracker will not do the hunting for you &mdash; there is no bank connection, so it only knows what you enter &mdash; but once each subscription is in, it keeps the list, the monthly and yearly totals, the next payment dates and the category breakdown in one place so nothing drops out of sight again.
             </p>
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
@@ -279,13 +279,13 @@ export default function FindForgottenSubscriptions() {
               </div>
               <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
                 <AlertTriangle className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Smart Alerts</p>
-                <p className="text-xs text-gray-400">Never forget again</p>
+                <p className="text-sm font-semibold text-white mb-1">Status Badges</p>
+                <p className="text-xs text-gray-400">Trials and cancellations flagged in the app</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
                 <Receipt className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Savings Insights</p>
-                <p className="text-xs text-gray-400">Cut unnecessary costs</p>
+                <p className="text-sm font-semibold text-white mb-1">Totals and Categories</p>
+                <p className="text-xs text-gray-400">See what the pile actually costs</p>
               </div>
             </div>
             <div className="text-center">

@@ -289,24 +289,26 @@ export default function SubscriptionSavingsGuide() {
               Track Everything with SubTracker
             </h2>
             <p className="text-lg text-gray-300 mb-6">
-              Manually tracking 12+ subscriptions is exhausting. SubTracker automatically organizes everything, 
-              sends savings alerts, and shows exactly where your money goes each month.
+              Keeping 12+ subscriptions straight in your head is the hard part. SubTracker organizes
+              them into one list with monthly and yearly totals, a category breakdown and a payment
+              calendar, so you can see exactly where the money goes before you decide what to cut.
+              It does not send alerts &mdash; you open it.
             </p>
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
                 <DollarSign className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Find Savings</p>
-                <p className="text-xs text-gray-400">Identify opportunities</p>
+                <p className="text-sm font-semibold text-white mb-1">See the Total</p>
+                <p className="text-xs text-gray-400">Monthly and yearly, in one figure</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
                 <Calendar className="w-8 h-8 text-teal-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Set Reminders</p>
-                <p className="text-xs text-gray-400">Never miss renewals</p>
+                <p className="text-sm font-semibold text-white mb-1">Payment Calendar</p>
+                <p className="text-xs text-gray-400">Which charges land on which day</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
                 <TrendingUp className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Track Savings</p>
-                <p className="text-xs text-gray-400">See your progress</p>
+                <p className="text-sm font-semibold text-white mb-1">Spending Over Time</p>
+                <p className="text-xs text-gray-400">Watch the total move as you cut</p>
               </div>
             </div>
             <div className="text-center">

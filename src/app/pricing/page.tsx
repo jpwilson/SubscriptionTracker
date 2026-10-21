@@ -9,7 +9,7 @@ import { LAST_UPDATED } from '@/lib/site'
 export const metadata = buildMetadata({
   title: 'SubTracker Pricing: Free Plan and Premium Costs',
   description:
-    'SubTracker is free with unlimited subscriptions and no credit card. Premium is $8 a month, $60 a year or $250 once. See exactly what each plan includes.',
+    'SubTracker is free with unlimited subscriptions and no credit card. Premium is published at $8 a month, $60 a year or $250 once, but is not available yet. See what each plan includes.',
   path: '/pricing',
 })
 
@@ -31,9 +31,10 @@ export default function PricingPage() {
       </h1>
 
       <p className="text-lg text-gray-300 mb-4">
-        SubTracker is a free web app for tracking subscriptions, and the free plan is the whole
-        product for most people: unlimited subscriptions, no credit card, no trial clock. Premium
-        adds custom categories and deeper analytics for $8 a month, $60 a year or $250 as a one-off.
+        SubTracker is a free web app for tracking subscriptions, and right now the free plan is the
+        whole product: unlimited subscriptions, no credit card, no trial clock. A Premium tier is
+        published at $8 a month, $60 a year or $250 as a one-off, and it is not available yet —
+        nothing in the app can move an account onto it, so no one has the Premium features.
       </p>
       <p className="text-gray-400 mb-4">{PRICING_CAVEAT}</p>
       <p className="text-sm text-gray-500 mb-12">Prices last checked {LAST_UPDATED}.</p>
@@ -63,16 +64,31 @@ export default function PricingPage() {
         </Link>
       </section>
 
-      <h2 className="text-2xl font-bold text-white mb-6 mt-14">Premium</h2>
+      <h2 className="text-2xl font-bold text-white mb-6 mt-14">Premium — not available yet</h2>
+      <div className="neu-card rounded-2xl p-6 mb-6 border border-yellow-500/30">
+        <p className="text-gray-200">
+          <strong className="text-yellow-400">Please read this before you plan around Premium.</strong>{' '}
+          These are published prices for a plan that cannot currently be switched on. Every account
+          is created on the free tier and nothing in the app upgrades it, so the Premium-only
+          features — custom categories, subcategories, advanced analytics, cost projections, usage
+          tracking and the Smart Insights screen — are unavailable to everyone, paid or not. We are
+          leaving the prices here so they are not a surprise later, and this page will say so
+          plainly when that changes.
+        </p>
+      </div>
       <p className="text-gray-300 mb-6">
-        The same Premium feature set, billed three different ways. Checkout runs through Stripe, so
-        your card details go to Stripe rather than to SubTracker.
+        The same planned Premium feature set, billed three different ways.
       </p>
 
       <div className="grid gap-6 md:grid-cols-3 mb-10">
         {paid.map((plan) => (
           <section key={plan.id} className="neu-card rounded-2xl p-6 border border-white/10">
             <h3 className="text-lg font-bold text-white mb-1">{plan.name}</h3>
+            {plan.status === 'planned' && (
+              <p className="inline-block mb-2 rounded-full border border-yellow-500/30 bg-yellow-500/10 px-3 py-1 text-xs font-semibold text-yellow-400">
+                Not available yet
+              </p>
+            )}
             <p className="text-2xl font-bold text-gradient mb-1">{plan.price}</p>
             <p className="text-xs text-gray-500 mb-4">{plan.period}</p>
             <p className="text-sm text-gray-400 mb-4">{plan.summary}</p>
@@ -129,25 +145,26 @@ export default function PricingPage() {
             </dd>
           </div>
           <div>
-            <dt className="font-semibold text-white mb-1">Can I cancel Premium?</dt>
+            <dt className="font-semibold text-white mb-1">Can I buy Premium today?</dt>
             <dd className="text-gray-300">
-              Monthly and annual Premium are ordinary Stripe subscriptions, so they can be
-              cancelled, and the lifetime option has nothing to cancel. Your subscription list stays
-              in your account either way.
+              No, and we would rather say so than take the money. There is no working path from a
+              free account to a Premium one, so paying would not unlock anything. Stay on the free
+              plan, which has no subscription limit.
             </dd>
           </div>
           <div>
             <dt className="font-semibold text-white mb-1">Is the annual plan the same as $5 a month?</dt>
             <dd className="text-gray-300">
-              It works out that way: $60 once a year is $5 a month, against $8 if you pay month to
-              month. You are billed the $60 in one charge.
+              That is how the published price works out: $60 once a year is $5 a month, against $8
+              if you pay month to month. Both are planned prices, not live ones.
             </dd>
           </div>
           <div>
-            <dt className="font-semibold text-white mb-1">What happens to my data if I stop paying?</dt>
+            <dt className="font-semibold text-white mb-1">Can I export or delete my data?</dt>
             <dd className="text-gray-300">
-              Your subscription list stays, and you can always export the whole thing to CSV from
-              your profile page.
+              Your profile page exports the whole subscription list to CSV, and its Reset Account
+              action deletes every subscription in the account. Removing the sign-in itself is not
+              yet a button in the app.
             </dd>
           </div>
         </dl>

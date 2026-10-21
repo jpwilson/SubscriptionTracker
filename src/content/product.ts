@@ -7,7 +7,7 @@
  */
 
 export const WHAT_IT_IS =
-  'SubTracker is a free web app for tracking subscriptions. You add each recurring payment once — name, amount, billing cycle, category and next payment date — and SubTracker shows what you are spending per month and per year, what is due next, and which subscriptions you appear to have stopped using.'
+  'SubTracker is a free web app for tracking subscriptions. You add each recurring payment once — name, amount, billing cycle, category and next payment date — and SubTracker shows what you are spending per month and per year, what is due next, and how the total breaks down by category.'
 
 export const WHO_IT_IS_FOR =
   'It is for people who pay for a pile of streaming, software, AI and gym subscriptions and have lost track of the total. It runs in the browser on desktop and mobile, it does not connect to your bank, and the free plan has no subscription limit and needs no credit card.'
@@ -35,7 +35,7 @@ export const FEATURES: Feature[] = [
   {
     title: 'Twelve categories out of the box',
     description:
-      'New accounts get Entertainment, AI Tools, SaaS Products, Finance, Health & Fitness, Education, Shopping, News & Media, Auto & Transport, Housing, Utilities and Other. Creating your own categories is a Premium feature.',
+      'New accounts get Entertainment, AI Tools, SaaS Products, Finance, Health & Fitness, Education, Shopping, News & Media, Auto & Transport, Housing, Utilities and Other. Creating your own categories is marked as a Premium feature, and Premium is not available yet, so the twelve are what everyone has.',
   },
   {
     title: 'Status badges for trials and cancellations',
@@ -43,19 +43,14 @@ export const FEATURES: Feature[] = [
       'Subscriptions are marked active, trial, trial ending soon, unsubscribed, service ending, paused or expired, so you can see at a glance what is about to charge you and what you have already cancelled.',
   },
   {
-    title: 'Payment reminders',
+    title: 'Next payment dates on every subscription',
     description:
-      'Each subscription has a reminder window (three days before renewal by default) and a next payment date, so trials and renewals do not arrive unannounced.',
+      'Each subscription carries its next payment date and a reminder window (three days before renewal by default). Both are stored with the subscription and shown in the app — SubTracker does not send emails, push notifications or texts.',
   },
   {
     title: 'Analytics and a payment calendar',
     description:
-      'Charts break spending down by category and over time, and a calendar view lays out which payments land on which day of the month.',
-  },
-  {
-    title: 'Smart insights',
-    description:
-      'SubTracker flags subscriptions you have not marked as used in a while, trials that are about to end, and services priced well above the average of your other subscriptions. The insights are calculated from the data you entered, not from your bank feed.',
+      'Charts break spending down by category and over time, and a calendar view lays out which payments land on which day of the month, so you can see what is due next without being notified about it.',
   },
   {
     title: 'CSV export',
@@ -90,7 +85,7 @@ export const HOW_IT_WORKS: Step[] = [
   {
     title: 'Review the totals and act',
     description:
-      'Look at the monthly and yearly totals, the category breakdown and the insights, then cancel, downgrade or switch to annual billing on the ones that are not worth it. Mark cancellations in SubTracker so you keep a record.',
+      'Look at the monthly and yearly totals, the category breakdown and the payment calendar, then cancel, downgrade or switch to annual billing on the ones that are not worth it. Mark cancellations in SubTracker so you keep a record.',
   },
 ]
 
@@ -105,12 +100,24 @@ export type Plan = {
   schemaPeriod?: 'P1M' | 'P1Y' | null
   summary: string
   features: string[]
+  /**
+   * 'available' = you can be on this plan today. 'planned' = the price is
+   * published but nothing in the app can put an account on it, so it must not
+   * be described as purchasable (and must stay out of structured data).
+   */
+  status: 'available' | 'planned'
 }
 
 /**
  * Prices as published on the site. Free plan: src/components/pricing-section.tsx
- * and the home page. Premium prices: src/app/payment/page.tsx, which is what the
- * Stripe checkout actually charges.
+ * and the home page. Premium prices: src/app/payment/page.tsx.
+ *
+ * Only the free plan is marked 'available'. The Premium tiers are 'planned':
+ * src/lib/feature-gates.ts always reports the signed-in user as free, there is
+ * no Stripe webhook route to grant an entitlement, and src/app/payment/success
+ * only simulates processing. Until paying actually unlocks something, Premium
+ * is a published price list and nothing more — which is why every Premium plan
+ * has schemaPrice: null and so never becomes an InStock Offer in JSON-LD.
  */
 export const PLANS: Plan[] = [
   {
@@ -120,15 +127,16 @@ export const PLANS: Plan[] = [
     period: 'per month, forever',
     schemaPrice: '0',
     schemaPeriod: 'P1M',
+    status: 'available',
     summary:
-      'The plan every account starts on. No credit card, no subscription limit, no trial clock.',
+      'The plan every account starts on, and currently the only plan you can be on. No credit card, no subscription limit, no trial clock.',
     features: [
       'Unlimited subscriptions',
       'Monthly and yearly cost totals',
       '12 built-in categories',
-      'Payment and trial reminders',
+      'Next payment date and reminder window on every subscription',
+      'Trial, cancellation and expiry status badges',
       'Analytics charts and payment calendar',
-      'Smart insights',
       'CSV export of your data',
       'Dark interface',
     ],
@@ -138,16 +146,18 @@ export const PLANS: Plan[] = [
     name: 'Premium, monthly',
     price: '$8',
     period: 'per month',
-    schemaPrice: '8.00',
+    schemaPrice: null,
     schemaPeriod: 'P1M',
-    summary: 'Month-to-month billing, cancel whenever you like.',
+    status: 'planned',
+    summary:
+      'The published month-to-month price. Not available yet — see the note above; there is currently no way to move an account onto Premium.',
     features: [
       'Everything in Free',
-      'Custom categories and subcategories',
-      'Advanced analytics',
-      'Cost projections',
-      'Usage tracking',
-      'Priority support',
+      'Planned: custom categories and subcategories',
+      'Planned: advanced analytics',
+      'Planned: cost projections',
+      'Planned: usage tracking and the Smart Insights screen',
+      'Planned: priority support',
     ],
   },
   {
@@ -155,9 +165,11 @@ export const PLANS: Plan[] = [
     name: 'Premium, annual',
     price: '$60',
     period: 'per year (works out to $5 per month)',
-    schemaPrice: '60.00',
+    schemaPrice: null,
     schemaPeriod: 'P1Y',
-    summary: 'The same Premium features billed once a year instead of monthly.',
+    status: 'planned',
+    summary:
+      'The same planned Premium feature set billed once a year instead of monthly. Not available yet.',
     features: ['Everything in Premium, monthly', 'Billed once a year'],
   },
   {
@@ -165,23 +177,24 @@ export const PLANS: Plan[] = [
     name: 'Premium, lifetime',
     price: '$250',
     period: 'one-time payment',
-    schemaPrice: '250.00',
+    schemaPrice: null,
     schemaPeriod: null,
-    summary: 'A single payment instead of a recurring one.',
+    status: 'planned',
+    summary: 'A single payment instead of a recurring one. Not available yet.',
     features: ['Everything in Premium', 'No recurring charge'],
   },
 ]
 
 /**
  * Honest caveat that belongs anywhere we describe the paid tiers. Every account
- * is created on the free tier (see src/hooks/use-user-profile.ts), and the free
- * tier is what the rest of this site describes.
+ * is created on the free tier (see src/hooks/use-user-profile.ts) and nothing in
+ * the app moves it off, so the free tier is the whole product today.
  */
 export const PRICING_CAVEAT =
-  'SubTracker is free to use today. Every new account is created on the free plan, and everything described on this site is available there unless it is explicitly marked as a Premium feature.'
+  'SubTracker is free today, and the free plan is the only plan you can actually be on. Every account is created on it, and nothing in the app upgrades an account, so the Premium prices below are a published plan rather than something you can buy. The features marked Premium — custom categories, subcategories, advanced analytics, cost projections, usage tracking and the Smart Insights screen — are not available to anyone yet. Everything else described on this site works on the free plan.'
 
 export const ENTERPRISE_NOTE =
-  'A Teams plan is listed at $200 per month per organisation and is arranged by getting in touch. Multi-user team accounts are not yet available in the app, so treat that tier as a waiting list rather than something you can switch on today.'
+  'A Teams plan is listed at $200 per month per organisation and is arranged by getting in touch. Multi-user team accounts are not yet available in the app, so treat that tier — like Premium — as a waiting list rather than something you can switch on today.'
 
 /** Things SubTracker deliberately does not do. Useful for answer engines and honest comparisons. */
 export const LIMITATIONS: string[] = [
@@ -189,12 +202,15 @@ export const LIMITATIONS: string[] = [
   'No cancelling or bill negotiation on your behalf. SubTracker shows you what to cancel and links out; you do the cancelling.',
   'No native iOS or Android app. It is a web app that works in a mobile browser.',
   'Not a budgeting tool. It covers recurring payments, not your whole income and spending.',
+  'No notifications of any kind. You set a reminder window and a next payment date on each subscription and SubTracker shows them in the app and on the payment calendar, but it does not email, push or text you, and it does not watch for price increases.',
+  'No Premium accounts yet. The Premium prices are published and the app shows Premium locks, but nothing upgrades an account, so custom categories, subcategories, advanced analytics, cost projections, usage tracking and the Smart Insights screen are unavailable to everyone.',
   'Email and screenshot import are shown in the interface as Premium features and are not available yet.',
+  'No one-click account deletion. You can export everything to CSV and you can reset the account, which deletes every subscription in it, but removing the sign-in itself is not something the app does yet.',
 ]
 
 export const PRIVACY_FACTS: string[] = [
   'SubTracker never asks for bank or card credentials, because it does not connect to financial accounts.',
-  'Your subscription list is data you typed in, and you can export all of it to CSV or delete your account.',
+  'Your subscription list is data you typed in. You can export all of it to CSV from your profile page, and the same page can reset the account, which deletes every subscription in it. Removing the sign-in itself is not yet automated — ask and it is done by hand.',
   'Payments for Premium are handled by Stripe; card details go to Stripe, not to SubTracker.',
   'Product analytics (PostHog and Vercel Analytics) are used to count page views and feature use. They are optional in the codebase and carry no subscription amounts.',
 ]

@@ -239,23 +239,23 @@ export default function HowToCancelSubscriptions() {
           <div className="neu-card rounded-3xl p-8 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-emerald-400" />
-              Never Miss a Cancellation Again
+              Keep a Record of What You Cancelled
             </h2>
             <p className="text-lg text-gray-300 mb-6">
-              SubTracker sends you alerts before trials end and renewal dates arrive. Track all your subscriptions in one place and get reminded when it&apos;s time to cancel.
+              SubTracker does not send you anything &mdash; no email, no push, no texts. What it does is keep every renewal date and trial end date in one place, flag the ones inside their last seven days with a badge, and keep a record of what you have already cancelled so it drops out of your monthly total without disappearing from the list.
             </p>
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
                 <Bell className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white">7-day trial alerts</p>
+                <p className="text-sm font-semibold text-white">&ldquo;Trial ending soon&rdquo; badge</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
                 <Calendar className="w-8 h-8 text-teal-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white">Renewal reminders</p>
+                <p className="text-sm font-semibold text-white">Payment calendar</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
                 <TrendingUp className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white">Price change alerts</p>
+                <p className="text-sm font-semibold text-white">Cancellation kept on record</p>
               </div>
             </div>
             <div className="text-center">
@@ -265,7 +265,7 @@ export default function HowToCancelSubscriptions() {
                   className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 group"
                 >
                   <span className="flex items-center gap-2">
-                    Start Free - Never Forget to Cancel
+                    Start Free - Keep Track of Cancellations
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Button>

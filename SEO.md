@@ -77,7 +77,7 @@ content.
 | URL | What it is for |
 |---|---|
 | `/` | What SubTracker is, features, how it works, pricing, FAQ teaser |
-| `/pricing` | Free plan and the three Premium prices, plus what it does not do |
+| `/pricing` | Free plan, the three published-but-unavailable Premium prices, and what it does not do |
 | `/faq` | 15 questions answered from how the app actually behaves |
 | `/alternatives` | Honest rundown of subscription trackers ("best X app" queries) |
 | `/vs-rocket-money` | Manual tracking vs bank-connected detection |
@@ -146,13 +146,45 @@ the live app. In practice that meant removing a fair amount:
 
 - Three testimonials with invented names, job titles, cities and dollar savings.
 - "Join thousands…", "Save 30% on average", "The average person has forgotten
-  2–5 subscriptions / $40–$300 a month", "Based on real user data".
+  2–5 subscriptions / $40–$300 a month".
+- "Based on real user data and optimization strategies" under the savings
+  calculator. This one survived the first pass and was caught in review: the
+  calculator runs on hardcoded per-category prices and hardcoded savings rates,
+  and there is no user data to base anything on. The line now reads
+  "Illustrative estimate based on assumed costs and savings; actual results
+  vary" and spells out both assumptions.
 - "Bank-level encryption", "encrypted end-to-end", "we have zero knowledge of
   your spending habits". The data sits in Postgres and is not end-to-end
   encrypted. What *is* true — no bank connection, no card credentials, CSV
-  export, account deletion, Stripe handles payment details — is on the page now.
+  export, Stripe handles payment details — is on the page now.
 - Features that do not exist: email scanning, screenshot import, bank sync,
   family account management, automatic price-increase detection.
+- **Notifications.** `reminder_days_before` is stored per subscription and
+  returned by the API, nothing consumes it, and there is no mailer, cron or
+  push registration anywhere in the repo. Every "we'll alert you / remind you /
+  tell you about price increases" line is gone; the pages now say a next payment
+  date and reminder window are stored and shown in the app, and that SubTracker
+  sends nothing.
+- **Account deletion.** `handleResetAccount()` in `src/app/profile/page.tsx`
+  deletes the subscriptions, clears two localStorage flags and reloads. It does
+  not delete the auth user or the profile row. The FAQ and privacy copy now
+  describe CSV export plus Reset Account, and say plainly that removing the
+  sign-in itself is not yet a button.
+- **Smart Insights.** The screen is blurred behind a Premium upgrade overlay for
+  anyone who is not Premium, which is everyone (below), so it is not a free
+  feature and was removed from the free lists. Its unused-subscription detection
+  also uses `Math.random()` rather than recorded usage, and its "costs more than
+  average" line compares against hardcoded category averages rather than your
+  other subscriptions — so those two descriptions are gone from the shared
+  content and the home page examples, not merely relabelled.
+- **Premium as a purchasable thing.** `isPremiumUser()` returns `false`
+  unconditionally, there is no Stripe webhook route, and
+  `/payment/success` only simulates processing — so paying unlocks nothing.
+  Premium is now presented everywhere as a published price for a plan that
+  cannot be switched on: `status: 'planned'` in `PLANS`, `schemaPrice: null` so
+  it never becomes an `InStock` `Offer` in JSON-LD, "Not available yet" badges
+  on the cards, and the home/login CTAs point at `/pricing` instead of Stripe
+  checkout.
 - The category count was wrong in three different places (20, 12 and 9). It is
   12, from `DEFAULT_CATEGORIES` in `src/app/api/categories/route.ts`.
 - The home page advertised Premium at $5/month while checkout charges $8
@@ -352,9 +384,19 @@ than any further on-page work.
   no longer claim** (20 categories, auto-import, the Enterprise feature list).
   It was left alone to keep this change focused on the public pages, but it is
   worth a pass.
-- **Premium entitlement looks stubbed in the app** — `isPremiumUser()` in
-  `src/lib/feature-gates.ts` returns `false` unconditionally, and
-  `use-user-profile.ts` hardcodes the free tier. The pricing page therefore
-  describes Premium as a published price rather than promising that paying
-  unlocks the features today. Worth fixing in the app, after which the pricing
-  copy can be more confident.
+- **Premium entitlement is stubbed in the app** — `isPremiumUser()` in
+  `src/lib/feature-gates.ts` returns `false` unconditionally,
+  `use-user-profile.ts` hardcodes the free tier, and there is no webhook route
+  to grant an entitlement after a Stripe payment. Three things have to land
+  together before the marketing copy can change: a `stripe` webhook route that
+  verifies the signature, a persisted entitlement, and `isPremiumUser()` reading
+  it. Until then Premium stays `status: 'planned'` with `schemaPrice: null` in
+  `src/content/product.ts` — flipping those two fields and the copy that keys off
+  them is the whole change on this side.
+- **Reminder delivery does not exist.** `reminder_days_before` is written and
+  read and never acted on. A mailer or a scheduled job plus a notification
+  preference would make the removed reminder copy true again; the honest version
+  is in `FEATURES` and `LIMITATIONS` in `src/content/product.ts`.
+- **Insights are partly simulated.** `src/app/insights/page.tsx` needs a real
+  `lastUsed` field instead of `Math.random()`, and a real baseline instead of
+  the hardcoded `categoryAverages`, before the screen can be described at all.

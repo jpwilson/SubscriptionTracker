@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { motion, LayoutGroup } from 'framer-motion'
-import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, Calendar, Tag, PieChart, Download, Shield, Zap, Home, AlertTriangle, DollarSign, Lock } from 'lucide-react'
+import { TrendingUp, Bell, BarChart3, Sparkles, ArrowRight, CheckCircle2, Calendar, Tag, PieChart, Download, Shield, Zap, Home, AlertTriangle, Lock } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/supabase-auth-provider'
 import { Button } from '@/components/ui/button'
@@ -157,8 +157,8 @@ export default function LandingPage() {
     },
     {
       icon: <Bell className="w-6 h-6" />,
-      title: "Get Reminders",
-      description: "Never get caught off-guard by subscription changes.",
+      title: "See What's Coming",
+      description: "Open SubTracker and the next charges are already laid out. It does not email or push anything to you.",
       gradient: "from-emerald-500 to-teal-500",
       examples: [
         {
@@ -171,8 +171,8 @@ export default function LandingPage() {
         },
         {
           type: "alert",
-          title: "Renewal reminders",
-          message: "Each subscription warns you ahead of its next payment date",
+          title: "Next payment dates",
+          message: "Every subscription stores its next charge date and a reminder window you set",
           icon: <TrendingUp className="w-4 h-4" />,
           color: "text-orange-400",
           bgColor: "bg-orange-400/10"
@@ -189,31 +189,31 @@ export default function LandingPage() {
     },
     {
       icon: <Sparkles className="w-6 h-6" />,
-      title: "Smart Insights",
-      description: "Insights worked out from the list you entered — no bank feed involved.",
+      title: "Your Data, Your Way",
+      description: "No bank feed, no lock-in. The list is yours and it leaves in a format anything can read.",
       gradient: "from-teal-500 to-emerald-400",
       examples: [
         {
-          type: "warning",
-          title: "Priced above your average",
-          message: "Flags a subscription costing well above your others",
-          icon: <TrendingUp className="w-4 h-4" />,
+          type: "feature",
+          title: "No bank connection",
+          message: "SubTracker never asks for bank or card credentials",
+          icon: <Shield className="w-4 h-4" />,
           color: "text-yellow-400",
           bgColor: "bg-yellow-400/10"
         },
         {
-          type: "alert",
-          title: "Not used in 60 days",
-          message: "Marked as unused, so you can cancel or downgrade it",
-          icon: <AlertTriangle className="w-4 h-4" />,
-          color: "text-red-400",
-          bgColor: "bg-red-400/10"
+          type: "feature",
+          title: "CSV export any time",
+          message: "Download the whole list from your profile page",
+          icon: <Download className="w-4 h-4" />,
+          color: "text-emerald-400",
+          bgColor: "bg-emerald-400/10"
         },
         {
-          type: "savings",
-          title: "Spending above your usual level",
-          message: "A nudge when the monthly total climbs past where it was",
-          icon: <DollarSign className="w-4 h-4" />,
+          type: "feature",
+          title: "Read-only MCP server",
+          message: "Let an AI assistant you control read your list with your own token",
+          icon: <Zap className="w-4 h-4" />,
           color: "text-green-400",
           bgColor: "bg-green-400/10"
         }
@@ -252,9 +252,9 @@ export default function LandingPage() {
       icon: <Zap className="w-5 h-5" />,
       features: [
         "Monthly and yearly totals",
-        "Unused subscription insights",
-        "Trial and renewal warnings",
-        "Category breakdown and calendar"
+        "Spending by category and over time",
+        "Trial and cancellation status badges",
+        "Payment calendar and CSV export"
       ]
     }
   ]
@@ -262,8 +262,8 @@ export default function LandingPage() {
   const freeFeatures = [
     { text: "Unlimited subscriptions", icon: <CheckCircle2 className="w-4 h-4" /> },
     { text: "Monthly & yearly overview", icon: <Calendar className="w-4 h-4" /> },
-    { text: "Smart insights", icon: <Sparkles className="w-4 h-4" /> },
-    { text: "Payment reminders", icon: <Bell className="w-4 h-4" /> },
+    { text: "Next payment dates", icon: <Bell className="w-4 h-4" /> },
+    { text: "Trial & cancellation badges", icon: <Sparkles className="w-4 h-4" /> },
     { text: "12 default categories", icon: <Tag className="w-4 h-4" /> },
     { text: "CSV export of your data", icon: <Download className="w-4 h-4" /> },
     { text: "Payment calendar", icon: <Calendar className="w-4 h-4" /> },
@@ -614,8 +614,15 @@ export default function LandingPage() {
                     Start Saving Now →
                   </Button>
                 </Link>
-                <p className="text-xs text-gray-500 mt-3">
-                  Based on real user data and optimization strategies
+                <p className="text-xs text-gray-500 mt-3 max-w-md mx-auto">
+                  Illustrative estimate based on assumed costs and savings; actual results vary.
+                  It assumes a typical price per subscription in each category (for example
+                  ${categoryPrices['Entertainment']} for entertainment and ${categoryPrices['AI Tools']} for AI tools) and a
+                  fixed savings rate per category (
+                  {Math.round(Math.min(...Object.values(categorySavings)) * 100)}–
+                  {Math.round(Math.max(...Object.values(categorySavings)) * 100)}%) from the
+                  strategies above. It is not based on SubTracker user data — we have none to
+                  publish. Your own numbers are whatever you enter in the app.
                 </p>
               </div>
             </div>
@@ -663,7 +670,7 @@ export default function LandingPage() {
                   <h3 className="text-2xl font-bold mb-3">{feature.title}</h3>
                   <p className="text-gray-400 mb-4">{feature.description}</p>
                   
-                  {/* Show concrete examples for Smart Insights */}
+                  {/* Concrete examples under each feature heading */}
                   {feature.examples && (
                     <div className="space-y-3 mt-6">
                       {feature.examples.map((example, idx) => (
@@ -870,20 +877,21 @@ export default function LandingPage() {
               className="neu-card rounded-3xl p-8 border-2 border-emerald-500/30 relative"
             >
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                <div className="px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-medium flex items-center gap-1">
-                  <Sparkles className="w-3 h-3" />
-                  Most Popular
+                <div className="px-4 py-1 rounded-full bg-white/10 border border-white/20 text-gray-300 text-sm font-medium flex items-center gap-1">
+                  <Lock className="w-3 h-3" />
+                  Not available yet
                 </div>
               </div>
               <div className="mb-8">
                 <h3 className="text-2xl font-bold mb-2">Premium</h3>
-                <p className="text-gray-400 mb-4">For power users</p>
+                <p className="text-gray-400 mb-4">Published price, not yet switchable on</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-5xl font-bold text-gradient">$5</span>
                   <span className="text-gray-400">/month billed annually</span>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  $60 once a year, or $8 if you pay month to month
+                  $60 once a year, or $8 if you pay month to month. Nothing in the app moves an
+                  account onto Premium today, so these features are planned rather than available.
                 </p>
               </div>
               <ul className="space-y-4 mb-8">
@@ -893,19 +901,19 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span className="font-medium">Custom categories</span>
+                  <span className="font-medium">Planned: custom categories</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span className="font-medium">Advanced analytics</span>
+                  <span className="font-medium">Planned: advanced analytics</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span className="font-medium">Cost projections and usage tracking</span>
+                  <span className="font-medium">Planned: cost projections, usage tracking and Smart Insights</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-                  <span className="font-medium">Priority support</span>
+                  <span className="font-medium">Planned: priority support</span>
                 </li>
               </ul>
               <Link href="/pricing">
@@ -925,7 +933,7 @@ export default function LandingPage() {
             >
               <div className="mb-6">
                 <h3 className="text-xl font-bold mb-2">Forever</h3>
-                <p className="text-gray-400 text-sm mb-3">Lifetime access</p>
+                <p className="text-gray-400 text-sm mb-3">Not available yet — published price</p>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-bold text-yellow-400">$250</span>
                   <span className="text-gray-400 text-sm">once</span>
@@ -934,7 +942,7 @@ export default function LandingPage() {
               <ul className="space-y-3 mb-6 text-sm">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-yellow-400 mt-0.5" />
-                  <span>All Premium features</span>
+                  <span>All planned Premium features</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-yellow-400 mt-0.5" />
@@ -946,12 +954,12 @@ export default function LandingPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-yellow-400 mt-0.5" />
-                  <span>Early access</span>
+                  <span>One payment, not a subscription</span>
                 </li>
               </ul>
-              <Link href="/payment?plan=forever">
+              <Link href="/pricing">
                 <Button className="w-full neu-button border border-yellow-500/30 hover:bg-yellow-500/10 text-sm">
-                  Buy Forever
+                  See the detail
                 </Button>
               </Link>
             </motion.div>
@@ -990,9 +998,9 @@ export default function LandingPage() {
                   <span>Dedicated support</span>
                 </li>
               </ul>
-              <Link href="/payment?plan=enterprise">
+              <Link href="/pricing">
                 <Button className="w-full neu-button border border-teal-500/30 hover:bg-teal-500/10 text-sm">
-                  Contact Sales
+                  See the detail
                 </Button>
               </Link>
             </motion.div>

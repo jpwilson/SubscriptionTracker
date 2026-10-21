@@ -47,7 +47,7 @@ export const COMPARISONS: Comparison[] = [
       'An honest comparison of SubTracker and Rocket Money for tracking subscriptions: bank connection, cancellations, pricing and privacy, checked October 2026.',
     h1: 'SubTracker vs Rocket Money',
     intro:
-      'Both apps exist to stop you paying for subscriptions you forgot about, but they take opposite routes. Rocket Money connects to your bank accounts and finds the recurring charges for you, then offers to cancel services and negotiate bills on your behalf. SubTracker is a free web app with no bank connection at all: you enter the subscriptions yourself and it does the arithmetic, the reminders and the category breakdown. This page is for someone deciding whether the automatic route is worth handing over bank access.',
+      'Both apps exist to stop you paying for subscriptions you forgot about, but they take opposite routes. Rocket Money connects to your bank accounts and finds the recurring charges for you, then offers to cancel services and negotiate bills on your behalf. SubTracker is a free web app with no bank connection at all: you enter the subscriptions yourself and it does the arithmetic, the payment calendar and the category breakdown. This page is for someone deciding whether the automatic route is worth handing over bank access.',
     competitorSummary:
       'Rocket Money is a personal-finance app from Rocket Companies, and it is the product formerly known as Truebill — Truebill was renamed Rocket Money in 2022, so the two names refer to the same service. As of October 2026 its own site describes finding and tracking your subscriptions automatically, cancelling services for you, breaking down everyday spending, automated saving, and an AI assistant called Rowan, and states that it has more than 10 million members. It has mobile apps and a web app, is built around linking your financial accounts, and has a free tier plus a paid Premium tier (check their site for the current Premium price, which they set within a range).',
     rows: [
@@ -78,7 +78,7 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         label: 'Paid plan',
-        subtracker: '$8/month, $60/year or $250 once',
+        subtracker: 'Premium is published at $8/month, $60/year or $250 once, but cannot be activated yet — free is the only working plan',
         competitor: 'Premium, priced on their site',
       },
       {
@@ -95,7 +95,7 @@ export const COMPARISONS: Comparison[] = [
     chooseSubtracker: [
       'You do not want to give any app your online banking login.',
       'You already roughly know what you subscribe to and want one clear list and total.',
-      'You want unlimited tracking without paying anything.',
+      'You want unlimited tracking without paying anything — free is all SubTracker currently sells.',
       'You want to export your list and keep it, rather than have it live inside a bank feed.',
     ],
     chooseCompetitor: [
@@ -121,14 +121,14 @@ export const COMPARISONS: Comparison[] = [
       'SubTracker and Bobby both track subscriptions you enter by hand. Compare platforms, categories, analytics and export, checked October 2026.',
     h1: 'SubTracker vs Bobby',
     intro:
-      'SubTracker and Bobby are the two sides of the same idea: a list of your subscriptions that you maintain yourself, with no bank connection. The practical difference is where it runs. Bobby is an iPhone app; SubTracker is a web app you open in any browser. This page is for someone choosing between a polished iOS-only tracker and something they can also use on a laptop.',
+      'SubTracker and Bobby are the two sides of the same idea: a list of your subscriptions that you maintain yourself, with no bank connection. The practical difference is where it runs. Bobby is an iPhone app, which an Apple Silicon Mac can also run; SubTracker is a web app you open in any browser, on any machine. This page is for someone choosing between a polished iPhone-first tracker and something that runs in any browser.',
     competitorSummary:
-      'Bobby is a subscription tracker for iOS made by the design studio Yummygum. According to its App Store listing in October 2026 it is a free download, it lets you pick from hundreds of preset services or create custom ones, it shows an overview of all your subscriptions and upcoming bills with a monthly total, and it notifies you when a bill is due. It requires iOS 14 or later and there is no Android or browser version.',
+      'Bobby is a subscription tracker for iOS made by the design studio Yummygum. According to its App Store listing in October 2026 it is a free download, it lets you pick from hundreds of preset services or create custom ones, it shows an overview of all your subscriptions and upcoming bills with a monthly total, and it notifies you when a bill is due. It requires iOS 14 or later. Its listing also shows macOS 11 or later on a Mac with an Apple M1 chip or later, alongside the note "Designed for iPhone. Not verified for macOS", and visionOS 1.0 or later. There is no Android version and no browser version. The listing shows in-app purchases, including an All-in-one Pack v2 at $2.99 and separate $0.99 unlocks for the subscription limit and the category limit.',
     rows: [
       {
         label: 'Where it runs',
-        subtracker: 'Any browser — desktop, tablet or phone',
-        competitor: 'iPhone and iPad (iOS 14+)',
+        subtracker: 'Any browser — desktop, tablet or phone, any operating system',
+        competitor: 'iPhone and iPad (iOS 14+), Apple Vision (visionOS 1+), and Macs with Apple M1 or later (macOS 11+)',
       },
       {
         label: 'Android',
@@ -137,8 +137,8 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         label: 'Desktop use',
-        subtracker: 'Yes, it is a web app',
-        competitor: 'No',
+        subtracker: 'Yes, in any desktop browser',
+        competitor: 'Apple Silicon Macs only — the listing offers the iPhone app on macOS 11+ with an M1 or later, marked "Designed for iPhone. Not verified for macOS". No browser version, so no Windows or Linux',
       },
       {
         label: 'How subscriptions get in',
@@ -152,17 +152,17 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         label: 'Cost',
-        subtracker: 'Free plan with unlimited subscriptions; Premium from $5/month billed annually',
-        competitor: 'Free to download; check the listing for in-app purchases',
+        subtracker: 'Free plan with unlimited subscriptions; Premium is published at $8/month, $60/year or $250 once but is not available yet',
+        competitor: 'Free to download, with in-app purchases from $0.99 — including unlocks for its subscription and category limits',
       },
       {
         label: 'Reminders',
-        subtracker: 'Per-subscription reminder window and next payment date',
+        subtracker: 'A reminder window and next payment date stored on each subscription and shown in the app. No notifications are sent',
         competitor: 'Notifies you when a bill is due',
       },
       {
         label: 'Analytics',
-        subtracker: 'Category charts, spending over time, payment calendar, insights',
+        subtracker: 'Category charts, spending over time and a payment calendar',
         competitor: 'Overview of subscriptions and upcoming bills',
       },
       {
@@ -172,8 +172,8 @@ export const COMPARISONS: Comparison[] = [
       },
     ],
     chooseSubtracker: [
-      'You want the same list on your laptop and your phone.',
-      'You are on Android, or you share the list with someone who is.',
+      'You want the same list on any laptop and any phone, not just Apple hardware.',
+      'You are on Android, Windows or Linux, or you share the list with someone who is.',
       'You want charts, a payment calendar and CSV export rather than just a list.',
     ],
     chooseCompetitor: [
@@ -182,12 +182,12 @@ export const COMPARISONS: Comparison[] = [
       'You would rather have no account at all than one more login.',
     ],
     competitorStrengths: [
-      'A native iOS app feels faster than a web app and gets proper system notifications and widgets.',
+      'A native iOS app feels faster than a web app, and it gets proper system notifications when a bill is due — SubTracker sends no notifications at all.',
       'The preset catalogue of common services makes data entry quicker than typing names in.',
       'Bobby has been around for years and is a well-regarded, carefully designed app.',
     ],
     sourceNote:
-      'Bobby details taken from its App Store listing in October 2026. Check the listing for the current feature set and any in-app purchases.',
+      'Bobby details, including its compatibility and in-app purchase list, taken from its App Store listing in October 2026. Check the listing for the current feature set and prices.',
   },
   {
     path: '/vs-ynab',
@@ -215,7 +215,7 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         label: 'Price',
-        subtracker: '$0, or Premium at $8/month, $60/year or $250 once',
+        subtracker: '$0. Premium is published at $8/month, $60/year or $250 once but cannot be activated yet',
         competitor: '$14.99/month or $109/year',
       },
       {
@@ -230,7 +230,7 @@ export const COMPARISONS: Comparison[] = [
       },
       {
         label: 'Subscription-specific features',
-        subtracker: 'Trial badges, renewal reminders, unused-subscription insights, payment calendar',
+        subtracker: 'Trial and cancellation badges, next payment dates, a payment calendar and category charts',
         competitor: 'Recurring spending appears as budget categories and scheduled transactions',
       },
       {
@@ -241,7 +241,7 @@ export const COMPARISONS: Comparison[] = [
     ],
     chooseSubtracker: [
       'Subscriptions are the specific problem and you do not want to budget your whole life to fix it.',
-      'You want to spend nothing.',
+      'You want to spend nothing — free is the only plan SubTracker can actually put you on.',
       'You want to see the subscription total and the renewal dates in one screen.',
     ],
     chooseCompetitor: [
@@ -283,9 +283,9 @@ export const ALTERNATIVES: AlternativeEntry[] = [
     urlLabel: 'this site',
     bestFor: 'A free, unlimited, manual list of your subscriptions with no bank access',
     summary:
-      'A web app where you enter each recurring payment and get monthly and yearly totals, category charts, a payment calendar, trial and renewal reminders and CSV export. The free plan has no subscription limit and no credit card requirement.',
+      'A web app where you enter each recurring payment and get monthly and yearly totals, category charts, a payment calendar, trial and cancellation status badges and CSV export. The free plan has no subscription limit and no credit card requirement.',
     watchOut:
-      'It will not find anything for you. If you cannot remember what you subscribe to, you have to go through your statements first. There is also no native mobile app.',
+      'It will not find anything for you. If you cannot remember what you subscribe to, you have to go through your statements first. It sends no notifications, so you have to open it. There is no native mobile app, and the published Premium tier cannot be activated yet.',
   },
   {
     name: 'Rocket Money',
@@ -302,10 +302,11 @@ export const ALTERNATIVES: AlternativeEntry[] = [
     name: 'Bobby',
     url: 'https://apps.apple.com/us/app/bobby-track-subscriptions/id1059152023',
     urlLabel: 'App Store listing',
-    bestFor: 'iPhone owners who want a native, no-account subscription list',
+    bestFor: 'iPhone owners who want a native, no-account subscription list with real notifications',
     summary:
-      'A long-standing iOS subscription tracker by Yummygum. Free to download, manual entry with presets for hundreds of common services, an overview of upcoming bills and notifications when one is due.',
-    watchOut: 'iOS only — no Android app and no browser version, so there is nothing to open on a laptop.',
+      'A long-standing iOS subscription tracker by Yummygum. Free to download with in-app purchases from $0.99, manual entry with presets for hundreds of common services, an overview of upcoming bills and notifications when one is due.',
+    watchOut:
+      'Apple only. There is no Android app and no browser version; the iPhone app can be installed on a Mac with an Apple M1 chip or later, which the listing marks as not verified for macOS, so Windows and Linux are out entirely.',
     comparisonPath: '/vs-bobby',
   },
   {
@@ -337,6 +338,6 @@ export const ALTERNATIVES: AlternativeEntry[] = [
     summary:
       'Free, infinitely flexible, and genuinely fine for ten subscriptions. One row per subscription, a column for the monthly equivalent, and a SUM at the bottom.',
     watchOut:
-      'Nothing reminds you about a trial ending, nothing normalises annual to monthly unless you write the formula, and in practice spreadsheets like this stop being updated after a few months.',
+      'Nothing flags a trial ending, nothing normalises annual to monthly unless you write the formula, and in practice spreadsheets like this stop being updated after a few months.',
   },
 ]

@@ -51,7 +51,7 @@ export default function AlternativesPage() {
       <p className="text-gray-400 mb-4">
         The short version: if you cannot remember what you subscribe to, a bank-connected app like
         Rocket Money will find it faster than you will. If you already roughly know and want one
-        clear list, totals and renewal reminders without handing over bank access, a manual tracker
+        clear list, totals and renewal dates without handing over bank access, a manual tracker
         like SubTracker or Bobby is enough — and free. If the real problem is your whole budget
         rather than your subscriptions, pay for a budgeting app instead.
       </p>
@@ -144,9 +144,8 @@ export default function AlternativesPage() {
       <section className="neu-card rounded-3xl p-8 mb-12 border border-emerald-500/20">
         <p className="text-gray-300 mb-4">
           SubTracker is the free, unlimited, no-bank-access option. You add each subscription once
-          and get monthly and yearly totals, twelve categories, trial and renewal badges, a payment
-          calendar, category charts, insights about subscriptions you have stopped using, and CSV
-          export. There is no cap on the free plan, which is the main thing that separates it from
+          and get monthly and yearly totals, twelve categories, trial and cancellation status
+          badges, next payment dates, a payment calendar, category charts and CSV export. There is no cap on the free plan, which is the main thing that separates it from
           the trackers that limit free users to a handful of entries.
         </p>
         <p className="text-gray-400 mb-6">
