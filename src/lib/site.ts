@@ -42,6 +42,12 @@ export type PublicPage = {
   nav: 'primary' | 'compare' | 'guide' | 'none'
   priority: number
   changeFrequency: 'weekly' | 'monthly'
+  /**
+   * True for pages that exist for the app rather than for readers (the sign-in
+   * page). They stay crawlable and stay in the sitemap, but the long-form
+   * content checks in scripts/check-seo.mjs do not apply to them.
+   */
+  thin?: true
 }
 
 /**
@@ -136,6 +142,7 @@ export const PUBLIC_PAGES: PublicPage[] = [
     nav: 'none',
     priority: 0.4,
     changeFrequency: 'monthly',
+    thin: true,
   },
 ]
 
