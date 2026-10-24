@@ -1,16 +1,23 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, TrendingUp, Calendar, Bell, Sparkles, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { JsonLd } from '@/components/json-ld'
+import { MarketingFooter } from '@/components/marketing-footer'
+import { MarketingHeader } from '@/components/marketing-header'
+import { articleSchema, breadcrumbSchema, buildMetadata } from '@/lib/seo'
+import { LAST_UPDATED_ISO } from '@/lib/site'
 
-export const metadata: Metadata = {
-  title: 'How to Cancel Subscriptions: Step-by-Step Guide | SubTracker',
-  description: 'Learn how to cancel subscriptions from Netflix, Spotify, Adobe, and more. Step-by-step instructions for canceling any subscription service.',
-  openGraph: {
-    title: 'How to Cancel Any Subscription: Complete Guide 2025',
-    description: 'Easy step-by-step instructions for canceling subscriptions. Save money by stopping unwanted recurring charges.',
-  },
-}
+const BREADCRUMB = [
+  { name: 'Home', path: '/' },
+  { name: 'How to cancel subscriptions', path: '/how-to-cancel-subscriptions' },
+]
+
+export const metadata = buildMetadata({
+  title: 'How to Cancel Subscriptions: Step-by-Step Guide',
+  description: 'Step-by-step instructions for cancelling subscriptions on iPhone, Android and the web, including Netflix, Spotify, Adobe and Amazon Prime, plus what to check afterwards.',
+  path: '/how-to-cancel-subscriptions',
+  type: 'article',
+})
 
 export default function HowToCancelSubscriptions() {
   const services = [
@@ -80,20 +87,19 @@ export default function HowToCancelSubscriptions() {
     <div className="min-h-screen bg-background">
       <div className="fixed inset-0 gradient-mesh" />
       
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-xl neu-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="text-xl font-bold text-gradient">SubTracker</span>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
-                Track Your Subscriptions
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <JsonLd
+        data={[
+          breadcrumbSchema(BREADCRUMB),
+          articleSchema({
+            headline: 'How to Cancel Subscriptions: Step-by-Step Guide',
+            description: 'Step-by-step instructions for cancelling subscriptions on iPhone, Android and the web, including Netflix, Spotify, Adobe and Amazon Prime, plus what to check afterwards.',
+            path: '/how-to-cancel-subscriptions',
+            datePublished: LAST_UPDATED_ISO,
+            dateModified: LAST_UPDATED_ISO,
+          }),
+        ]}
+      />
+      <MarketingHeader />
 
       <main className="relative pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -233,23 +239,23 @@ export default function HowToCancelSubscriptions() {
           <div className="neu-card rounded-3xl p-8 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-emerald-400" />
-              Never Miss a Cancellation Again
+              Keep a Record of What You Cancelled
             </h2>
             <p className="text-lg text-gray-300 mb-6">
-              SubTracker sends you alerts before trials end and renewal dates arrive. Track all your subscriptions in one place and get reminded when it&apos;s time to cancel.
+              SubTracker does not send you anything &mdash; no email, no push, no texts. What it does is keep every renewal date and trial end date in one place, flag the ones inside their last seven days with a badge, and keep a record of what you have already cancelled so it drops out of your monthly total without disappearing from the list.
             </p>
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
                 <Bell className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white">7-day trial alerts</p>
+                <p className="text-sm font-semibold text-white">&ldquo;Trial ending soon&rdquo; badge</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
                 <Calendar className="w-8 h-8 text-teal-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white">Renewal reminders</p>
+                <p className="text-sm font-semibold text-white">Payment calendar</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
                 <TrendingUp className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white">Price change alerts</p>
+                <p className="text-sm font-semibold text-white">Cancellation kept on record</p>
               </div>
             </div>
             <div className="text-center">
@@ -259,7 +265,7 @@ export default function HowToCancelSubscriptions() {
                   className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300 group"
                 >
                   <span className="flex items-center gap-2">
-                    Start Free - Never Forget to Cancel
+                    Start Free - Keep Track of Cancellations
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </Button>
@@ -270,11 +276,7 @@ export default function HowToCancelSubscriptions() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 relative">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. Never miss a cancellation deadline.</p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

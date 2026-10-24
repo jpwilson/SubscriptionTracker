@@ -1,16 +1,23 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, DollarSign, TrendingUp, Users, Calendar, Shield, Sparkles, Zap } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { JsonLd } from '@/components/json-ld'
+import { MarketingFooter } from '@/components/marketing-footer'
+import { MarketingHeader } from '@/components/marketing-header'
+import { articleSchema, breadcrumbSchema, buildMetadata } from '@/lib/seo'
+import { LAST_UPDATED_ISO } from '@/lib/site'
 
-export const metadata: Metadata = {
-  title: 'Subscription Savings Guide: 12 Ways to Save Money | SubTracker',
-  description: 'Practical strategies to reduce subscription costs. Learn about annual billing savings, family plan sharing, and more money-saving tips.',
-  openGraph: {
-    title: 'Save Money on Subscriptions: Complete 2025 Guide',
-    description: '12 proven strategies to cut subscription costs without losing services you love. Start saving today.',
-  },
-}
+const BREADCRUMB = [
+  { name: 'Home', path: '/' },
+  { name: 'Subscription savings guide', path: '/subscription-savings-guide' },
+]
+
+export const metadata = buildMetadata({
+  title: 'Subscription Savings Guide: Cut Recurring Costs',
+  description: 'Ways to spend less on subscriptions: annual billing, family plans, downgrades, rotating streaming services and cancelling what you do not use.',
+  path: '/subscription-savings-guide',
+  type: 'article',
+})
 
 export default function SubscriptionSavingsGuide() {
   const strategies = [
@@ -176,20 +183,19 @@ export default function SubscriptionSavingsGuide() {
     <div className="min-h-screen bg-background">
       <div className="fixed inset-0 gradient-mesh" />
       
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-xl neu-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="text-xl font-bold text-gradient">SubTracker</span>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
-                Start Saving Money
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <JsonLd
+        data={[
+          breadcrumbSchema(BREADCRUMB),
+          articleSchema({
+            headline: 'Subscription Savings Guide: Cut Recurring Costs',
+            description: 'Ways to spend less on subscriptions: annual billing, family plans, downgrades, rotating streaming services and cancelling what you do not use.',
+            path: '/subscription-savings-guide',
+            datePublished: LAST_UPDATED_ISO,
+            dateModified: LAST_UPDATED_ISO,
+          }),
+        ]}
+      />
+      <MarketingHeader />
 
       <main className="relative pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -283,24 +289,26 @@ export default function SubscriptionSavingsGuide() {
               Track Everything with SubTracker
             </h2>
             <p className="text-lg text-gray-300 mb-6">
-              Manually tracking 12+ subscriptions is exhausting. SubTracker automatically organizes everything, 
-              sends savings alerts, and shows exactly where your money goes each month.
+              Keeping 12+ subscriptions straight in your head is the hard part. SubTracker organizes
+              them into one list with monthly and yearly totals, a category breakdown and a payment
+              calendar, so you can see exactly where the money goes before you decide what to cut.
+              It does not send alerts &mdash; you open it.
             </p>
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
                 <DollarSign className="w-8 h-8 text-emerald-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Find Savings</p>
-                <p className="text-xs text-gray-400">Identify opportunities</p>
+                <p className="text-sm font-semibold text-white mb-1">See the Total</p>
+                <p className="text-xs text-gray-400">Monthly and yearly, in one figure</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
                 <Calendar className="w-8 h-8 text-teal-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Set Reminders</p>
-                <p className="text-xs text-gray-400">Never miss renewals</p>
+                <p className="text-sm font-semibold text-white mb-1">Payment Calendar</p>
+                <p className="text-xs text-gray-400">Which charges land on which day</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
                 <TrendingUp className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Track Savings</p>
-                <p className="text-xs text-gray-400">See your progress</p>
+                <p className="text-sm font-semibold text-white mb-1">Spending Over Time</p>
+                <p className="text-xs text-gray-400">Watch the total move as you cut</p>
               </div>
             </div>
             <div className="text-center">
@@ -321,11 +329,7 @@ export default function SubscriptionSavingsGuide() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 relative">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. Save money on subscriptions.</p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

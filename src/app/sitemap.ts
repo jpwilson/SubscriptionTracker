@@ -1,50 +1,18 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
+import { LAST_UPDATED_ISO, PUBLIC_PAGES, absoluteUrl } from '@/lib/site'
 
+/**
+ * Every public canonical URL, generated from PUBLIC_PAGES so a new marketing
+ * page only has to be registered in one place. lastmod uses the date the
+ * content was last reviewed rather than the build time, so it stays honest.
+ */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://subtracker.app'
-  
-  return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/vs-rocket-money`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/vs-truebill`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/how-to-cancel-subscriptions`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/find-forgotten-subscriptions`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/subscription-savings-guide`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/login`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.5,
-    },
-  ]
+  const lastModified = new Date(LAST_UPDATED_ISO)
+
+  return PUBLIC_PAGES.map((page) => ({
+    url: absoluteUrl(page.path),
+    lastModified,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }))
 }

@@ -1,16 +1,23 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowRight, CheckCircle2, Search, Mail, CreditCard, Receipt, AlertTriangle, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { JsonLd } from '@/components/json-ld'
+import { MarketingFooter } from '@/components/marketing-footer'
+import { MarketingHeader } from '@/components/marketing-header'
+import { articleSchema, breadcrumbSchema, buildMetadata } from '@/lib/seo'
+import { LAST_UPDATED_ISO } from '@/lib/site'
 
-export const metadata: Metadata = {
-  title: 'How to Find Forgotten Subscriptions: Complete Guide | SubTracker',
-  description: 'Discover forgotten subscriptions draining your bank account. Learn 7 proven methods to find hidden recurring charges.',
-  openGraph: {
-    title: 'Find Forgotten Subscriptions: Save Money Today',
-    description: '7 ways to find forgotten subscriptions. Many people have active subscriptions they forgot about. Find yours now.',
-  },
-}
+const BREADCRUMB = [
+  { name: 'Home', path: '/' },
+  { name: 'Find forgotten subscriptions', path: '/find-forgotten-subscriptions' },
+]
+
+export const metadata = buildMetadata({
+  title: 'How to Find Forgotten Subscriptions You Still Pay For',
+  description: 'A practical audit for finding recurring charges you forgot about: bank statements, App Store and Google Play subscriptions, email receipts and PayPal agreements.',
+  path: '/find-forgotten-subscriptions',
+  type: 'article',
+})
 
 export default function FindForgottenSubscriptions() {
   const methods = [
@@ -116,20 +123,19 @@ export default function FindForgottenSubscriptions() {
     <div className="min-h-screen bg-background">
       <div className="fixed inset-0 gradient-mesh" />
       
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-xl neu-card">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center gap-3">
-              <span className="text-xl font-bold text-gradient">SubTracker</span>
-            </Link>
-            <Link href="/login">
-              <Button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white">
-                Find My Subscriptions
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <JsonLd
+        data={[
+          breadcrumbSchema(BREADCRUMB),
+          articleSchema({
+            headline: 'How to Find Forgotten Subscriptions You Still Pay For',
+            description: 'A practical audit for finding recurring charges you forgot about: bank statements, App Store and Google Play subscriptions, email receipts and PayPal agreements.',
+            path: '/find-forgotten-subscriptions',
+            datePublished: LAST_UPDATED_ISO,
+            dateModified: LAST_UPDATED_ISO,
+          }),
+        ]}
+      />
+      <MarketingHeader />
 
       <main className="relative pt-32 pb-20 px-4">
         <div className="max-w-4xl mx-auto">
@@ -260,10 +266,10 @@ export default function FindForgottenSubscriptions() {
           <div className="neu-card rounded-3xl p-8 border border-emerald-500/20 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
             <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
               <Sparkles className="w-6 h-6 text-emerald-400" />
-              The Easier Way: Let SubTracker Do It
+              Keep Them Visible: Put Them in SubTracker
             </h2>
             <p className="text-lg text-gray-300 mb-6">
-              Manually hunting through emails and statements takes hours. SubTracker organizes everything automatically and alerts you to forgotten subscriptions, upcoming renewals, and price increases.
+              Hunting through emails and statements takes an hour or two, and you only want to do it once. SubTracker will not do the hunting for you &mdash; there is no bank connection, so it only knows what you enter &mdash; but once each subscription is in, it keeps the list, the monthly and yearly totals, the next payment dates and the category breakdown in one place so nothing drops out of sight again.
             </p>
             <div className="grid md:grid-cols-3 gap-4 mb-6">
               <div className="neu-card rounded-xl p-4 border border-emerald-500/20 text-center">
@@ -273,13 +279,13 @@ export default function FindForgottenSubscriptions() {
               </div>
               <div className="neu-card rounded-xl p-4 border border-teal-500/20 text-center">
                 <AlertTriangle className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Smart Alerts</p>
-                <p className="text-xs text-gray-400">Never forget again</p>
+                <p className="text-sm font-semibold text-white mb-1">Status Badges</p>
+                <p className="text-xs text-gray-400">Trials and cancellations flagged in the app</p>
               </div>
               <div className="neu-card rounded-xl p-4 border border-blue-500/20 text-center">
                 <Receipt className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-sm font-semibold text-white mb-1">Savings Insights</p>
-                <p className="text-xs text-gray-400">Cut unnecessary costs</p>
+                <p className="text-sm font-semibold text-white mb-1">Totals and Categories</p>
+                <p className="text-xs text-gray-400">See what the pile actually costs</p>
               </div>
             </div>
             <div className="text-center">
@@ -300,11 +306,7 @@ export default function FindForgottenSubscriptions() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 py-8 px-4 relative">
-        <div className="max-w-7xl mx-auto text-center text-gray-400">
-          <p>&copy; 2025 SubTracker. Find and manage all your subscriptions.</p>
-        </div>
-      </footer>
+      <MarketingFooter />
     </div>
   )
 }

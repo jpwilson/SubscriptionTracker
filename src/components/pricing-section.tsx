@@ -7,22 +7,25 @@ import Link from 'next/link'
 const FREE_FEATURES = [
   'Track unlimited subscriptions',
   'Monthly & yearly cost overview',
-  'Payment reminders',
+  'Next payment dates & payment calendar',
+  'Trial & cancellation status badges',
   'Basic analytics & graphs',
   'Export subscription data',
   'Dark mode',
-  '20 default categories',
+  '12 default categories',
 ]
 
+// Premium cannot be activated yet: src/lib/feature-gates.ts always reports the
+// user as free and there is no webhook that grants an entitlement. Keep these
+// labelled as planned until that is wired up. See src/content/product.ts.
 const PREMIUM_FEATURES = [
   'Everything in Free',
-  'Create custom categories',
-  'Add subcategories',
-  'Advanced analytics',
-  'Usage tracking & insights',
-  'Cost projections',
-  'Priority support',
-  'Early access to new features',
+  'Planned: custom categories',
+  'Planned: subcategories',
+  'Planned: advanced analytics',
+  'Planned: usage tracking & Smart Insights',
+  'Planned: cost projections',
+  'Planned: priority support',
 ]
 
 const ENTERPRISE_FEATURES = [
@@ -52,7 +55,8 @@ export function PricingSection() {
             Choose Your Plan
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Start free and upgrade when you need more powerful features
+            Free is the only plan you can be on today. The Premium and Enterprise prices below are
+            published plans that cannot be switched on yet.
           </p>
         </motion.div>
 
@@ -99,9 +103,9 @@ export function PricingSection() {
             className="neu-card p-8 relative border-2 border-emerald-500/20"
           >
             <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-              <div className="px-4 py-1 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-medium flex items-center gap-1">
+              <div className="px-4 py-1 rounded-full bg-white/10 border border-white/20 text-muted-foreground text-sm font-medium flex items-center gap-1">
                 <Sparkles className="w-3 h-3" />
-                Most Popular
+                Not available yet
               </div>
             </div>
 
@@ -111,12 +115,15 @@ export function PricingSection() {
                 <Sparkles className="w-5 h-5 text-emerald-500" />
               </h3>
               <p className="text-muted-foreground mb-4">
-                For power users who want more control
+                Published price, not yet switchable on
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-gradient">$5</span>
-                <span className="text-muted-foreground">/month</span>
+                <span className="text-muted-foreground">/month billed annually</span>
               </div>
+              <p className="text-xs text-muted-foreground mt-1">
+                $60 once a year, or $8 month to month
+              </p>
             </div>
 
             <ul className="space-y-4 mb-8">
@@ -130,9 +137,9 @@ export function PricingSection() {
               ))}
             </ul>
 
-            <Link href="/payment?plan=premium" className="block w-full">
-              <button className="neu-button w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:shadow-emerald-500/25">
-                Upgrade to Premium
+            <Link href="/pricing" className="block w-full">
+              <button className="neu-button w-full border-2 border-emerald-500/20 hover:bg-emerald-500/10">
+                See Premium pricing
               </button>
             </Link>
           </motion.div>
@@ -152,7 +159,7 @@ export function PricingSection() {
                 </span>
               </h3>
               <p className="text-muted-foreground mb-4">
-                Stop unchecked expenses in your company
+                Not available yet &mdash; get in touch
               </p>
               <div className="flex items-baseline gap-1">
                 <span className="text-4xl font-bold text-gradient">$200</span>
@@ -172,9 +179,9 @@ export function PricingSection() {
               ))}
             </ul>
 
-            <Link href="/payment?plan=enterprise" className="block w-full">
+            <Link href="/pricing" className="block w-full">
               <button className="neu-button w-full border-2 border-emerald-500/20 hover:bg-emerald-500/10">
-                Contact Sales
+                See the detail
               </button>
             </Link>
           </motion.div>
@@ -187,10 +194,14 @@ export function PricingSection() {
           className="mt-12 text-center"
         >
           <p className="text-sm text-muted-foreground mb-4">
-            Cancel anytime. No credit card required for free plan.
+            No credit card required for the free plan, and no subscription limit on it either.
           </p>
-          <p className="text-xs text-emerald-400 font-medium">
-            &ldquo;So many dumb tiny expenses go 100% unchecked&rdquo; - Enterprise customers save thousands monthly
+          <p className="text-xs text-muted-foreground">
+            Full detail, including what SubTracker deliberately does not do, on the{' '}
+            <Link href="/pricing" className="text-emerald-400 hover:text-emerald-300">
+              pricing page
+            </Link>
+            .
           </p>
         </motion.div>
       </div>
